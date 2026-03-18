@@ -1,0 +1,121 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/sidebar') %>
+
+<div class="main-area">
+    <%- include('../../partials/header') %>
+
+    <div class="command-center">
+        <!-- LEFT: FACILITY LIST -->
+        <aside class="inbound-feed">
+            <div class="feed-header">
+                <h2>Live Sessions</h2>
+                <div class="search-wrap">
+                    <input type="text" placeholder="Search facilities...">
+                </div>
+            </div>
+            
+            <div class="feed-stack no-scrollbar">
+                <% chats.forEach(chat => { %>
+                    <a href="/chatbot?id=<%= chat.id %>" class="feed-card <%= currentChat && currentChat.id === chat.id ? 'active' : '' %>">
+                        <div class="card-avatar"><%= chat.client.charAt(0) %></div>
+                        <div class="card-info">
+                            <div class="card-meta">
+                                <h3><%= chat.client %></h3>
+                                <span class="time"><%= chat.messages[chat.messages.length-1].time %></span>
+                            </div>
+                            <p><%= chat.messages[chat.messages.length-1].text %></p>
+                            <% if(chat.sentiment === 'Urgent') { %>
+                                <div class="urgent-indicator">URGENT</div>
+                            <% } %>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+        </aside>
+
+        <!-- CENTER: WORKSPACE -->
+        <main class="chat-workspace">
+            <% if(currentChat) { %>
+                <header class="workspace-nav">
+                    <div class="nav-client">
+                        <h2><%= currentChat.client %></h2>
+                        <span class="online-status">● <%= currentChat.status %></span>
+                    </div>
+                    <div class="nav-actions">
+                        <!-- Toggle button for Brain Training -->
+                        <button class="btn-neural" onclick="document.querySelector('.neural-drawer').classList.toggle('open')">
+                            🧠 Logic Neural
+                        </button>
+                        <a href="/chatbot/end/<%= currentChat.id %>" class="btn-end">End Session</a>
+                    </div>
+                </header>
+
+                <div class="message-area no-scrollbar">
+                    <% currentChat.messages.forEach(msg => { %>
+                        <div class="msg-row <%= msg.sender === 'Admin' ? 'admin' : 'client' %>">
+                            <div class="bubble">
+                                <p><%= msg.text %></p>
+                                <span class="meta"><%= msg.time %></span>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+
+                <footer class="workspace-footer">
+                    <div class="quick-chips no-scrollbar">
+                        <% quickReplies.forEach(reply => { %>
+                            <button onclick="document.getElementById('chatInput').value='<%= reply %>'" class="chip">
+                                <%= reply %>
+                            </button>
+                        <% }) %>
+                    </div>
+                    <form action="/chatbot/send/<%= currentChat.id %>" method="POST" class="composer">
+                        <input id="chatInput" name="message" placeholder="Type a message..." required autocomplete="off">
+                        <button type="submit">SEND</button>
+                    </form>
+                </footer>
+
+            <% } else { %>
+                <div class="empty-state">
+                    <div class="empty-art">💊</div>
+                    <h2>PharMediSync Hub</h2>
+                    <p>Select a medical facility from the inbound feed to begin processing.</p>
+                </div>
+            <% } %>
+        </main>
+
+        <!-- RIGHT: SLIDING NEURAL DRAWER -->
+        <aside class="neural-drawer">
+            <div class="drawer-header">
+                <h3>Bot Intelligence</h3>
+                <button onclick="document.querySelector('.neural-drawer').classList.remove('open')">✕</button>
+            </div>
+            
+            <div class="drawer-content no-scrollbar">
+                <section class="brain-section">
+                    <label>Train Logic Rule</label>
+                    <form action="/chatbot/kb/add" method="POST" class="train-form">
+                        <input name="trigger" placeholder="If facility says: (e.g. price)" required>
+                        <textarea name="response" placeholder="Bot should reply with..." required></textarea>
+                        <button type="submit">Deploy Neural Rule</button>
+                    </form>
+                </section>
+
+                <section class="rules-section">
+                    <label>Active Rules</label>
+                    <div class="rules-list">
+                        <% kb.forEach(rule => { %>
+                            <div class="rule-tag">
+                                <span>#<%= rule.trigger %></span>
+                                <a href="/chatbot/kb/delete/<%= rule.id %>" class="del-rule">✕</a>
+                            </div>
+                        <% }) %>
+                    </div>
+                </section>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<%- include('../../partials/footer') %>
+

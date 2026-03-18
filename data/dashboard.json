@@ -1,0 +1,26 @@
+{
+  "kpi": {
+    "salesPending": 12,
+    "inTransit": 5,
+    "delivered": 148,
+    "qtyOnHand": 1240,
+    "qtyToReceive": 85
+  },
+  "productDetails": {
+    "allItems": 45,
+    "lowStock": 8,
+    "expired": 2,
+    "products": 38
+  },
+  "sales": {
+    "deliveryToClient": 65,
+    "walkInCustomer": 35
+  },
+  "topClients": ["St. Luke's Medical", "Makati Medical", "PGH"],
+  "topProducts": ["Digital Thermometer", "Nebulizer Kit", "N95 Masks"],
+  "recentActivity": [
+    { "time": "10:45 AM", "event": "New Order: St. Luke's", "type": "success" },
+    { "time": "09:30 AM", "event": "Low Stock: Gloves", "type": "warning" },
+    { "time": "08:15 AM", "event": "Supplier delay: SUP-01", "type": "danger" }
+  ]
+}

@@ -1,0 +1,114 @@
+<%- include('../../staffpartials/head') %>
+<%- include('../../staffpartials/sidebar') %>
+
+<main class="main-area-staff">
+    <%- include('../../staffpartials/header') %>
+
+    <div class="content" style="padding: 15px;">
+        <!-- Header -->
+        <div class="page-header" style="margin-bottom: 15px;">
+            <div>
+                <h1 style="font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.3rem; color: #1e293b;">Support <span style="color: var(--red);">Terminal</span></h1>
+                <p class="st-label-tiny" style="color: #94a3b8; font-size: 8px;">Operational Intelligence & Client Assistance</p>
+            </div>
+            <div class="flex gap-2">
+                <span class="badge badge-success" style="font-size: 9px; padding: 5px 10px;">● System Integrated</span>
+            </div>
+        </div>
+
+        <div class="st-workspace shadow-2xl">
+            
+            <!-- PANEL 1: INBOX -->
+            <aside class="st-inbox">
+                <div class="st-inbox-header">
+                    <h3 class="st-label-tiny">Live Feed</h3>
+                </div>
+                <div class="no-sb" style="flex: 1; overflow-y: auto;">
+                    <% chats.forEach(chat => { %>
+                        <a href="/staff/chatbot?id=<%= chat.id %>" class="st-inbox-card <%= currentChat && currentChat.id === chat.id ? 'active' : '' %>">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong style="font-size: 0.7rem; color: #1e293b;"><%= chat.client %></strong>
+                                <span style="font-size: 0.55rem; color: #94a3b8;"><%= chat.messages[chat.messages.length-1].time %></span>
+                            </div>
+                            <p style="font-size: 0.6rem; color: #64748b; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                <%= chat.messages[chat.messages.length-1].text %>
+                            </p>
+                            <% if(chat.status === 'Waiting for Staff') { %>
+                                <span class="badge badge-danger" style="font-size: 7px; font-weight: 900; margin-top: 5px;">Reply Needed</span>
+                            <% } %>
+                        </a>
+                    <% }) %>
+                </div>
+            </aside>
+
+            <!-- PANEL 2: MESSENGER -->
+            <section class="st-chat">
+                <% if(currentChat) { %>
+                    <!-- Chat Header -->
+                    <div style="padding: 10px 20px; background: #fff; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; z-index: 10;">
+                        <div>
+                            <h4 style="font-size: 0.75rem; font-weight: 800; color: #1e293b; margin: 0;"><%= currentChat.client %></h4>
+                            <p style="font-size: 8px; font-weight: 700; color: #10b981; text-transform: uppercase; margin: 0;">● <%= currentChat.status %></p>
+                        </div>
+                        <a href="/staff/chatbot/resolve/<%= currentChat.id %>" class="btn btn-primary btn-sm" style="font-size: 8px; background: #10b981; border: none; padding: 4px 10px;" onclick="return confirm('Archive conversation?')">Resolve</a>
+                    </div>
+
+                    <!-- Stream -->
+                    <div class="st-chat-stream no-sb" style="background-image: radial-gradient(#f1f1f1 0.5px, transparent 0); background-size: 15px 15px;">
+                        <% currentChat.messages.forEach(msg => { %>
+                            <div class="<%= msg.type === 'internal' ? 'st-bubble-internal' : (msg.sender === 'Staff' || msg.sender === 'Admin' ? 'st-bubble-staff' : 'st-bubble-client') %>">
+                                <p style="margin: 0;"><%= msg.text %></p>
+                                <span style="font-size: 0.5rem; opacity: 0.6; display: block; margin-top: 3px; text-align: right; font-weight: 800;">
+                                    <%= msg.sender %> • <%= msg.time %>
+                                </span>
+                            </div>
+                        <% }) %>
+                    </div>
+
+                    <!-- Input Console (FIXED ACTION) -->
+                    <div style="padding: 15px; background: #fff; border-top: 1px solid #f1f5f9;">
+                        <form action="/staff/chatbot/reply/<%= currentChat.id %>" method="POST">
+                            <div style="display: flex; gap: 5px; margin-bottom: 8px; overflow-x: auto; padding-bottom: 5px;" class="no-sb">
+                                <% quickReplies.forEach(qr => { %>
+                                    <button type="button" onclick="document.getElementById('msgIn').value='<%= qr %>'" class="chip-button" style="font-size: 8px; padding: 3px 8px;">⚡ <%= qr %></button>
+                                <% }) %>
+                            </div>
+                            <div style="display: flex; gap: 8px; align-items: center; background: #f8fafc; padding: 6px; border-radius: 12px; border: 1.5px solid #eee;">
+                                <select name="isInternal" style="background: white; padding: 5px; border-radius: 8px; border: 1px solid #ddd; font-size: 8px; font-weight: 800; text-transform: uppercase;">
+                                    <option value="false">Public</option>
+                                    <option value="true">Internal</option>
+                                </select>
+                                <input type="text" name="message" id="msgIn" placeholder="Type message..." required style="flex: 1; background: transparent; border: none; outline: none; font-size: 0.75rem; font-weight: 500;">
+                                <button type="submit" class="btn btn-primary" style="padding: 6px 15px; border-radius: 10px; font-weight: 900; font-size: 0.7rem; border: none;">SEND</button>
+                            </div>
+                        </form>
+                    </div>
+                <% } else { %>
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0.2;">
+                        <span style="font-size: 4rem;">💬</span>
+                        <p class="font-black uppercase tracking-[2px] text-[10px]">Select Session to Begin Assisting</p>
+                    </div>
+                <% } %>
+            </section>
+
+            <!-- PANEL 3: INTEL -->
+            <aside class="st-intel">
+                <h3 class="st-label-tiny" style="margin-bottom: 20px;">Support Intelligence</h3>
+                <div class="st-insight-card">
+                    <span class="st-label-tiny">Designation</span>
+                    <p style="font-size: 0.7rem; font-weight: 800; color: #1e293b; margin-top: 2px;"><%= currentChat ? (currentChat.type || 'Institutional') : '---' %></p>
+                </div>
+                <div class="st-insight-card" style="background: #f0fdf4;">
+                    <span class="st-label-tiny" style="color: #16a34a;">AI Sentiment</span>
+                    <p style="font-size: 0.7rem; font-weight: 800; color: #166534; margin-top: 2px;">94% POSITIVE</p>
+                </div>
+                <div class="st-insight-card" style="margin-top: 20px; border-style: dashed;">
+                    <span class="st-label-tiny">Guidelines</span>
+                    <p style="font-size: 0.6rem; color: #94a3b8; font-style: italic; line-height: 1.4;">Manual replies notify facility contact via email immediately.</p>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+    <%- include('../../staffpartials/footer') %>
+</main>

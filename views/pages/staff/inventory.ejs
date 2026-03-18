@@ -1,0 +1,81 @@
+<%- include('../../staffpartials/head') %>
+<%- include('../../staffpartials/sidebar') %>
+
+<main class="staff-main-area">
+    <%- include('../../staffpartials/header') %>
+
+    <div class="content">
+        <!-- Dashboard Header -->
+        <div class="page-header" style="margin-bottom: 25px;">
+            <div>
+                <h1 style="font-family: 'Nunito', sans-serif; font-weight: 900;">Inventory <span style="color: var(--red);">Intelligence</span></h1>
+                <p class="staff-label">Automated stock tracking and expiry monitoring</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-outline btn-sm quick-filter-btn" onclick="filterBy('expiring')">🕒 Expiring Soon</button>
+                <button class="btn btn-outline btn-sm quick-filter-btn" onclick="filterBy('low')">📉 Low Stock</button>
+                <button class="btn btn-primary btn-sm" onclick="filterBy('all')">View All</button>
+            </div>
+        </div>
+
+        <!-- Filter Console -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 mb-8 flex gap-4">
+            <div class="flex-1 relative">
+                <input type="text" id="staffSearch" onkeyup="staffFilter()" placeholder="Search Medicine Name or SKU..." 
+                    style="width: 100%; padding: 12px 20px; border-radius: 12px; border: 1.5px solid #f1f1f1; outline: none; font-size: 0.8rem; font-weight: 600;">
+            </div>
+            <select id="catFilter" onchange="staffFilter()" style="padding: 10px; border-radius: 12px; border: 1.5px solid #f1f1f1; font-size: 0.7rem; font-weight: 800; color: #94a3b8; outline: none;">
+                <option value="all">ALL CATEGORIES</option>
+                <option value="medicine">MEDICINE</option>
+                <option value="ppe">PPE</option>
+                <option value="diagnostic">DIAGNOSTIC</option>
+                <option value="consumable">CONSUMABLE</option>
+            </select>
+        </div>
+
+        <!-- Dynamic Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="staffInvGrid">
+            <% inventory.forEach(p => { %>
+                <div class="item-card overflow-hidden" 
+                     data-name="<%= p.name.toLowerCase() %>" 
+                     data-cat="<%= p.category.toLowerCase() %>"
+                     data-low="<%= p.qty < 15 %>"
+                     data-expiring="<%= p.daysLeft < 90 %>">
+                    
+                    <div style="padding: 25px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span class="meta-label">#<%= p.id %></span>
+                            <% if(p.daysLeft < 30) { %>
+                                <span class="badge-urgent uppercase">Urgent Expiry</span>
+                            <% } else if(p.daysLeft < 90) { %>
+                                <span class="badge badge-warning" style="font-size: 0.5rem; font-weight: 900;">Check Date</span>
+                            <% } %>
+                        </div>
+
+                        <h4 style="font-size: 0.85rem; font-weight: 800; color: var(--gray-800); min-height: 40px;"><%= p.name %></h4>
+                        <p class="meta-label" style="margin-top: 10px;">Batch: <span style="color: var(--red);"><%= p.batch %></span></p>
+                    </div>
+
+                    <!-- Footer Data -->
+                    <div style="background: #FDFDFD; padding: 20px; border-top: 1px solid #f8f9fa;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <p class="meta-label">Availability</p>
+                                <p class="stock-val"><%= p.qty %> <span style="font-size: 0.6rem; color: #94a3b8; font-weight: 600;"><%= p.unit %></span></p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p class="meta-label">Shelf Life</p>
+                                <p style="font-size: 0.75rem; font-weight: 900; color: <%= p.daysLeft < 90 ? 'var(--red)' : '#10b981' %>;">
+                                    <%= p.daysLeft === 9999 ? 'Permanent' : p.daysLeft + ' Days' %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <%- include('../../staffpartials/footer') %>
+</main>
+
+<script src="/js/staff-inventory.js"></script>

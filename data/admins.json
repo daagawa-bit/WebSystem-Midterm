@@ -1,0 +1,8 @@
+[
+  {
+    "name": "Super Admin",
+    "email": "admin@pharmed.com",
+    "password": "123",
+    "role": "Admin"
+  }
+]

@@ -1,0 +1,109 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/sidebar') %>
+
+<div class="main-area bg-[#F8FAFC]">
+<%- include('../../partials/header') %>
+
+<div class="content">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div>
+            <h1 class="text-3xl font-black text-slate-800 italic">Strategic <span class="text-pharma-red">Intelligence</span></h1>
+            <p class="kpi-label-sm">Decision Support System & BIR Reporting</p>
+        </div>
+        <div class="report-actions">
+            <button class="btn btn-outline" onclick="exportReport('pdf')">📥 Export PDF</button>
+            <button class="btn btn-primary" onclick="exportReport('bir')">📊 Generate BIR 2550M</button>
+        </div>
+    </div>
+
+    <!-- KPI ROW -->
+    <div class="intel-grid">
+        <div class="intel-card">
+            <p class="kpi-label-sm">Gross Revenue</p>
+            <h2 class="text-2xl font-black text-slate-800 mt-1">₱<%= metrics.gross.toLocaleString() %></h2>
+            <span class="trend-up">↑ 12.5% Growth</span>
+        </div>
+        <div class="intel-card">
+            <p class="kpi-label-sm">VAT Payable (12%)</p>
+            <h2 class="text-2xl font-black text-pharma-red mt-1">₱<%= metrics.vat.toLocaleString() %></h2>
+            <span class="trend-up">Tax Compliant</span>
+        </div>
+        <div class="intel-card">
+            <p class="kpi-label-sm">Net Operations</p>
+            <h2 class="text-2xl font-black text-slate-800 mt-1">₱<%= metrics.net.toLocaleString() %></h2>
+            <span class="text-[10px] text-blue-500 font-bold">Post-Tax</span>
+        </div>
+        <div class="intel-card">
+            <p class="kpi-label-sm">Waste Risk</p>
+            <h2 class="text-2xl font-black text-orange-500 mt-1">₱<%= metrics.waste.toLocaleString() %></h2>
+            <span class="trend-down">Potential Loss</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-10 items-start">
+        
+        <!-- AUTO-REORDER FORECAST -->
+        <div class="lg:col-span-3 intel-card mt-6">
+            <div class="flex justify-between items-center mb-10">
+                <h3 class="font-black text-slate-800 text-xs uppercase tracking-widest">Predictive Auto-Reorder</h3>
+                <span class="bg-red-50 text-pharma-red px-3 py-1 rounded-full text-[9px] font-black italic">AI Model Active</span>
+            </div>
+            
+            <div class="space-y-8">
+                <% forecast.forEach(item => { %>
+                <div class="forecast-row">
+                    <div class="forecast-header">
+                        <span class="text-xs font-black text-slate-600 uppercase"><%= item.name %></span>
+                        <span class="text-xs font-black text-pharma-red">Order +<%= item.suggested %> units</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: '<%= 100 - (item.suggested * 1.5) %>%'"></div>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- SUPPLIER SCORECARD -->
+        <div class="dark-panel shadow-2xl">
+            <h3 class="kpi-label-sm text-white/40 mb-6">Supplier Scorecard</h3>
+            <div class="space-y-2">
+                <% suppliers.forEach(s => { %>
+                <div class="score-row">
+                    <div>
+                        <p class="font-bold text-sm text-white"><%= s.name %></p>
+                        <p class="text-[9px] text-white/30 uppercase font-bold tracking-widest">LT: <%= s.leadTime %></p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-pharma-red font-black text-sm">★ <%= s.rating %></p>
+                        <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-[8px] font-black rounded uppercase">Reliable</span>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- CATEGORY DISTRIBUTION BAR CHART -->
+        <div class="lg:col-span-3 intel-card mt-6">
+            <h3 class="kpi-label-sm text-center mb-4">Inventory Distribution by Category</h3>
+            <div class="chart-container">
+                <% const cats = ['Medicine', 'PPE', 'Diagnostic', 'Equipment']; 
+                   cats.forEach(cat => { 
+                   const count = inventory.filter(p => p.category === cat).length;
+                %>
+                <div class="chart-bar-wrapper">
+                    <div class="chart-bar" style="height: '<%= count * 40 %>'px">
+                        <span class="chart-val"><%= count %></span>
+                    </div>
+                    <span class="chart-label"><%= cat %></span>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="/js/reports.js"></script>
+<%- include('../../partials/footer') %>

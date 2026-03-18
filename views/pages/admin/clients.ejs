@@ -1,0 +1,156 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/sidebar') %>
+
+<div class="main-area">
+    <%- include('../../partials/header') %>
+
+    <div class="client-manager">
+        <header class="page-header">
+            <div>
+                <h1>Institutional Portals</h1>
+                <p>Manage access for Hospitals, Clinics, and LGUs.</p>
+            </div>
+            <a href="/sales" class="btn-outline-red">Back to Sales</a>
+        </header>
+
+        <div class="manager-grid">
+            <!-- LEFT: CLIENT REGISTRY -->
+            <section class="registry-card">
+                <div class="card-header">
+                    <h2>Facility Registry</h2>
+                    <span class="count-badge"><%= clients.length %> Accounts</span>
+                </div>
+                
+                <div class="table-wrap no-scrollbar">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Facility Name</th>
+                                <th>Username</th>
+                                <th>Email/Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% clients.forEach(c => { %>
+                                <tr>
+                                    <td><span class="id-tag"><%= c.id %></span></td>
+                                    <td><strong><%= c.facilityName %></strong></td>
+                                    <td><code><%= c.username %></code></td>
+                                    <td>
+                                        <div class="contact-info">
+                                            <span><%= c.email %></span>
+                                            <small><%= c.contact %></small>
+                                        </div>
+                                    </td>
+                                    <td class="actions">
+                                        <button class="btn-edit" onclick="editClient(<%= JSON.stringify(c) %>)">Edit</button>
+                                        <a href="/client/delete/<%= c.id %>" class="btn-del" onclick="return confirm('Remove access?')">Delete</a>
+                                    </td>>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- RIGHT: ADD/EDIT FORM -->
+            <aside class="form-aside">
+                <div class="form-card">
+                    <h3 id="form-title">Register New Facility</h3>
+                    <form action="/client/add" method="POST" id="clientForm">
+                        <div class="input-group">
+                            <label>Facility Name</label>
+                            <input type="text" name="facilityName" id="f-name" required placeholder="e.g. St. Luke's Medical">
+                        </div>
+                        <div class="input-group">
+                            <label>Portal Username</label>
+                            <input type="text" name="username" id="f-user" required placeholder="lgu_iriga_city">
+                        </div>
+                        <div class="input-group">
+                            <label>Assign Password</label>
+                            <input type="text" name="password" id="f-pass" required placeholder="Default password">
+                        </div>
+                        <div class="row">
+                            <div class="input-group"><label>Email</label><input type="email" name="email" id="f-email" required></div>
+                            <div class="input-group"><label>Contact</label><input type="text" name="contact" id="f-phone" required></div>
+                        </div>
+                        <button type="submit" class="btn-submit" id="submit-btn">Authorize Portal Access</button>
+                        <button type="button" class="btn-reset" onclick="resetForm()" style="display:none;" id="reset-btn">Cancel Edit</button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+
+<%- include('../../partials/footer') %>
+
+<script>
+    function editClient(client) {
+        document.getElementById('form-title').innerText = "Edit: " + client.facilityName;
+        document.getElementById('f-name').value = client.facilityName;
+        document.getElementById('f-user').value = client.username;
+        document.getElementById('f-pass').value = client.password;
+        document.getElementById('f-email').value = client.email;
+        document.getElementById('f-phone').value = client.contact;
+        
+        // FIX: Update action to /client/edit/ID
+        document.getElementById('clientForm').action = "/client/edit/" + client.id;
+        document.getElementById('submit-btn').innerText = "Update Portal";
+        document.getElementById('reset-btn').style.display = "block";
+    }
+
+    function resetForm() {
+        document.getElementById('clientForm').reset();
+        document.getElementById('form-title').innerText = "Register New Facility";
+        // FIX: Reset action to /client/add
+        document.getElementById('clientForm').action = "/client/add";
+        document.getElementById('submit-btn').innerText = "Authorize Portal Access";
+        document.getElementById('reset-btn').style.display = "none";
+    }
+</script>
+
+<style>
+    /* ── PHARMA-RED CLIENT MANAGEMENT ── */
+    :root { --p-red: #D32F2F; --p-pale: #FFEBEE; }
+    .client-manager { padding: 30px; background: #fff; min-height: calc(100vh - var(--header-h)); }
+    
+    .page-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--p-red); padding-bottom: 15px; margin-bottom: 25px; }
+    .page-header h1 { font-family: 'Nunito', sans-serif; font-weight: 900; color: var(--p-red); margin: 0; }
+    .btn-outline-red { border: 1.5px solid var(--p-red); color: var(--p-red); text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: 800; font-size: 0.75rem; }
+
+    .manager-grid { display: grid; grid-template-columns: 1fr 340px; gap: 30px; }
+
+    /* TABLE REGISTRY */
+    .registry-card { background: #fff; border: 1px solid #eee; border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
+    .card-header { padding: 20px; background: var(--p-pale); border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .card-header h2 { font-size: 1rem; color: var(--p-red); margin: 0; }
+    .count-badge { font-size: 0.65rem; font-weight: 900; background: var(--p-red); color: #fff; padding: 4px 10px; border-radius: 20px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; padding: 15px 20px; font-size: 0.65rem; color: #999; text-transform: uppercase; border-bottom: 1px solid #f5f5f5; }
+    td { padding: 18px 20px; border-bottom: 1px solid #f9f9f9; font-size: 0.85rem; }
+
+    .id-tag { background: #eee; padding: 3px 7px; border-radius: 5px; font-family: monospace; font-weight: 800; font-size: 0.7rem; }
+    .contact-info span { display: block; font-weight: 700; color: var(--p-red); }
+    .contact-info small { color: #888; }
+
+    .btn-edit { background: var(--p-pale); color: var(--p-red); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 0.7rem; }
+    .btn-del { color: #999; text-decoration: none; font-size: 0.7rem; margin-left: 10px; font-weight: 800; }
+    .btn-del:hover { color: var(--p-red); }
+
+    /* FORM PANEL */
+    .form-card { background: #fff; border: 2px solid var(--p-red); border-radius: 16px; padding: 25px; box-shadow: 0 10px 30px rgba(211, 47, 47, 0.1); }
+    .form-card h3 { font-size: 0.9rem; color: var(--p-red); font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
+    
+    .input-group { margin-bottom: 15px; }
+    .input-group label { display: block; font-size: 0.65rem; font-weight: 800; color: #aaa; text-transform: uppercase; margin-bottom: 5px; }
+    .input-group input { width: 100%; padding: 12px; border: 1.5px solid var(--p-pale); border-radius: 10px; font-size: 0.85rem; outline: none; }
+    .input-group input:focus { border-color: var(--p-red); }
+    
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-submit { width: 100%; background: var(--p-red); color: #fff; border: none; padding: 15px; border-radius: 12px; font-weight: 900; font-size: 0.75rem; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3); }
+    .btn-reset { width: 100%; background: transparent; border: none; color: #999; padding: 10px; font-size: 0.7rem; font-weight: 800; cursor: pointer; }
+</style>

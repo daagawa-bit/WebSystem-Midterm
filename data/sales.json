@@ -1,0 +1,42 @@
+{
+  "salesOrders": [
+    {
+      "id": "SO-2511",
+      "client": "haha",
+      "date": "2026-03-18",
+      "total": 11,
+      "subtotal": 9.82,
+      "vat": 1.18,
+      "payment": "Unpaid",
+      "method": "Cash",
+      "delivery": "Pending",
+      "status": "Active",
+      "batchNo": "BN-3545"
+    },
+    {
+      "id": "SO-6414",
+      "client": "LGU Iriga City",
+      "date": "2026-03-18",
+      "total": 1111,
+      "subtotal": 991.96,
+      "vat": 119.04,
+      "payment": "Unpaid",
+      "method": "Cash",
+      "delivery": "Pending",
+      "status": "Active",
+      "batchNo": "BN-7830"
+    },
+    {
+      "id": "SO-101",
+      "client": "LGU Iriga City",
+      "total": 45000,
+      "status": "Active"
+    },
+    {
+      "id": "SO-102",
+      "client": "RHU Baao",
+      "total": 12500,
+      "status": "Completed"
+    }
+  ]
+}

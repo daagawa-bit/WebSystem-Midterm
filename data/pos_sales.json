@@ -1,0 +1,23 @@
+[
+  {
+    "id": "OR-483832",
+    "date": "3/18/2026",
+    "time": "1:44:43 PM",
+    "total": 593.6,
+    "method": "Cash",
+    "paid": 5000,
+    "change": 4406.4,
+    "items": 3
+  },
+  {
+    "orNumber": "OR-714326",
+    "date": "3/18/2026",
+    "time": "01:34 AM",
+    "items": 3,
+    "subtotal": 490,
+    "vat": 58.8,
+    "total": 548.8,
+    "method": "Cash",
+    "change": 451.20000000000005
+  }
+]

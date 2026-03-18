@@ -1,0 +1,43 @@
+<%- include('../../staffpartials/head') %>
+<%- include('../../staffpartials/sidebar') %>
+
+<main class="staff-main-area">
+    <%- include('../../staffpartials/header') %>
+    <div class="content">
+        <div class="page-header">
+            <div>
+                <h1 style="font-family: 'Nunito', sans-serif; font-weight: 900;">Order <span style="color: var(--red);">Fulfillment</span></h1>
+                <p class="staff-label">Institutional Picking & Packing Terminal</p>
+            </div>
+            <div class="badge badge-warning">🚚 Dispatch Active</div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% orders.forEach(order => { %>
+                <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <span style="font-size: 10px; font-weight: 900; color: #cbd5e1; letter-spacing: 1px;">#<%= order.id %></span>
+                            <span class="badge badge-info" style="font-size: 8px;"><%= order.status %></span>
+                        </div>
+                        <h4 style="font-size: 1rem; font-weight: 800; color: var(--gray-800); margin-top: 10px;">🏢 <%= order.facility %></h4>
+                        <p style="font-size: 0.7rem; color: #94a3b8; font-weight: 600; margin-top: 2px;">Ordered: <%= order.date %></p>
+                        
+                        <div style="margin-top: 20px; padding: 12px; background: var(--gray-50); border-radius: 15px;">
+                            <p style="font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Packing Checklist</p>
+                            <ul style="margin-top: 8px; font-size: 0.75rem; color: #475569; list-style: none;">
+                                <li>✅ Nebulizers (10)</li>
+                                <li>⬜ Digital BP Monitors (5)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full mt-6 py-3 bg-slate-800 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-pharma-red transition-all">
+                        Mark Ready for Dispatch
+                    </button>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <%- include('../../staffpartials/footer') %>
+</main>

@@ -1,0 +1,185 @@
+<%- include('../../partials/head') %>
+<%- include('../../partials/sidebar') %>
+
+<div class="main-area">
+    <%- include('../../partials/header') %>
+
+    <div class="sales-portal">
+        <header class="portal-header">
+            <div class="info">
+                <h1>Outbound Logistics Hub</h1>
+                <p>Robin Rose Trading • Institutional Sales Command Center</p>
+            </div>
+            <div class="actions">
+                <button class="btn-outline-red" onclick="window.print()">📥 Export PDF/Print</button>
+                <a href="#dispatch" class="btn-red">＋ New Dispatch</a>
+            </div>
+        </header>
+
+        <div class="portal-body">
+            <!-- LEFT: PIPELINE FEED -->
+            <section class="pipeline-card">
+                <div class="pipeline-tabs">
+                    <button class="tab active">Live Feed</button>
+                    <button class="tab">Institutional Client Alerts</button>
+                </div>
+                <div class="pipeline-list no-scrollbar" style="overflow-y: auto;">
+                    <% salesOrders.forEach(o => { %>
+                        <div class="order-strip" id="card-<%= o.id %>" onclick='inspectOrder(<%- JSON.stringify(o) %>)'>
+                            <div>
+                                <strong style="font-family: monospace; background: var(--p-red); color: #fff; padding: 2px 5px; border-radius: 4px; font-size: 0.65rem;">#<%= o.id %></strong>
+                                <span style="display: block; font-weight: 800; margin-top: 5px;"><%= o.client %></span>
+                                <small style="color: #999;"><%= o.date %></small>
+                            </div>
+                            <div style="text-align: right;">
+                                <strong style="color: var(--p-red)">₱<%= o.total.toLocaleString() %></strong>
+                                <small style="display: block; font-size: 0.6rem; color: #10b981;">● Active</small>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </section>
+
+            <!-- RIGHT: INSPECTOR & FORM -->
+            <aside class="inspector-aside">
+                <div id="inspector-ui" class="audit-container" style="display: none;">
+                    <div class="audit-header">
+                        <h2 id="view-id">SO-0000</h2>
+                        <span class="stamp">BIR COMPLIANT</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                        <div><small>CLIENT FACILITY</small><br><strong id="view-client"></strong></div>
+                        <div><small>BATCH NO</small><br><strong id="view-batch"></strong></div>
+                    </div>
+                    <div class="tax-box">
+                        <div class="tax-row"><span>Vatable Sales</span> <strong id="view-subtotal"></strong></div>
+                        <div class="tax-row"><span>VAT (12%)</span> <strong id="view-vat"></strong></div>
+                        <div class="tax-row grand"><span>TOTAL AMOUNT</span> <strong id="view-total"></strong></div>
+                    </div>
+                    <button class="btn-red" style="width: 100%; margin-top: 15px;" onclick="window.print()">Print Official Receipt</button>
+                </div>
+
+                <div id="inspector-placeholder" style="text-align: center; padding: 50px; color: #ccc;">
+                    <p>Select an Order to Audit BIR Data.</p>
+                </div>
+
+                <!-- DISPATCH FORM (Managed Clients) -->
+                <div class="dispatch-form" id="dispatch">
+                    <h3>Log New Distribution</h3>
+                    <form action="/sales/add" method="POST">
+                        <select name="client" required>
+                            <option value="" disabled selected>Select Institutional Client...</option>
+                            <% if(clients.length > 0) { %>
+                                <% clients.forEach(c => { %>
+                                    <option value="<%= c.facilityName %>"><%= c.facilityName %></option>
+                                <% }) %>
+                            <% } else { %>
+                                <option disabled>No clients found. Add some in Management.</option>
+                            <% } %>
+                        </select>
+                        <input type="number" name="total" placeholder="Gross Amount (₱)" step="0.01" required>
+                        <select name="method">
+                            <option>Cash</option><option>GCash</option>
+                        </select>
+                        <button type="submit" class="btn-red" style="width: 100%;">Dispatch Order</button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+
+<!-- PRINTABLE INVOICE -->
+<div id="print-invoice">
+    <h1 style="color: #D32F2F; margin: 0; text-align: center;">PHARMEDISYNC MEDICAL</h1>
+    <p style="text-align: center; font-weight: bold;">Robin Rose Trading • Official Sales Invoice</p>
+    <hr style="border: 1px solid #D32F2F;">
+    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <p><strong>BILL TO:</strong> <span id="pr-client"></span></p>
+        <p><strong>INVOICE NO:</strong> <span id="pr-id"></span></p>
+    </div>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead><tr style="background: #D32F2F; color: white;"><th>Description</th><th>Amount</th></tr></thead>
+        <tbody>
+            <tr><td style="border: 1px solid #ddd; padding: 10px;">Medical Supply Lot Distribution</td><td id="pr-total" style="border: 1px solid #ddd; padding: 10px; font-weight: bold;"></td></tr>
+        </tbody>
+    </table>
+    <div style="text-align: right; margin-top: 30px;">
+        <p>BIR Reg: 123-456-7890-CAS</p>
+        <p>Vatable: <span id="pr-subtotal"></span> | VAT: <span id="pr-vat"></span></p>
+    </div>
+</div>
+
+<%- include('../../partials/footer') %>
+
+<script>
+function inspectOrder(order) {
+    document.getElementById('inspector-placeholder').style.display = 'none';
+    document.getElementById('inspector-ui').style.display = 'block';
+
+    document.querySelectorAll('.order-strip').forEach(s => s.classList.remove('active'));
+    document.getElementById('card-' + order.id).classList.add('active');
+
+    // Update UI
+    document.getElementById('view-id').innerText = order.id;
+    document.getElementById('view-client').innerText = order.client;
+    document.getElementById('view-batch').innerText = order.batchNo || 'N/A';
+    document.getElementById('view-subtotal').innerText = '₱' + order.subtotal.toLocaleString();
+    document.getElementById('view-vat').innerText = '₱' + order.vat.toLocaleString();
+    document.getElementById('view-total').innerText = '₱' + order.total.toLocaleString();
+
+    // Update Print
+    document.getElementById('pr-id').innerText = order.id;
+    document.getElementById('pr-client').innerText = order.client;
+    document.getElementById('pr-total').innerText = '₱' + order.total.toLocaleString();
+    document.getElementById('pr-subtotal').innerText = '₱' + order.subtotal.toLocaleString();
+    document.getElementById('pr-vat').innerText = '₱' + order.vat.toLocaleString();
+}
+</script>
+
+<style>
+    :root { --p-red: #D32F2F; --p-soft: #FFEBEE; }
+    .sales-portal { padding: 20px; background: #fff; min-height: calc(100vh - var(--header-h)); font-size: 13px; }
+    
+    /* THEME HEADER */
+    .portal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 3px solid var(--p-red); padding-bottom: 10px; }
+    .portal-header h1 { color: var(--p-red); font-weight: 900; margin: 0; font-size: 1.4rem; }
+    
+    .btn-red { background: var(--p-red); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 900; font-size: 0.7rem; cursor: pointer; text-decoration: none; }
+    .btn-outline-red { background: #fff; border: 1px solid var(--p-red); color: var(--p-red); padding: 8px 16px; border-radius: 6px; font-weight: 900; font-size: 0.7rem; cursor: pointer; }
+
+    .portal-body { display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
+
+    /* PIPELINE STYLES */
+    .pipeline-card { background: #fff; border: 1px solid #eee; border-radius: 12px; height: calc(100vh - 200px); display: flex; flex-direction: column; overflow: hidden; }
+    .pipeline-tabs { display: flex; background: #f9f9f9; }
+    .tab { flex: 1; padding: 10px; border: none; font-weight: 800; font-size: 0.65rem; color: #999; cursor: pointer; }
+    .tab.active { background: var(--p-red); color: #fff; }
+
+    .order-strip { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #f5f5f5; cursor: pointer; transition: 0.2s; }
+    .order-strip:hover { background: var(--p-soft); }
+    .order-strip.active { background: var(--p-soft); border-left: 5px solid var(--p-red); }
+
+    /* AUDIT BOX */
+    .audit-container { border: 2px solid var(--p-red); border-radius: 12px; padding: 20px; background: #fff; box-shadow: 0 10px 30px rgba(211, 47, 47, 0.1); }
+    .audit-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--p-red); padding-bottom: 10px; margin-bottom: 15px; }
+    .audit-header h2 { font-size: 1rem; color: var(--p-red); margin: 0; }
+    .stamp { font-size: 0.55rem; border: 1px solid var(--p-red); color: var(--p-red); padding: 2px 6px; font-weight: 900; }
+
+    .tax-box { background: var(--p-soft); padding: 15px; border-radius: 8px; margin-top: 15px; }
+    .tax-row { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 5px; }
+    .tax-row.grand { border-top: 1px solid var(--p-red); margin-top: 10px; padding-top: 10px; font-weight: 900; font-size: 1rem; color: var(--p-red); }
+
+    /* FORM */
+    .dispatch-form { background: #fdfdfd; border: 1px solid #eee; padding: 20px; border-radius: 12px; margin-top: 20px; }
+    .dispatch-form h3 { font-size: 0.8rem; color: var(--p-red); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+    .dispatch-form select, .dispatch-form input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; font-size: 0.8rem; }
+
+    /* PRINT */
+    @media print {
+        body * { display: none !important; }
+        #print-invoice, #print-invoice * { display: block !important; }
+        #print-invoice { padding: 40px; width: 100%; }
+    }
+    #print-invoice { display: none; }
+</style>

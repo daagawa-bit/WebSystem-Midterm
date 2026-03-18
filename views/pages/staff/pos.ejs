@@ -1,0 +1,69 @@
+<%- include('../../staffpartials/head') %>
+<%- include('../../staffpartials/sidebar') %>
+
+<main class="main-area-staff">
+    <%- include('../../staffpartials/header') %>
+    
+    <div class="staff-pos-layout">
+        <!-- LEFT: CATALOG (Scrollable) -->
+        <section class="staff-catalog shadow-sm">
+            <div class="p-4 border-b border-gray-50 flex gap-3 bg-white">
+                <input type="text" id="posSearch" onkeyup="filterPos()" placeholder="🔍 Search Medicine..." 
+                    class="flex-1 p-3 bg-slate-50 border-0 rounded-xl outline-none text-xs font-bold focus:ring-2 focus:ring-red-500/10">
+            </div>
+            <div class="staff-p-grid no-sb" id="posGrid">
+                <% products.forEach(p => { %>
+                    <div class="staff-p-card" onclick="addToCart('<%= p.id %>', '<%= p.name %>', <%= p.price %>, <%= p.qty %>)" data-name="<%= p.name.toLowerCase() %>">
+                        <span style="font-size: 7px; color: #ccc; font-weight: 900; display: block; text-align: left;">#<%= p.id %></span>
+                        <div style="font-size: 1.2rem; margin: 5px 0;">📦</div>
+                        <h4 style="font-size: 0.75rem; font-weight: 800; color: #334155; line-height:1.2; height:32px; overflow:hidden;"><%= p.name %></h4>
+                        <div class="staff-p-price" style="color: var(--red); font-weight: 900; font-size:0.85rem;">₱<%= p.price.toLocaleString() %></div>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+
+        <!-- RIGHT: THE CONSOLE (Fixed Layout) -->
+        <aside class="cart-console">
+            <!-- 1. FIXED HEADER -->
+            <div class="cart-header">
+                <div class="flex justify-between items-center">
+                    <h3 style="font-size: 10px; font-weight: 900; text-transform: uppercase; color: #1e293b;">Active Cart</h3>
+                    <button onclick="resetTerminal()" style="font-size: 9px; font-weight: 900; color: var(--red); background:none; border:none;">CLEAR</button>
+                </div>
+            </div>
+
+            <!-- 2. SCROLLABLE AREA -->
+            <div id="staffCartItems" class="no-sb">
+                <!-- Items injected by staff.js go here -->
+            </div>
+
+            <!-- 3. FIXED FOOTER -->
+            <div class="cart-footer">
+                <div class="bill-line"><span>Vatable Sales</span><span id="subtotalDisplay">₱0.00</span></div>
+                <div class="bill-line"><span>VAT (12%)</span><span id="vatDisplay">₱0.00</span></div>
+                <div class="bill-line grand"><span>Total Amount</span><strong id="totalDisplay">₱0.00</strong></div>
+
+                <div style="margin-top:10px;">
+                    <div style="display:flex; gap:4px; margin-bottom:8px;">
+                        <button id="m-cash" onclick="setPaymentMethod('Cash')" style="flex:1; font-size:9px; font-weight:900; background:#1e293b; color:white; border-radius:8px; padding:6px; border:none;">CASH</button>
+                        <button id="m-gcash" onclick="setPaymentMethod('GCash')" style="flex:1; font-size:9px; font-weight:900; background:#f1f5f9; color:#94a3b8; border-radius:8px; padding:6px; border:none;">GCASH</button>
+                    </div>
+                    <input type="number" id="amtPaid" oninput="calcChange()" placeholder="Enter Cash Amount" style="width:100%; padding:8px; border:1px solid #e2e8f0; border-radius:10px; font-weight:900; font-size:0.9rem; outline:none; text-align:right;">
+                    
+                    <div style="display:flex; justify-content:space-between; margin-top:6px; padding:6px 10px; background:#FFFBEB; border-radius:8px;">
+                        <span style="font-size:9px; font-weight:800; color:#B45309;">CHANGE DUE</span>
+                        <strong id="changeDisplay" style="font-size:0.9rem; color:#B45309; font-weight:900;">₱0.00</strong>
+                    </div>
+                </div>
+
+                <button onclick="staffCheckout()" class="btn-checkout-final">
+                    Complete Checkout
+                </button>
+            </div>
+        </aside>
+    </div>
+    <%- include('../../staffpartials/footer') %>
+</main>
+
+<script src="/js/staff.js"></script>

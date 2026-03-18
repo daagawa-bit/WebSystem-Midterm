@@ -1,0 +1,39 @@
+
+/* Medical Background */
+.medical-bg {
+    background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
+                url('/images/adminstaff.avif');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Layering logic */
+.form-wrapper { animation: hideLayer .3s ease-out forwards; }
+.form-wrapper.is-active { animation: showLayer .3s ease-in forwards; z-index: 10; }
+
+@keyframes showLayer { 50% { z-index: 10; } 100% { z-index: 10; } }
+@keyframes hideLayer { 0% { z-index: 10; } 49% { z-index: 10; } 50% { z-index: 1; } }
+
+/* Sliding Animations */
+.form-login { animation: hideLogin .3s ease-out forwards; }
+.is-active .form-login { animation: showLogin .3s ease-in forwards; }
+
+.form-signup { animation: hideSignup .3s ease-out forwards; }
+.is-active .form-signup { animation: showSignup .3s ease-in forwards; }
+
+@keyframes showLogin {
+    0% { background: #f1e6e678; transform: translate(40%, 10px); }
+    100% { background: white; transform: translate(35%, -20px); }
+}
+@keyframes hideLogin {
+    0% { background: white; transform: translate(35%, -20px); }
+    100% { background: #f1e6e678; transform: translate(40%, 10px); }
+}
+@keyframes showSignup {
+    0% { background: #f1e6e678; transform: translate(-40%, 10px); }
+    100% { background: white; transform: translate(-35%, -20px); }
+}
+@keyframes hideSignup {
+    0% { background: white; transform: translate(-35%, -20px); }
+    100% { background: #f1e6e6; transform: translate(-40%, 10px); }
+}

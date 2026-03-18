@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharMediSync | Internal Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: { colors: { 'pharma-red': '#E8344A', 'pharma-red-dark': '#C4283C' } }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; }
+        
+        /* THE FIXED BACKGROUND (Locked in) */
+        .internal-bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(232, 52, 74, 0.3) 100%), 
+                        url('/images/adminstaff.avif'); /* Local high-quality lab image */
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        .main-wrapper {
+            min-height: 100vh; overflow-y: auto;
+            display: flex; flex-direction: column; align-items: center; padding: 3rem 1.5rem;
+        }
+
+        /* Centered Fade Transitions */
+        .portal-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute; width: 100%; top: 0;
+        }
+        .hidden-portal { opacity: 0; transform: scale(0.96) translateY(20px); pointer-events: none; }
+        .active-portal { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
+
+        .glass-box {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        #pill-bg { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="text-white">
+
+    <div class="internal-bg-overlay"></div>
+
+    <div class="main-wrapper">
+        <!-- Brand Header -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pharma-red/20 border border-pharma-red/30 text-pharma-red text-[10px] font-bold uppercase tracking-widest mb-4">
+                🔒 Internal Access Control
+            </div>
+            <h1 class="text-5xl font-extrabold tracking-tighter mb-2">PharMediSync</h1>
+            <p class="text-gray-400 font-light text-sm">Operation & Management Command Center</p>
+        </div>
+
+        <!-- PILL TOGGLE -->
+        <div class="bg-black/40 p-1.5 rounded-full flex items-center mb-14 border border-white/10 w-72 relative">
+            <button id="btnAdmin" onclick="switchTab('admin')" class="flex-1 py-2.5 text-xs font-black uppercase tracking-widest z-10 text-white">Admin</button>
+            <button id="btnStaff" onclick="switchTab('staff')" class="flex-1 py-2.5 text-xs font-black uppercase tracking-widest z-10 text-gray-500">Staff</button>
+            <div id="pill-bg" class="absolute top-1.5 left-1.5 bg-pharma-red w-[138px] h-[39px] rounded-full shadow-lg shadow-pharma-red/40"></div>
+        </div>
+
+        <!-- CONTAINER -->
+        <div class="relative w-full max-w-[420px] min-h-[500px]">
+            
+            <!-- ADMIN FORM -->
+            <div id="panelAdmin" class="portal-card active-portal">
+                <div class="glass-box p-10 rounded-[3rem] text-center border-t-4 border-pharma-red">
+                    <div class="w-20 h-20 bg-pharma-red/10 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-pharma-red/20">
+                        <span class="text-4xl">🔐</span>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-1">Admin</h2>
+                    <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-8">Full System Control</p>
+                    
+                    <form action="/login" method="POST" class="space-y-5 text-left">
+                        <input type="email" name="email" required placeholder="admin@pharmed.com" 
+                            class="w-full px-5 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-pharma-red outline-none transition-all text-white">
+                        <input type="password" name="password" required placeholder="••••••••"
+                            class="w-full px-5 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-pharma-red outline-none transition-all text-white">
+                        <button type="submit" class="w-full py-5 bg-pharma-red hover:bg-pharma-red-dark text-white font-black rounded-2xl shadow-xl transition-all active:scale-95 mt-4">
+                            ENTER DASHBOARD
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- STAFF FORM -->
+            <div id="panelStaff" class="portal-card hidden-portal">
+                <div class="glass-box p-10 rounded-[3rem] text-center border-t-4 border-slate-500">
+                    <div class="w-20 h-20 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10">
+                        <span class="text-4xl">💼</span>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-1">Staff Member</h2>
+                    <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-8">Operational Interface</p>
+                    
+                    <form action="/login" method="POST" class="space-y-5 text-left">
+                        <input type="email" name="email" required placeholder="staff@pharmed.com" 
+                            class="w-full px-5 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-white/40 outline-none transition-all text-white">
+                        <input type="password" name="password" required placeholder="••••••••"
+                            class="w-full px-5 py-4 rounded-2xl bg-white/5 border border-white/10 focus:border-white/40 outline-none transition-all text-white">
+                        <button type="submit" class="w-full py-5 bg-white/10 hover:bg-white/20 text-white font-black rounded-2xl shadow-xl transition-all active:scale-95 mt-4">
+                            INITIALIZE TERMINAL
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function switchTab(role) {
+            const adminP = document.getElementById('panelAdmin');
+            const staffP = document.getElementById('panelStaff');
+            const pill = document.getElementById('pill-bg');
+            const btnA = document.getElementById('btnAdmin');
+            const btnS = document.getElementById('btnStaff');
+
+            if (role === 'admin') {
+                adminP.classList.remove('hidden-portal'); adminP.classList.add('active-portal');
+                staffP.classList.add('hidden-portal'); staffP.classList.remove('active-portal');
+                pill.style.transform = 'translateX(0px)';
+                btnA.classList.replace('text-gray-500', 'text-white');
+                btnS.classList.replace('text-white', 'text-gray-500');
+            } else {
+                staffP.classList.remove('hidden-portal'); staffP.classList.add('active-portal');
+                adminP.classList.add('hidden-portal'); adminP.classList.remove('active-portal');
+                pill.style.transform = 'translateX(140px)';
+                btnS.classList.replace('text-gray-500', 'text-white');
+                btnA.classList.replace('text-white', 'text-gray-500');
+            }
+        }
+    </script>
+</body>
+</html>

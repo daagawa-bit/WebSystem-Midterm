@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title><%= title %> | PharMediSync</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; background:var(--gray-50); }
+    .err-box { text-align:center; padding:48px; }
+    .err-num { font-family:'Nunito',sans-serif; font-size:7rem; font-weight:900; color:var(--red); line-height:1; }
+    .err-msg { font-size:1.1rem; font-weight:600; color:var(--gray-600); margin:12px 0 28px; }
+  </style>
+</head>
+<body>
+  <div class="err-box">
+    <div class="err-num">💊</div>
+    <div class="err-num" style="font-size:4rem;margin-top:-8px"><%= title.split('–')[0].trim() %></div>
+    <div class="err-msg">Oops! This page doesn't exist in PharMediSync.</div>
+    <a href="/" class="btn btn-primary" style="font-size:0.9rem;padding:12px 28px">← Back to Dashboard</a>
+  </div>
+</body>
+</html>

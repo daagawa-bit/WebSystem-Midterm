@@ -1,0 +1,109 @@
+<%- include('../../staffpartials/head') %>
+<%- include('../../staffpartials/sidebar') %>
+
+<main class="main-area-staff">
+    <%- include('../../staffpartials/header') %>
+    <div class="content p-6">
+        <div>
+            <div>
+                <h1 style="font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.4rem;">Disposal <span style="color: var(--red);">Log</span></h1>
+                <p class="st-label-tiny">Responsible Medical Waste Management</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6 h-[calc(100vh-160px)] overflow-hidden">
+            
+            <!-- LEFT: SELECT STOCK (Scrollable) -->
+            <div class="col-span-8 flex flex-col bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-50 flex justify-between items-center">
+                    <h3 class="st-label-tiny" style="margin:0">Available Inventory</h3>
+                    <input type="text" id="wasteSearch" onkeyup="filterWasteTable()" placeholder="Search stock..." 
+                        style="font-size: 0.7rem; padding: 8px 15px; border: 1px solid #eee; border-radius: 10px; outline: none; width: 200px;">
+                </div>
+                <div class="flex-1 overflow-y-auto no-sb">
+                    <table class="w-full text-left" id="wasteTable">
+                        <thead class="bg-slate-50 sticky top-0 z-10">
+                            <tr class="text-[9px] font-black text-slate-400 uppercase tracking-widest border-b">
+                                <th class="p-5">Product</th>
+                                <th class="p-5">Current Stock</th>
+                                <th class="p-5">Expiry</th>
+                                <th class="p-5">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            <% inventory.forEach(p => { %>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="p-5">
+                                        <div class="font-bold text-slate-700 text-xs"><%= p.name %></div>
+                                        <div class="text-[9px] text-slate-400 font-mono">#<%= p.id %></div>
+                                    </td>
+                                    <td class="p-5 font-black text-slate-600 text-xs"><%= p.qty %> <%= p.unit %></td>
+                                    <td class="p-5 text-[10px] font-bold <%= p.status === 'Near Expiry' ? 'text-red-500' : 'text-slate-400' %>"><%= p.expiry %></td>
+                                    <td class="p-5">
+                                        <button onclick="selectForWaste('<%= p.id %>', '<%= p.name %>', <%= p.qty %>)" 
+                                            class="text-pharma-red font-black text-[10px] uppercase hover:underline">Select</button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RIGHT: RECORD FORM & HISTORY -->
+            <div class="col-span-4 flex flex-col gap-6">
+                <!-- Record Form -->
+                <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl">
+                    <h3 class="st-label-tiny mb-4">Record Disposal</h3>
+                    <form action="/staff/waste/record" method="POST" class="space-y-4">
+                        <input type="hidden" name="productId" id="input-id">
+                        <div class="p-4 bg-red-50 rounded-2xl border border-red-100">
+                            <p class="text-[8px] font-black text-red-400 uppercase tracking-widest">Target Item</p>
+                            <p id="display-name" class="text-xs font-black text-slate-800 mt-1 italic">Please select item →</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="st-label-tiny">Qty to Remove</label>
+                                <input type="number" name="qty" id="input-qty" required min="1" class="w-full p-3 bg-slate-50 border-0 rounded-xl outline-none text-xs font-bold focus:ring-2 focus:ring-red-500/10">
+                            </div>
+                            <div>
+                                <label class="st-label-tiny">Reason</label>
+                                <select name="reason" class="w-full p-3 bg-slate-50 border-0 rounded-xl outline-none text-[10px] font-black uppercase text-slate-500">
+                                    <option>Expired</option>
+                                    <option>Damaged</option>
+                                    <option>Recall</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-pharma-red text-black py-4 rounded-2xl font-black text-[10px] uppercase tracking-[2px] shadow-lg shadow-pharma-red/30 transition-all hover:scale-[1.02] active:scale-95">
+                            Submit Log Entry
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Small History Table -->
+                <div class="flex-1 bg-slate-900 rounded-[2rem] p-6 text-white overflow-hidden flex flex-col shadow-2xl">
+                    <h3 class="text-[9px] font-black uppercase text-white/30 tracking-widest mb-4 italic">Recent Logs</h3>
+                    <div class="flex-1 overflow-y-auto no-sb">
+                        <% logs.slice(0,10).forEach(l => { %>
+                            <div class="mb-4 pb-4 border-b border-white/5 last:border-0">
+                                <div class="flex justify-between items-start">
+                                    <strong class="text-[11px] text-white/90 truncate pr-2"><%= l.productName %></strong>
+                                    <span class="text-pharma-red font-black text-[10px]">x<%= l.qty %></span>
+                                </div>
+                                <div class="flex justify-between mt-1">
+                                    <span class="text-[8px] text-white/30 font-bold uppercase tracking-tighter"><%= l.reason %></span>
+                                    <span class="text-[8px] text-white/30 font-bold uppercase tracking-tighter"><%= l.date %></span>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <%- include('../../staffpartials/footer') %>
+</main>
+
+<script src="/js/staff.js"></script>

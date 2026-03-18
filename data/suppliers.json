@@ -1,0 +1,25 @@
+[
+  {
+    "id": "SUP-8821",
+    "name": "MedPharma Distribution",
+    "email": "logistics@medpharma.com",
+    "password": "supplier123",
+    "contact": "John Doe",
+    "phone": "0917-123-4567",
+    "address": "Quezon City, Manila",
+    "leadTime": "3-5 Days",
+    "rating": 4.8,
+    "status": "Active"
+  },
+  {
+    "id": "SUP-5849",
+    "name": "dani",
+    "email": "dani@gmail.com",
+    "password": "1234",
+    "leadTime": "3 days",
+    "phone": "09480596894",
+    "address": "sagrada, baao, HEHE, HHA",
+    "rating": 5,
+    "status": "Active"
+  }
+]

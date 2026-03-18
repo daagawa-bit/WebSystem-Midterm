@@ -1,0 +1,39 @@
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <h1>💊 PharMediSync</h1>
+        <p>Robin Rose Trading</p>
+    </div>
+    <div class="sidebar-role">
+        <%= userRole %> Panel
+    </div>
+    <nav class="sidebar-nav">
+        <a href="/dashboard" class="<%= active==='dashboard' ? 'active':'' %>"><span
+                class="nav-icon">🏠</span>Dashboard</a>
+        <a href="/chatbot" class="<%= active==='chatbot' ? 'active':'' %>"><span class="nav-icon">🤖</span> Chatbot
+            Handling</a>
+
+        <div class="nav-section">Operations</div>
+        <a href="/supplier" class="<%= active==='supplier' ? 'active':'' %>"><span class="nav-icon">🏭</span>
+            Supplier</a>
+        <a href="/inventory" class="<%= active==='inventory' ? 'active':'' %>"><span class="nav-icon">📦</span>
+            Inventory</a>
+        <a href="/sales" class="<%= active==='sales' ? 'active':'' %>"><span class="nav-icon">🛒</span> Sales</a>
+        <a href="/client" class="<%= active==='client' ? 'active':'' %>"><span class="nav-icon">🏢</span> Customer</a>
+
+        <div class="nav-section">Finance & Reports</div>
+        <a href="/pos" class="<%= active==='pos' ? 'active':'' %>"><span class="nav-icon">🖥️</span> Point of Sale</a>
+        <a href="/reports" class="<%= active==='reports' ? 'active':'' %>"><span class="nav-icon">📊</span> Reports</a>
+        <a href="/bir" class="<%= active==='bir' ? 'active':'' %>"><span class="nav-icon">📋</span> BIR Compliance</a>
+
+        <% if(userRole==='Admin' ) { %>
+            <div class="nav-section">Admin Tools</div>
+            <a href="/users" class="<%= active==='users' ? 'active':'' %>"><span class="nav-icon">👤</span> Manage
+                Staff</a>
+            <% } %>
+
+                <div class="nav-section">Others</div>
+                <a href="/announcement" class="<%= active==='announcement' ? 'active':'' %>"><span
+                        class="nav-icon">📣</span> Announcement</a>
+                <a href="/logout" style="color: #ffcccc;"><span class="nav-icon">🚪</span> Logout</a>
+    </nav>
+</aside>

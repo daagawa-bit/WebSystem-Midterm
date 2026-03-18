@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ANN-1001",
+    "title": "System Maintenance Schedule",
+    "body": "The inventory system will be down for maintenance this Sunday from 2AM to 4AM.",
+    "date": "2024-03-17",
+    "audience": "All Users",
+    "priority": "High"
+  },
+  {
+    "id": "ANN-1002",
+    "title": "New Supplier Onboarding",
+    "body": "We have successfully partnered with MedSupply Global for PPE distribution.",
+    "date": "2024-03-16",
+    "audience": "Admin, Staff",
+    "priority": "Medium"
+  }
+]

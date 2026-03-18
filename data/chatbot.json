@@ -1,0 +1,99 @@
+{
+  "activeChats": [
+    {
+      "id": "CHAT-101",
+      "client": "St. Luke's Medical",
+      "email": "procurement@stlukes.ph",
+      "type": "Hospital",
+      "status": "Waiting for Staff",
+      "sentiment": "Urgent",
+      "messages": [
+        {
+          "sender": "Client",
+          "text": "Hello, we need to order 100 units of SKU-005. Do we get a bulk discount?",
+          "time": "10:45 AM",
+          "type": "public"
+        },
+        {
+          "sender": "Bot",
+          "text": "Our standard price is ₱180.00. I am checking our institutional discount policy for bulk orders...",
+          "time": "10:46 AM",
+          "type": "public"
+        },
+        {
+          "sender": "Client",
+          "text": "We need an answer soon as we are finalizing our budget today.",
+          "time": "10:50 AM",
+          "type": "public"
+        }
+      ]
+    },
+    {
+      "id": "CHAT-102",
+      "client": "Makati Medical",
+      "email": "admin@makatimed.ph",
+      "type": "Hospital",
+      "status": "Bot Handling",
+      "sentiment": "Normal",
+      "messages": [
+        {
+          "sender": "Client",
+          "text": "What time do you close on Fridays?",
+          "time": "11:01 AM",
+          "type": "public"
+        },
+        {
+          "sender": "Bot",
+          "text": "We are open 8AM-5PM, Mon-Fri.",
+          "time": "11:01 AM",
+          "type": "public"
+        }
+      ]
+    },
+    {
+      "id": "CHAT-103",
+      "client": "Brgy. 143 Health Center",
+      "email": "health@brgy143.gov.ph",
+      "type": "Clinic",
+      "status": "Waiting for Staff",
+      "sentiment": "Normal",
+      "messages": [
+        {
+          "sender": "Client",
+          "text": "Is the Digital BP Monitor (SKU-002) currently in stock?",
+          "time": "11:15 AM",
+          "type": "public"
+        }
+      ]
+    }
+  ],
+  "quickReplies": [
+    "Order Processed",
+    "Stock is Available",
+    "Checking with Logistics",
+    "Invalid SKU",
+    "Discount Approved"
+  ],
+  "knowledgeBase": [
+    {
+      "id": 1773788509363,
+      "trigger": "hours",
+      "response": "We are open 8AM-5PM, Mon-Fri."
+    },
+    {
+      "id": 1773788549363,
+      "trigger": "discount",
+      "response": "yes, for institutional bulk orders."
+    },
+    {
+      "id": 1773789216950,
+      "trigger": "available",
+      "response": "Please provide the SKU so I can check our real-time stock."
+    },
+    {
+      "id": 1773789655582,
+      "trigger": "price",
+      "response": "Prices vary by item category. You can view our catalog in your portal."
+    }
+  ]
+}

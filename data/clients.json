@@ -1,0 +1,17 @@
+{
+  "clients": [
+    {
+      "id": "CL-01",
+      "facilityName": "LGU Iriga City",
+      "contact": "09123456789"
+    },
+    {
+      "id": "CL-02",
+      "facilityName": "RHU Baao",
+      "contact": "09987654321",
+      "email": "undefined@gail.com",
+      "username": "hehe",
+      "password": "undefined"
+    }
+  ]
+}
