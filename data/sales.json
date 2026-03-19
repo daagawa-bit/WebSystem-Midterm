@@ -1,7 +1,31 @@
 {
   "salesOrders": [
     {
-      "id": "SO-8572",
+      "id": "SO-2878",
+      "client": "LGU Iriga City",
+      "date": "2026-03-19",
+      "total": 10,
+      "subtotal": 8.93,
+      "vat": 1.07,
+      "payment": "Unpaid",
+      "delivery": "Pending",
+      "status": "Active"
+    },
+    {
+      "id": "SO-9864",
+      "client": "LGU Iriga City",
+      "date": "2026-03-19",
+      "total": 1000,
+      "subtotal": 892.86,
+      "vat": 107.14,
+      "payment": "Unpaid",
+      "method": "Cash",
+      "delivery": "In Transit",
+      "status": "Active",
+      "batchNo": "BN-5466"
+    },
+    {
+      "id": "SO-9615",
       "client": "LGU Iriga City",
       "date": "2026-03-19",
       "total": 1000,
@@ -10,6 +34,19 @@
       "payment": "Unpaid",
       "method": "Cash",
       "delivery": "Pending",
+      "status": "Active",
+      "batchNo": "BN-8001"
+    },
+    {
+      "id": "SO-8572",
+      "client": "LGU Iriga City",
+      "date": "2026-03-19",
+      "total": 1000,
+      "subtotal": 892.86,
+      "vat": 107.14,
+      "payment": "Unpaid",
+      "method": "Cash",
+      "delivery": "In Transit",
       "status": "Active",
       "batchNo": "BN-7219"
     },

@@ -10,130 +10,98 @@ const paths = {
     clients: path.join(dataDir, 'clients.json'),
     suppliers: path.join(dataDir, 'suppliers.json'),
     sales: path.join(dataDir, 'sales.json'),
-    admins: path.join(dataDir, 'admins.json'),        // Separate Admin DB
-    staff: path.join(dataDir, 'staff_members.json')   // Separate Staff DB
+    pos: path.join(dataDir, 'pos_sales.json'),
+    admins: path.join(dataDir, 'admins.json'),        
+    staff: path.join(dataDir, 'staff_members.json')   
 };
 
-// SAFE READ FUNCTION: Preserved from your code
+// SMART SAFE READ: Handles both flat arrays [...] and objects { key: [...] }
 const getSafeData = (filePath, key) => {
     try {
-        if (!fs.existsSync(filePath)) {
-            console.log("File not found:", filePath);
-            return [];
-        }
+        if (!fs.existsSync(filePath)) return [];
         const content = fs.readFileSync(filePath, 'utf8');
         if (!content || content.trim() === "") return [];
-        
         const parsed = JSON.parse(content);
-        
-        // SMART CHECK: If the file is a flat array [...], return it immediately.
-        // If it's an object { key: [...] }, look for the key.
-        if (Array.isArray(parsed)) {
-            return parsed;
-        } else {
-            return parsed[key] || [];
-        }
-    } catch (err) {
-        console.error("JSON Error in " + filePath, err);
-        return [];
-    }
+        if (Array.isArray(parsed)) return parsed;
+        return parsed[key] || [];
+    } catch (err) { return []; }
 };
 
-/**
- * 1. LANDING PAGE (Root)
- */
 router.get('/', (req, res) => {
     res.render('pages/admin/login', { title: 'Admin & Staff Login', active: 'login' });
 });
 
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
-    const inputEmail = email.toLowerCase().trim();
-    const inputPass = password.toString().trim();
-
     try {
-        // 1. Check Admin Database (data/admins.json)
-        const admins = getSafeData(paths.admins, 'admins'); // uses your getSafeData helper
-        const adminUser = admins.find(u => 
-            u.email.toLowerCase().trim() === inputEmail && 
-            u.password.toString().trim() === inputPass
-        );
-
-        if (adminUser) {
-            console.log("Admin Logged In:", adminUser.name);
-            return res.redirect('/dashboard');
-        }
-
-        // 2. Check Staff Database (data/staff_members.json)
+        const admins = getSafeData(paths.admins, 'admins');
+        const adminUser = admins.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim() && u.password.toString() === password.toString());
+        if (adminUser) return res.redirect('/dashboard');
+        
         const staffMembers = getSafeData(paths.staff, 'staff');
-        const staffUser = staffMembers.find(u => 
-            u.email.toLowerCase().trim() === inputEmail && 
-            u.password.toString().trim() === inputPass
-        );
+        const staffUser = staffMembers.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim() && u.password.toString() === password.toString());
+        if (staffUser) return res.redirect('/staff');
 
-        if (staffUser) {
-            console.log("Staff Logged In:", staffUser.name);
-            return res.redirect('/staff');
-        }
-
-        // 3. Neither matches
-        res.send("<script>alert('Invalid Internal Credentials'); window.location='/';</script>");
-
-    } catch (err) {
-        console.error("Login Failure:", err);
-        res.status(500).send("Login System Error.");
-    }
+        res.send("<script>alert('Invalid Credentials'); window.location='/';</script>");
+    } catch (err) { res.status(500).send("Login Error."); }
 });
 
-/**
- * 3. OPERATIONS DASHBOARD (Kept exactly as you provided)
- */
 router.get('/dashboard', (req, res) => {
     try {
         const inventory = getSafeData(paths.inventory, 'products');
         const clients = getSafeData(paths.clients, 'clients');
-        const suppliers = getSafeData(paths.suppliers, 'suppliers');
-        const sales = getSafeData(paths.sales, 'salesOrders');
+        const salesOrders = getSafeData(paths.sales, 'salesOrders');
+        const posTransactions = getSafeData(paths.pos, 'posTransactions');
+        const staff = getSafeData(paths.staff, 'staff');
+        const admins = getSafeData(paths.admins, 'admins');
 
-        // REAL-TIME CALCULATIONS
         const totalQty = inventory.reduce((sum, p) => sum + (p.qty || 0), 0);
-        const lowStockCount = inventory.filter(p => p.qty < 10).length;
-        const totalSalesVal = sales.reduce((sum, o) => sum + (o.total || 0), 0);
+        const posRevenue = posTransactions.reduce((sum, t) => sum + (t.total || 0), 0);
+        const instRevenue = salesOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+        const totalRev = posRevenue + instRevenue;
 
-        // Construct the dynamic data object
         const liveData = {
             kpi: {
-                salesPending: sales.filter(s => s.status === 'Active').length,
-                inTransit: 2,
-                delivered: sales.filter(s => s.status === 'Completed').length,
+                // FIXED: Matches your JSON keys 'status' and 'delivery'
+                // Pending: status is Active AND delivery is Pending
+                salesPending: salesOrders.filter(s => s.status === 'Active' && s.delivery === 'Pending').length,
+                
+                // In Transit: delivery is marked as In Transit
+                inTransit: salesOrders.filter(s => s.delivery === 'In Transit').length,
+                
+                // Delivered: status is Completed OR delivery is Delivered
+                delivered: salesOrders.filter(s => s.status === 'Completed' || s.delivery === 'Delivered').length,
+                
                 qtyOnHand: totalQty,
-                qtyToReceive: 120
+                qtyToReceive: 240 
             },
             productDetails: {
                 allItems: inventory.length,
-                lowStock: lowStockCount,
+                lowStock: inventory.filter(p => p.qty < 20).length,
                 expired: 0,
                 products: inventory.length
             },
             sales: {
-                totalValue: totalSalesVal,
-                walkInCustomer: 25,
-                deliveryToClient: 75 
+                totalValue: totalRev,
+                deliveryToClient: totalRev > 0 ? Math.round((instRevenue / totalRev) * 100) : 50,
+                walkInCustomer: totalRev > 0 ? Math.round((posRevenue / totalRev) * 100) : 50
             },
-            topClients: clients.slice(0, 3).map(c => c.facilityName || c.name || "Unknown"),
-            topProducts: inventory.slice(0, 2).map(p => p.name || "Unnamed Product"),
-
+            // Mapping 'client' from your sales.json
+            topClients: salesOrders.slice(0, 3).map(s => s.client || "Institutional Client"),
+            topProducts: inventory.sort((a,b) => b.qty - a.qty).slice(0, 2).map(p => p.name),
+            
+            financials: {
+                monthlyTarget: 500000,
+                progress: Math.round((totalRev / 500000) * 100)
+            },
+            forecast: inventory.filter(p => p.qty < 20).slice(0, 3).map(p => ({
+                name: p.name,
+                daysRemaining: Math.floor(p.qty / 4)
+            })),
+            activeStaff: staff.length,
             recentActivity: [
-                {
-                    time: "Just now",
-                    event: inventory.length > 0 ? `Inventory verified: ${inventory[0].name}` : "System Initialized",
-                    type: "success"
-                },
-                {
-                    time: "Update",
-                    event: `Monitoring ${clients.length} Institutional Clients`,
-                    type: "info"
-                }
+                { time: "Just now", event: `Database synchronized with ${salesOrders.length} orders`, type: "success" },
+                { time: "Update", event: `Inventory Total: ${totalQty} units`, type: "info" }
             ]
         };
 
@@ -141,12 +109,13 @@ router.get('/dashboard', (req, res) => {
             title: 'Operations Dashboard',
             active: 'dashboard',
             userRole: 'Admin',
+            adminName: admins[0]?.name || "Super Admin", // Added for the welcome message
             data: liveData
         });
 
-    } catch (err) {
-        console.error("Dashboard Logic Error:", err);
-        res.status(500).send("Check your data folder for missing or empty JSON files.");
+    } catch (err) { 
+        console.error("Dashboard Error:", err);
+        res.status(500).send("Critical error loading data."); 
     }
 });
 

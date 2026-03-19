@@ -853,18 +853,262 @@ textarea{resize:vertical;min-height:76px}
     background: linear-gradient(135deg, #b02a37, #991b1b);
 }
 
-.action-link {
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #94a3b8; /* soft slate */
-    transition: all 0.2s ease-in-out;
+.action-link {font-size: 10px;font-weight: 800;text-transform: uppercase;letter-spacing: 0.05em;color: #94a3b8; /* soft slate */transition: all 0.2s ease-in-out;
     cursor: pointer;
     position: relative;
-    text-decoration: none;
+    text-decoration: none;}
+
+.action-link:hover {color: #dc3545;}
+
+
+/* ── INSTITUTIONAL SALES: PROFESSIONAL GRID ── */
+.sales-workspace {
+    display: grid;
+    grid-template-columns: 1fr 360px; /* Locked sidebar form width */
+    gap: 20px;
+    height: calc(100vh - 140px);
+    overflow: hidden;
 }
 
-.action-link:hover {
-    color: #dc3545;
+/* Registry (Left) */
+.order-registry {
+    background: #fff;
+    border-radius: 1.5rem;
+    border: 1px solid #eef2f6;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.registry-scroll { flex: 1; overflow-y: auto; scrollbar-width: none; }
+.registry-scroll::-webkit-scrollbar { display: none; }
+
+/* Table Typography (Micro-Professional) */
+.sales-table { width: 100%; border-collapse: collapse; }
+.sales-table thead th {
+    position: sticky; top: 0; background: #5b5858; z-index: 10;
+    padding: 12px 15px; font-size: 9px; font-weight: 900;
+    color: #ffffff; text-transform: uppercase; letter-spacing: 1px;
+    border-bottom: 1px solid #eef2f6;
+}
+.sales-table td { padding: 12px 15px; border-bottom: 1px solid #f8fafc; font-size: 11px; vertical-align: middle; }
+
+/* Audit Inspector (Right) */
+.order-inspector {
+    background: #fff;
+    border-radius: 1.5rem;
+    border: 2px solid var(--red);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(232, 52, 74, 0.05);
+}
+
+.audit-head { padding: 20px; border-bottom: 1px dashed var(--red); }
+.audit-head h2 { font-size: 1rem; font-weight: 900; margin: 0; color: #1e293b; }
+
+.audit-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.audit-label { font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase; }
+.audit-val { font-size: 11px; font-weight: 700; color: #334155; }
+
+.financial-wrap { background: var(--red-pale); padding: 15px; border-radius: 12px; margin-top: 10px; }
+
+/* Status Buttons */
+.ship-btn {
+    background: #FFFBEB; color: #B45309; border: 1px solid #FEF3C7;
+    padding: 5px 10px; border-radius: 6px; font-weight: 800; font-size: 9px;
+    text-decoration: none; transition: 0.2s;
+}
+.ship-btn:hover { background: #F59E0B; color: #fff; }
+
+/* FORMAL PRINT STYLES */
+@media print {
+    body * { visibility: hidden; }
+    #formal-invoice, #formal-invoice * { visibility: visible; }
+    #formal-invoice { position: absolute; left: 0; top: 0; width: 100%; display: block !important; }
+}
+
+.page-header-actions {display: flex;align-items: center;justify-content: flex-end; gap: 15px;}
+.search-wrapper-smart {position: relative;width: 280px;}
+
+.search-wrapper-smart input {width: 100%;padding: 10px 15px 10px 40px; background: #ffffff;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1e293b;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-wrapper-smart::before {
+    content: '🔍';
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* ─── QUICK SALES ENTRY: SMART FORM ─── */
+/* ─── SALES WORKSPACE FIXED HEIGHT FIX ─── */
+
+/* 1. Lock the main grid so it fits the laptop screen */
+.sales-workspace {
+    display: grid;
+    grid-template-columns: 1fr 360px; /* Keeps your 2-column layout */
+    gap: 20px;
+    height: calc(100vh - 160px); /* Fits 100% zoom perfectly */
+    overflow: hidden; /* Prevents the whole page from scrolling */
+}
+
+/* 2. Make the Left Table area scrollable */
+.order-registry {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.registry-scroll {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* 3. FIX: Make the Right column (Audit + Form) scrollable independently */
+aside.flex.flex-col.gap-4 {
+    height: 100%;
+    overflow-y: auto; /* Allows you to scroll down to the form */
+    padding-right: 8px; /* Space for the scrollbar */
+    scrollbar-width: thin; /* Modern thin scrollbar */
+    scrollbar-color: var(--red) #f1f1f1;
+}
+
+/* Chrome/Edge/Safari Scrollbar Styling */
+aside.flex.flex-col.gap-4::-webkit-scrollbar {
+    width: 6px;
+}
+aside.flex.flex-col.gap-4::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+aside.flex.flex-col.gap-4::-webkit-scrollbar-thumb {
+    background: var(--red);
+    border-radius: 10px;
+}
+
+/* 4. Ensure the cards don't shrink */
+.order-audit-panel, .quick-entry-card {
+    flex-shrink: 0; 
+}
+
+.quick-entry-card {
+    background: #ffffff;
+    border-radius: 1.5rem;
+    padding: 24px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.quick-entry-card h3 {
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #94a3b8; /* Slate 400 */
+    margin-bottom: 20px;
+}
+
+/* Professional Inset Inputs */
+.input-field-smart {
+    width: 100%;
+    background-color: #f8fafc; /* Subtle off-white */
+    border: 1.5px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1e293b;
+    outline: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-field-smart:focus {
+    background-color: #ffffff;
+    border-color: var(--red);
+    box-shadow: 0 0 0 4px rgba(232, 52, 74, 0.05);
+}
+
+/* Small Caps Labels */
+.entry-label {
+    font-size: 8px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #cbd5e1;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    display: block;
+}
+
+/* Action Button */
+.btn-record-sale {
+    width: 100%;
+    background: var(--red);
+    color: #fff;
+    font-weight: 900;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
+}
+
+.btn-record-sale:hover {
+    background: var(--red); /* Switches to brand color on interaction */
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(232, 52, 74, 0.3);
+}
+
+/* ─── PROFESSIONAL PRINT BUTTON STYLE ─── */
+
+.btn-audit-print {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: var(--red);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 15px -3px rgba(232, 52, 74, 0.2), 
+                0 4px 6px -2px rgba(232, 52, 74, 0.1);
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+/* Hover State: "Lifts" the button */
+.btn-audit-print:hover {
+    transform: translateY(-3px);
+}
+
+/* Ensure it doesn't show up on the printed document */
+@media print {
+    .btn-audit-print {
+        display: none !important;
+    }
 }

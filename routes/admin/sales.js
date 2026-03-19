@@ -6,56 +6,59 @@ const path = require('path');
 const salesPath = path.join(__dirname, '../../data/sales.json');
 const clientPath = path.join(__dirname, '../../data/clients.json');
 
-const readData = (p, key) => {
-    if (!fs.existsSync(p)) return [];
-    const d = JSON.parse(fs.readFileSync(p, 'utf8'));
-    return d[key] || [];
-};
-
-const saveData = (p, key, list) => {
-    const data = {};
-    data[key] = list;
-    fs.writeFileSync(p, JSON.stringify(data, null, 2));
-};
+const readJSON = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
 
 router.get('/', (req, res) => {
-    const salesOrders = readData(salesPath, 'salesOrders');
-    const clients = readData(clientPath, 'clients');
-    
+    const salesData = readJSON(salesPath);
+    const clientData = readJSON(clientPath);
     res.render('pages/admin/sales', {
         title: 'Sales Dashboard',
         active: 'sales',
         userRole: 'Admin',
-        salesOrders: salesOrders,
-        clients: clients,
-        totalSales: salesOrders.reduce((s, o) => s + o.total, 0)
+        salesOrders: salesData.salesOrders,
+        clients: clientData.clients,
+        totalSales: salesData.salesOrders.reduce((s, o) => s + (o.total || 0), 0)
     });
 });
 
-// Added this to handle the form submission
+// FIXED: Update Status route (Ship Now / Mark Delivered)
+router.get('/update/:id/:field/:value', (req, res) => {
+    let data = readJSON(salesPath);
+    const index = data.salesOrders.findIndex(o => o.id === req.params.id);
+    
+    if (index !== -1) {
+        data.salesOrders[index][req.params.field] = req.params.value;
+        // Logic: If delivered, mark status as Completed
+        if (req.params.value === 'Delivered') {
+            data.salesOrders[index].status = 'Completed';
+        }
+        fs.writeFileSync(salesPath, JSON.stringify(data, null, 2));
+    }
+    res.redirect('/sales');
+});
+
 router.post('/add', (req, res) => {
-    let salesOrders = readData(salesPath, 'salesOrders');
+    let data = readJSON(salesPath);
     const total = parseFloat(req.body.total);
     const subtotal = total / 1.12;
 
     const newOrder = {
-        id: `SO-${Date.now().toString().slice(-4)}`,
+        id: `SO-${Math.floor(1000 + Math.random() * 9000)}`,
         client: req.body.client,
         date: new Date().toISOString().split('T')[0],
         total: total,
         subtotal: parseFloat(subtotal.toFixed(2)),
         vat: parseFloat((total - subtotal).toFixed(2)),
-        payment: 'Unpaid',
-        method: req.body.method || 'Cash',
-        delivery: 'Pending',
-        status: 'Active',
-        batchNo: "BN-" + Math.floor(Math.random() * 9000 + 1000)
+        payment: req.body.payment,
+        method: req.body.method,
+        delivery: "Pending",
+        status: "Active",
+        batchNo: req.body.batchNo || "BN-TEMP"
     };
 
-    salesOrders.unshift(newOrder);
-    saveData(salesPath, 'salesOrders', salesOrders);
+    data.salesOrders.unshift(newOrder);
+    fs.writeFileSync(salesPath, JSON.stringify(data, null, 2));
     res.redirect('/sales');
 });
 
-// CRITICAL FIX: This must be at the bottom
 module.exports = router;

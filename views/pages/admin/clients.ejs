@@ -8,13 +8,12 @@
         <header class="page-header">
             <div>
                 <h1>Institutional Portals</h1>
-                <p>Manage access for Hospitals, Clinics, and LGUs.</p>
+                <p>Manage access and security for Partner Facilities.</p>
             </div>
-            <a href="/sales" class="btn-outline-red">Back to Sales</a>
+            <a href="/sales" class="btn-outline-red">View Sales Orders</a>
         </header>
 
         <div class="manager-grid">
-            <!-- LEFT: CLIENT REGISTRY -->
             <section class="registry-card">
                 <div class="card-header">
                     <h2>Facility Registry</h2>
@@ -27,8 +26,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Facility Name</th>
-                                <th>Username</th>
-                                <th>Email/Contact</th>
+                                <th>Access Key</th>
+                                <th>Contact Details</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -36,8 +35,11 @@
                             <% clients.forEach(c => { %>
                                 <tr>
                                     <td><span class="id-tag"><%= c.id %></span></td>
-                                    <td><strong><%= c.facilityName %></strong></td>
-                                    <td><code><%= c.username %></code></td>
+                                    <td>
+                                        <strong><%= c.facilityName %></strong>
+                                        <div style="font-size: 0.6rem; color: #10b981; font-weight: 800;">● PORTAL ACTIVE</div>
+                                    </td>
+                                    <td><code><%= c.username %></code><br/><small style="opacity: 0.5;">Pass: <%= c.password %></small></td>
                                     <td>
                                         <div class="contact-info">
                                             <span><%= c.email %></span>
@@ -45,9 +47,10 @@
                                         </div>
                                     </td>
                                     <td class="actions">
-                                        <button class="btn-edit" onclick="editClient(<%= JSON.stringify(c) %>)">Edit</button>
-                                        <a href="/client/delete/<%= c.id %>" class="btn-del" onclick="return confirm('Remove access?')">Delete</a>
-                                    </td>>
+                                        <!-- FIXED: Using template strings for safer JSON parsing -->
+                                        <button class="btn-edit" onclick='editClient(`<%- JSON.stringify(c) %>`)'>Edit</button>
+                                        <a href="/client/delete/<%= c.id %>" class="btn-del" onclick="return confirm('Revoke portal access?')">Delete</a>
+                                    </td>
                                 </tr>
                             <% }) %>
                         </tbody>
@@ -55,28 +58,27 @@
                 </div>
             </section>
 
-            <!-- RIGHT: ADD/EDIT FORM -->
             <aside class="form-aside">
                 <div class="form-card">
                     <h3 id="form-title">Register New Facility</h3>
                     <form action="/client/add" method="POST" id="clientForm">
                         <div class="input-group">
                             <label>Facility Name</label>
-                            <input type="text" name="facilityName" id="f-name" required placeholder="e.g. St. Luke's Medical">
+                            <input type="text" name="facilityName" id="f-name" required placeholder="e.g. Makati Medical City">
                         </div>
                         <div class="input-group">
                             <label>Portal Username</label>
-                            <input type="text" name="username" id="f-user" required placeholder="lgu_iriga_city">
+                            <input type="text" name="username" id="f-user" required>
                         </div>
                         <div class="input-group">
                             <label>Assign Password</label>
-                            <input type="text" name="password" id="f-pass" required placeholder="Default password">
+                            <input type="password" name="password" id="f-pass" required>
                         </div>
                         <div class="row">
-                            <div class="input-group"><label>Email</label><input type="email" name="email" id="f-email" required></div>
-                            <div class="input-group"><label>Contact</label><input type="text" name="contact" id="f-phone" required></div>
+                            <div class="input-group"><label>Official Email</label><input type="email" name="email" id="f-email" required></div>
+                            <div class="input-group"><label>Contact No.</label><input type="text" name="contact" id="f-phone" required></div>
                         </div>
-                        <button type="submit" class="btn-submit" id="submit-btn">Authorize Portal Access</button>
+                        <button type="submit" class="btn-submit" id="submit-btn">Authorize Access</button>
                         <button type="button" class="btn-reset" onclick="resetForm()" style="display:none;" id="reset-btn">Cancel Edit</button>
                     </form>
                 </div>
@@ -88,26 +90,26 @@
 <%- include('../../partials/footer') %>
 
 <script>
-    function editClient(client) {
-        document.getElementById('form-title').innerText = "Edit: " + client.facilityName;
+    function editClient(jsonStr) {
+        const client = JSON.parse(jsonStr);
+        document.getElementById('form-title').innerText = "Modify: " + client.facilityName;
         document.getElementById('f-name').value = client.facilityName;
         document.getElementById('f-user').value = client.username;
         document.getElementById('f-pass').value = client.password;
         document.getElementById('f-email').value = client.email;
         document.getElementById('f-phone').value = client.contact;
         
-        // FIX: Update action to /client/edit/ID
         document.getElementById('clientForm').action = "/client/edit/" + client.id;
-        document.getElementById('submit-btn').innerText = "Update Portal";
+        document.getElementById('submit-btn').innerText = "Update Registry";
         document.getElementById('reset-btn').style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function resetForm() {
         document.getElementById('clientForm').reset();
         document.getElementById('form-title').innerText = "Register New Facility";
-        // FIX: Reset action to /client/add
         document.getElementById('clientForm').action = "/client/add";
-        document.getElementById('submit-btn').innerText = "Authorize Portal Access";
+        document.getElementById('submit-btn').innerText = "Authorize Access";
         document.getElementById('reset-btn').style.display = "none";
     }
 </script>

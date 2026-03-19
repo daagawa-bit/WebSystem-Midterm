@@ -1,21 +1,5 @@
 [
   {
-    "id": "ANN-4040",
-    "title": "hehe",
-    "body": "hehe",
-    "date": "2026-03-19",
-    "audience": "All Users",
-    "priority": "Low"
-  },
-  {
-    "id": "ANN-5925",
-    "title": "haha",
-    "body": "haha",
-    "date": "2026-03-19",
-    "audience": "All Users",
-    "priority": "Low"
-  },
-  {
     "id": "ANN-1001",
     "title": "System Maintenance Schedule",
     "body": "The inventory system will be down for maintenance this Sunday from 2AM to 4AM.",

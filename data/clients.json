@@ -1,9 +1,22 @@
 {
   "clients": [
     {
-      "id": "CL-01",
+      "id": "CL-8821",
       "facilityName": "LGU Iriga City",
-      "contact": "09123456789"
+      "username": "lguiriga",
+      "password": "123",
+      "email": "procurement@iriga.gov.ph",
+      "contact": "0917-123-4567",
+      "status": "Active"
+    },
+    {
+      "id": "CL-4452",
+      "facilityName": "RHU Baao",
+      "username": "rhu_baao",
+      "password": "123",
+      "email": "health@baao.gov.ph",
+      "contact": "0918-999-0000",
+      "status": "Active"
     }
   ]
 }
