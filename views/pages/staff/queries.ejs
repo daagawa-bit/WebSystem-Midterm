@@ -1,27 +1,28 @@
 <%- include('../../staffpartials/head') %>
 <%- include('../../staffpartials/sidebar') %>
 
-<!-- 1. h-screen + overflow-hidden locks the viewport so it never grows larger than the screen -->
 <main class="ml-60 flex-1 flex flex-col h-screen bg-[#F1F5F9] overflow-hidden">
     <%- include('../../partials/header') %>
 
-    <!-- 2. This container fills all remaining height after the header -->
     <div class="flex-1 flex flex-col p-4 min-h-0">
-        
+
         <!-- Compact Header -->
         <div class="flex justify-between items-center mb-3 px-2">
             <div>
-                <h1 class="text-lg font-black text-slate-800 tracking-tighter uppercase leading-none mt-5">Support <span class="text-red-700 italic">Terminal</span></h1>
-                <p class="text-[7px] font-black text-slate-400 uppercase tracking-widest mt-1 mb-3">Real-time Decision Support System</p>
+                <h1 class="text-lg font-black text-slate-800 tracking-tighter uppercase leading-none mt-5">Support <span
+                        class="text-red-700 italic">Terminal</span></h1>
+                <p class="text-[7px] font-black text-slate-400 uppercase tracking-widest mt-1 mb-3">Real-time Decision
+                    Support System</p>
             </div>
             <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 bg-emerald-500 text-white text-[8px] font-black rounded-md uppercase italic">AI Core Linked</span>
+                <span class="px-2 py-0.5 bg-emerald-500 text-white text-[8px] font-black rounded-md uppercase italic">AI
+                    Core Linked</span>
             </div>
         </div>
 
-        <!-- 3. THE WORKSPACE GRID: min-h-0 is the secret to making internal scrolls work in Flexbox -->
-        <div class="grid grid-cols-12 flex-1 bg-white rounded-[1rem] shadow-1xl border border-slate-300 overflow-hidden min-h-0">
-            
+        <div
+            class="grid grid-cols-12 flex-1 bg-white rounded-[1rem] shadow-1xl border border-slate-300 overflow-hidden min-h-0">
+
             <!-- PANEL 1: INBOX -->
             <aside class="col-span-3 border-r border-slate-100 flex flex-col bg-white h-full">
                 <div class="p-4 border-b border-slate-50 bg-slate-50/50">
@@ -29,17 +30,21 @@
                 </div>
                 <div class="flex-1 overflow-y-auto no-sb">
                     <% chats.forEach(chat => { %>
-                        <a href="/staff/chatbot?id=<%= chat.id %>" 
-                           class="block p-4 border-b border-slate-50 transition-all <%= currentChat && currentChat.id === chat.id ? 'bg-red-50 border-r-4 border-r-red-700' : 'hover:bg-slate-50' %>">
-                            <div class="flex justify-between mb-1">
-                                <strong class="text-[10px] text-slate-700 font-black truncate"><%= chat.client %></strong>
-                                <span class="text-[7px] text-slate-400 font-bold"><%= chat.messages[chat.messages.length-1].time %></span>
-                            </div>
-                            <p class="text-[9px] text-slate-400 truncate leading-none"><%= chat.messages[chat.messages.length-1].text %></p>
-                            <% if(chat.status === 'Waiting for Staff') { %>
-                                <span class="inline-block mt-2 px-1.5 py-0.5 bg-red-700 text-white text-[7px] font-black rounded uppercase italic animate-pulse">Needs Reply</span>
-                            <% } %>
-                        </a>
+                    <a href="/staff/chatbot?id=<%= chat.id %>"
+                        class="block p-4 border-b border-slate-50 transition-all <%= currentChat && currentChat.id === chat.id ? 'bg-red-50 border-r-4 border-r-red-700' : 'hover:bg-slate-50' %>">
+                        <div class="flex justify-between mb-1">
+                            <strong class="text-[10px] text-slate-700 font-black truncate"><%= chat.client %></strong>
+                            <span
+                                class="text-[7px] text-slate-400 font-bold"><%= chat.messages[chat.messages.length-1].time %></span>
+                        </div>
+                        <p class="text-[9px] text-slate-400 truncate leading-none">
+                            <%= chat.messages[chat.messages.length-1].text %></p>
+                        <% if(chat.status === 'Waiting for Staff') { %>
+                        <span
+                            class="inline-block mt-2 px-1.5 py-0.5 bg-red-700 text-white text-[7px] font-black rounded uppercase italic animate-pulse">Needs
+                            Reply</span>
+                        <% } %>
+                    </a>
                     <% }) %>
                 </div>
             </aside>
@@ -47,68 +52,79 @@
             <!-- PANEL 2: CHAT STREAM (The Scroller) -->
             <section class="col-span-6 flex flex-col bg-[#F9FBFF] h-full min-h-0 relative">
                 <% if(currentChat) { %>
-                    <!-- Fixed Header inside Chat -->
-                    <div class="p-3 bg-white border-b border-slate-100 flex justify-between items-center px-6 shadow-sm z-10">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-xs">🏥</div>
-                            <div>
-                                <h4 class="text-[10px] font-black text-slate-800 leading-none"><%= currentChat.client %></h4>
-                                <p class="text-[7px] text-emerald-500 font-bold uppercase tracking-widest mt-1">● <%= currentChat.status %></p>
-                            </div>
+                <!-- Fixed Header inside Chat -->
+                <div
+                    class="p-3 bg-white border-b border-slate-100 flex justify-between items-center px-6 shadow-sm z-10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-xs">🏥</div>
+                        <div>
+                            <h4 class="text-[10px] font-black text-slate-800 leading-none"><%= currentChat.client %>
+                            </h4>
+                            <p class="text-[7px] text-emerald-500 font-bold uppercase tracking-widest mt-1">●
+                                <%= currentChat.status %></p>
                         </div>
-                        <a href="/staff/chatbot/resolve/<%= currentChat.id %>" 
-                           class="px-3 py-1 border border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white text-[8px] font-black rounded-md transition-all uppercase tracking-widest">Resolve</a>
                     </div>
+                    <a href="/staff/chatbot/resolve/<%= currentChat.id %>"
+                        class="px-3 py-1 border border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white text-[8px] font-black rounded-md transition-all uppercase tracking-widest">Resolve</a>
+                </div>
 
-                    <!-- 4. THIS AREA SCROLLS INDEPENDENTLY -->
-                    <div class="flex-1 overflow-y-auto p-4 space-y-4 no-sb" style="background-image: radial-gradient(#E2E8F0 0.8px, transparent 0); background-size: 15px 15px;">
-                        <% currentChat.messages.forEach(msg => { %>
-                            <% if(msg.type === 'internal') { %>
-                                <div class="flex justify-center my-2">
-                                    <div class="bg-amber-50 border border-amber-200 text-amber-800 text-[9px] py-1.5 px-4 rounded-xl italic font-semibold max-w-[90%] text-center">
-                                        <span class="block text-[6px] font-black uppercase text-amber-500 mb-0.5">Internal Note</span>
-                                        <%= msg.text %>
-                                    </div>
-                                </div>
-                            <% } else { %>
-                                <div class="flex flex-col <%= (msg.sender === 'Staff' || msg.sender === 'Admin') ? 'items-end' : 'items-start' %>">
-                                    <span class="text-[7px] font-black text-slate-300 uppercase mb-1 px-1 tracking-widest"><%= msg.sender %></span>
-                                    <div class="max-w-[80%] p-3 rounded-[1.2rem] text-[11px] leading-snug shadow-sm 
+                <div class="flex-1 overflow-y-auto p-4 space-y-4 no-sb"
+                    style="background-image: radial-gradient(#E2E8F0 0.8px, transparent 0); background-size: 15px 15px;">
+                    <% currentChat.messages.forEach(msg => { %>
+                    <% if(msg.type === 'internal') { %>
+                    <div class="flex justify-center my-2">
+                        <div
+                            class="bg-amber-50 border border-amber-200 text-amber-800 text-[9px] py-1.5 px-4 rounded-xl italic font-semibold max-w-[90%] text-center">
+                            <span class="block text-[6px] font-black uppercase text-amber-500 mb-0.5">Internal
+                                Note</span>
+                            <%= msg.text %>
+                        </div>
+                    </div>
+                    <% } else { %>
+                    <div
+                        class="flex flex-col <%= (msg.sender === 'Staff' || msg.sender === 'Admin') ? 'items-end' : 'items-start' %>">
+                        <span
+                            class="text-[7px] font-black text-slate-300 uppercase mb-1 px-1 tracking-widest"><%= msg.sender %></span>
+                        <div
+                            class="max-w-[80%] p-3 rounded-[1.2rem] text-[11px] leading-snug shadow-sm 
                                         <%= (msg.sender === 'Staff' || msg.sender === 'Admin') ? 'bg-red-700 text-white rounded-br-none' : 'bg-white text-slate-700 border border-slate-50 rounded-bl-none' %>">
-                                        <%= msg.text %>
-                                        <div class="text-[7px] mt-1.5 opacity-50 text-right font-black"><%= msg.time %></div>
-                                    </div>
-                                </div>
-                            <% } %>
+                            <%= msg.text %>
+                            <div class="text-[7px] mt-1.5 opacity-50 text-right font-black"><%= msg.time %></div>
+                        </div>
+                    </div>
+                    <% } %>
+                    <% }) %>
+                </div>
+
+                <!-- 5. FIXED INPUT (Bottom) -->
+                <div class="p-3 bg-white border-t border-slate-100">
+                    <div class="flex gap-1.5 mb-2 overflow-x-auto no-sb">
+                        <% quickReplies.forEach(qr => { %>
+                        <button type="button" onclick="document.getElementById('msgIn').value='<%= qr %>'"
+                            class="whitespace-nowrap px-2 py-1 bg-slate-50 border border-slate-100 text-slate-400 text-[8px] font-black rounded-full hover:border-red-700 hover:text-red-700 transition-all">
+                            ⚡ <%= qr %>
+                        </button>
                         <% }) %>
                     </div>
 
-                    <!-- 5. FIXED INPUT (Bottom) -->
-                    <div class="p-3 bg-white border-t border-slate-100">
-                        <div class="flex gap-1.5 mb-2 overflow-x-auto no-sb">
-                            <% quickReplies.forEach(qr => { %>
-                                <button type="button" onclick="document.getElementById('msgIn').value='<%= qr %>'" 
-                                        class="whitespace-nowrap px-2 py-1 bg-slate-50 border border-slate-100 text-slate-400 text-[8px] font-black rounded-full hover:border-red-700 hover:text-red-700 transition-all">
-                                    ⚡ <%= qr %>
-                                </button>
-                            <% }) %>
-                        </div>
-                        
-                        <form action="/staff/chatbot/reply/<%= currentChat.id %>" method="POST" class="flex gap-2 items-center bg-slate-50 p-1 rounded-xl border border-slate-200">
-                            <select name="isInternal" class="bg-white border-0 rounded-lg px-2 py-1.5 text-[8px] font-black text-slate-500 uppercase outline-none">
-                                <option value="false">Public</option>
-                                <option value="true">Note</option>
-                            </select>
-                            <input type="text" name="message" id="msgIn" required placeholder="Type response..." 
-                                   class="flex-1 bg-transparent border-0 outline-none text-[11px] font-bold text-slate-700 px-1">
-                            <button type="submit" class="bg-red-700 text-white px-4 py-2 rounded-lg font-black text-[9px] uppercase shadow-lg shadow-red-700/30 active:scale-95">Send</button>
-                        </form>
-                    </div>
+                    <form action="/staff/chatbot/reply/<%= currentChat.id %>" method="POST"
+                        class="flex gap-2 items-center bg-slate-50 p-1 rounded-xl border border-slate-200">
+                        <select name="isInternal"
+                            class="bg-white border-0 rounded-lg px-2 py-1.5 text-[8px] font-black text-slate-500 uppercase outline-none">
+                            <option value="false">Public</option>
+                            <option value="true">Note</option>
+                        </select>
+                        <input type="text" name="message" id="msgIn" required placeholder="Type response..."
+                            class="flex-1 bg-transparent border-0 outline-none text-[11px] font-bold text-slate-700 px-1">
+                        <button type="submit"
+                            class="bg-red-700 text-white px-4 py-2 rounded-lg font-black text-[9px] uppercase shadow-lg shadow-red-700/30 active:scale-95">Send</button>
+                    </form>
+                </div>
                 <% } else { %>
-                    <div class="flex-1 flex flex-col items-center justify-center opacity-10">
-                        <span class="text-6xl mb-2">💬</span>
-                        <p class="font-black uppercase tracking-[3px] text-[8px]">Select Session</p>
-                    </div>
+                <div class="flex-1 flex flex-col items-center justify-center opacity-10">
+                    <span class="text-6xl mb-2">💬</span>
+                    <p class="font-black uppercase tracking-[3px] text-[8px]">Select Session</p>
+                </div>
                 <% } %>
             </section>
 
@@ -118,7 +134,8 @@
                 <div class="space-y-3">
                     <div class="p-4 bg-slate-50 rounded-[1.5rem] border border-slate-100">
                         <span class="text-[7px] font-black text-slate-400 uppercase block mb-1">Entity Profile</span>
-                        <p class="text-[10px] font-black text-slate-800 uppercase tracking-tight"><%= currentChat ? (currentChat.type || 'HOSPITAL') : '---' %></p>
+                        <p class="text-[10px] font-black text-slate-800 uppercase tracking-tight">
+                            <%= currentChat ? (currentChat.type || 'HOSPITAL') : '---' %></p>
                     </div>
                     <div class="p-4 bg-emerald-50 rounded-[1.5rem] border border-emerald-100">
                         <span class="text-[7px] font-black text-emerald-600 uppercase block mb-1">AI Sentiment</span>
@@ -131,7 +148,8 @@
                     </div>
                     <div class="p-4 border-2 border-dashed border-slate-100 rounded-[1.5rem]">
                         <p class="text-[9px] text-slate-400 italic leading-relaxed">
-                            Staff responses bypass automated logic. Verify <strong>Batch Numbers</strong> before confirming.
+                            Staff responses bypass automated logic. Verify <strong>Batch Numbers</strong> before
+                            confirming.
                         </p>
                     </div>
                 </div>

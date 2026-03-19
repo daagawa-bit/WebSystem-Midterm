@@ -8,8 +8,6 @@ const invPath = path.join(__dirname, '../../data/inventory.json');
 router.get('/', (req, res) => {
     try {
         const inventory = JSON.parse(fs.readFileSync(invPath, 'utf8'));
-        
-        // SERVER-SIDE LOGIC: Expiry Intel
         const processedInv = inventory.map(item => {
             if (!item.expiry || item.expiry === "N/A") return { ...item, daysLeft: 9999 };
             

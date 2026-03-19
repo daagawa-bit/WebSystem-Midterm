@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-// Paths to your data files
+// Paths to the data files
 const dataDir = path.join(__dirname, '../../data');
 const paths = {
     inventory: path.join(dataDir, 'inventory.json'),
@@ -15,7 +15,6 @@ const paths = {
     staff: path.join(dataDir, 'staff_members.json')   
 };
 
-// SMART SAFE READ: Handles both flat arrays [...] and objects { key: [...] }
 const getSafeData = (filePath, key) => {
     try {
         if (!fs.existsSync(filePath)) return [];
@@ -41,7 +40,6 @@ router.post('/login', (req, res) => {
         const adminUser = admins.find(u => u.email.toLowerCase().trim() === inputEmail && u.password === inputPass);
 
         if (adminUser) {
-            // SAVE TO SESSION
             req.session.user = adminUser; 
             return res.redirect('/dashboard');
         }
@@ -50,7 +48,6 @@ router.post('/login', (req, res) => {
         const staffUser = staffMembers.find(u => u.email.toLowerCase().trim() === inputEmail && u.password === inputPass);
 
         if (staffUser) {
-            // SAVE TO SESSION
             req.session.user = staffUser;
             return res.redirect('/staff');
         }
@@ -79,14 +76,10 @@ router.get('/dashboard', (req, res) => {
 
         const liveData = {
             kpi: {
-                // FIXED: Matches your JSON keys 'status' and 'delivery'
-                // Pending: status is Active AND delivery is Pending
                 salesPending: salesOrders.filter(s => s.status === 'Active' && s.delivery === 'Pending').length,
                 
-                // In Transit: delivery is marked as In Transit
                 inTransit: salesOrders.filter(s => s.delivery === 'In Transit').length,
                 
-                // Delivered: status is Completed OR delivery is Delivered
                 delivered: salesOrders.filter(s => s.status === 'Completed' || s.delivery === 'Delivered').length,
                 
                 qtyOnHand: totalQty,
@@ -103,7 +96,7 @@ router.get('/dashboard', (req, res) => {
                 deliveryToClient: totalRev > 0 ? Math.round((instRevenue / totalRev) * 100) : 50,
                 walkInCustomer: totalRev > 0 ? Math.round((posRevenue / totalRev) * 100) : 50
             },
-            // Mapping 'client' from your sales.json
+            // Mapping 'client' from sales.json
             topClients: salesOrders.slice(0, 3).map(s => s.client || "Institutional Client"),
             topProducts: inventory.sort((a,b) => b.qty - a.qty).slice(0, 2).map(p => p.name),
             
@@ -126,7 +119,7 @@ router.get('/dashboard', (req, res) => {
             title: 'Operations Dashboard',
             active: 'dashboard',
             userRole: 'Admin',
-            adminName: admins[0]?.name || "Super Admin", // Added for the welcome message
+            adminName: admins[0]?.name || "Super Admin", 
             data: liveData
         });
 
@@ -137,7 +130,7 @@ router.get('/dashboard', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    req.session.destroy(); // Deletes the session
+    req.session.destroy(); 
     res.redirect('/');
 });
 

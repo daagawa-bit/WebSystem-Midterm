@@ -41,7 +41,7 @@ router.post('/edit/:id', (req, res) => {
     const index = inventory.findIndex(i => i.id === req.params.id);
     if (index !== -1) {
         inventory[index] = {
-            id: req.params.id, // Keep the same ID
+            id: req.params.id, 
             name: req.body.name,
             category: req.body.category,
             batch: req.body.batch,

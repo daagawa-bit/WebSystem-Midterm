@@ -3,7 +3,6 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-// Correct paths to your data
 const invPath = path.join(__dirname, '../../data/inventory.json');
 const wastePath = path.join(__dirname, '../../data/waste_log.json');
 
@@ -30,7 +29,7 @@ router.get('/', (req, res) => {
         active: 'waste',
         userRole: 'Staff',
         inventory: inventory,
-        logs: wasteData // CRITICAL: This must be named 'logs' to match your EJS
+        logs: wasteData 
     });
 });
 

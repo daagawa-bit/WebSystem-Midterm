@@ -28,7 +28,6 @@ router.get('/update/:id/:field/:value', (req, res) => {
     
     if (index !== -1) {
         data.salesOrders[index][req.params.field] = req.params.value;
-        // Logic: If delivered, mark status as Completed
         if (req.params.value === 'Delivered') {
             data.salesOrders[index].status = 'Completed';
         }

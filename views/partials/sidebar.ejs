@@ -26,14 +26,14 @@
         <a href="/bir" class="<%= active==='bir' ? 'active':'' %>"><span class="nav-icon">📋</span> BIR Compliance</a>
 
         <% if(userRole==='Admin' ) { %>
-            <div class="nav-section">Admin Tools</div>
-            <a href="/users" class="<%= active==='users' ? 'active':'' %>"><span class="nav-icon">👤</span> Manage
-                Staff</a>
-            <% } %>
+        <div class="nav-section">Admin Tools</div>
+        <a href="/users" class="<%= active==='users' ? 'active':'' %>"><span class="nav-icon">👤</span> Manage
+            Staff</a>
+        <% } %>
 
-                <div class="nav-section">Others</div>
-                <a href="/announcement" class="<%= active==='announcement' ? 'active':'' %>"><span
-                        class="nav-icon">📣</span> Announcement</a>
-                <a href="/logout" style="color: #ffcccc;"><span class="nav-icon">🚪</span> Logout</a>
+        <div class="nav-section">Others</div>
+        <a href="/announcement" class="<%= active==='announcement' ? 'active':'' %>"><span class="nav-icon">📣</span>
+            Announcement</a>
+        <a href="/logout" style="color: #ffcccc;"><span class="nav-icon">🚪</span> Logout</a>
     </nav>
 </aside>

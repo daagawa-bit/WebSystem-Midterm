@@ -38,7 +38,7 @@ router.post('/checkout', (req, res) => {
         orNumber: "OR-" + Math.floor(100000 + Math.random() * 900000),
         date: new Date().toLocaleDateString(),
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        itemsList: cart, // Added for receipt printing
+        itemsList: cart, 
         subtotal: subtotal,
         vat: vat,
         total: total,

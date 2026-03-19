@@ -44,19 +44,18 @@ router.post('/send/:id', (req, res) => {
 router.post('/kb/add', (req, res) => {
     let data = readData();
     const newRule = { 
-        id: Date.now().toString(), // Use string to match params consistently
+        id: Date.now().toString(),
         trigger: req.body.trigger.toLowerCase(), 
         response: req.body.response 
     };
     data.knowledgeBase.push(newRule);
     saveData(data);
-    res.redirect('/chatbot'); // Redirect to main to see changes
+    res.redirect('/chatbot'); 
 });
 
 // Delete Knowledge Base Rule
 router.get('/kb/delete/:id', (req, res) => {
     let data = readData();
-    // Use != to catch both string and number IDs
     data.knowledgeBase = data.knowledgeBase.filter(k => k.id != req.params.id);
     saveData(data);
     res.redirect('/chatbot');

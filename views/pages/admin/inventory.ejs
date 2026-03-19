@@ -1,214 +1,211 @@
 <%- include('../../partials/head') %>
-    <%- include('../../partials/sidebar') %>
+<%- include('../../partials/sidebar') %>
 
-        <div class="main-area">
-            <%- include('../../partials/header') %>
-                <div class="content">
+<div class="main-area">
+    <%- include('../../partials/header') %>
+    <div class="content">
 
-                    <div class="page-header">
-                        <div>
-                            <h1>Inventory Management</h1>
-                            <p>Track products, batches, expiry dates, and stock levels.</p>
-                        </div>
-                        <button class="btn btn-primary"
-                            onclick="document.getElementById('addForm').scrollIntoView({behavior:'smooth'})">＋ Add
-                            Product</button>
-                    </div>
-
-                    <!-- Summary KPIs (Same as your code) -->
-                    <div class="kpi-row"
-                        style="display: grid; grid-template-columns:repeat(4,1fr); margin-bottom:24px; gap: 20px;">
-                        <div class="kpi-card white">
-                            <div class="kpi-value">
-                                <%= inventory.length %>
-                            </div>
-                            <div class="kpi-label">Total SKUs</div>
-                        </div>
-                        <div class="kpi-card white">
-                            <div class="kpi-value text-red">
-                                <%= inventory.filter(i=>i.status==='Low Stock').length %>
-                            </div>
-                            <div class="kpi-label">Low Stock</div>
-                        </div>
-                        <div class="kpi-card white">
-                            <div class="kpi-value text-red">
-                                <%= inventory.filter(i=>i.status==='Near Expiry').length %>
-                            </div>
-                            <div class="kpi-label">Near Expiry</div>
-                        </div>
-                        <div class="kpi-card white">
-                            <div class="kpi-value">
-                                <%= inventory.reduce((s,i)=>s+i.qty,0) %>
-                            </div>
-                            <div class="kpi-label">Total Units</div>
-                        </div>
-                    </div>
-
-                    <!-- Table Card -->
-                    <div class="table-card">
-                        <div class="table-header">
-                            <h2>Product Inventory</h2>
-                            <div class="flex gap-3">
-                                <input type="text" placeholder="Search products…"
-                                    style="padding:7px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:0.8rem"
-                                    id="searchBox" oninput="filterTable()" />
-                            </div>
-                        </div>
-                        <table id="inventoryTable">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Product Name</th>
-                                    <th>Category</th>
-                                    <th>Batch</th>
-                                    <th>Qty</th>
-                                    <th>Unit</th>
-                                    <th>Expiry Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Table Section (Inside your existing EJS) -->
-                                <% inventory.forEach(item=> { %>
-                                    <tr>
-                                        <!-- Clean display of ID -->
-                                        <td><span style="font-size:0.72rem; color:var(--gray-400)">
-                                                <%= item.id %>
-                                            </span></td>
-                                        <td><strong>
-                                                <%= item.name %>
-                                            </strong></td>
-                                        <td>
-                                            <%= item.category %>
-                                        </td>
-                                        <td>
-                                            <%= item.batch %>
-                                        </td>
-                                        <td><strong>
-                                                <%= item.qty %>
-                                            </strong></td>
-                                        <td>
-                                            <%= item.unit %>
-                                        </td>
-                                        <td>
-                                            <%= item.expiry %>
-                                        </td>
-                                        <td>
-                                            <% if(item.status==='Good' ) { %><span
-                                                    class="badge badge-success">Good</span>
-                                                <% } else if(item.status==='Low Stock' ) { %><span
-                                                        class="badge badge-warning">Low Stock</span>
-                                                    <% } else { %><span class="badge badge-danger">Near Expiry</span>
-                                                        <% } %>
-                                        </td>
-                                        <td>
-                                            <div class="flex gap-2">
-                                                <!-- EDIT BUTTON: Passes the item object to JS -->
-                                                <button class="btn btn-outline btn-sm"
-                                                    onclick='editItem(`<%- JSON.stringify(item) %>`)'>Edit</button>
-
-                                                <!-- DELETE LINK: Absolute path to /inventory/delete/ID -->
-                                                <a href="/inventory/delete/<%= item.id %>"
-                                                    class="btn btn-outline btn-sm"
-                                                    style="color:var(--red); border-color:var(--red)"
-                                                    onclick="return confirm('Delete this product permanently?')">
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Form Card (Add / Edit) -->
-                    <div class="form-card mt-6" id="addForm">
-                        <div class="form-title">➕ Add New Product / Batch</div>
-                        <form method="POST" action="/inventory/add">
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label>Product Name</label>
-                                    <input type="text" name="name" required />
-                                </div>
-                                <div class="form-group">
-                                    <label>Category</label>
-                                    <select name="category">
-                                        <option>Medicine</option>
-                                        <option>Consumable</option>
-                                        <option>Equipment</option>
-                                        <option>PPE</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Batch Number</label>
-                                    <input type="text" name="batch" required />
-                                </div>
-                                <div class="form-group">
-                                    <label>Quantity</label>
-                                    <input type="number" name="qty" min="0" required />
-                                </div>
-                                <div class="form-group">
-                                    <label>Unit Price (₱)</label>
-                                    <input type="number" name="price" step="0.01" placeholder="0.00" required />
-                                </div>
-                                <div class="form-group">
-                                    <label>Unit</label>
-                                    <select name="unit">
-                                        <option>pcs</option>
-                                        <option>tabs</option>
-                                        <option>btls</option>
-                                        <option>boxes</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Expiry Date</label>
-                                    <input type="date" name="expiry" required />
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" id="submitBtn" class="btn btn-primary">Save Product</button>
-                                <a href="/inventory" class="btn btn-outline">Cancel / Reset</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+        <div class="page-header">
+            <div>
+                <h1>Inventory Management</h1>
+                <p>Track products, batches, expiry dates, and stock levels.</p>
+            </div>
+            <button class="btn btn-primary"
+                onclick="document.getElementById('addForm').scrollIntoView({behavior:'smooth'})">＋ Add
+                Product</button>
         </div>
 
-        <!-- The script at the bottom of inventory.ejs -->
-        <script>
-            function editItem(jsonStr) {
-                const item = JSON.parse(jsonStr);
-                const form = document.querySelector('#addForm form');
-                const title = document.querySelector('.form-title');
-                const submitBtn = document.getElementById('submitBtn');
+        <!-- Summary KPIs (Same as your code) -->
+        <div class="kpi-row" style="display: grid; grid-template-columns:repeat(4,1fr); margin-bottom:24px; gap: 20px;">
+            <div class="kpi-card white">
+                <div class="kpi-value">
+                    <%= inventory.length %>
+                </div>
+                <div class="kpi-label">Total SKUs</div>
+            </div>
+            <div class="kpi-card white">
+                <div class="kpi-value text-red">
+                    <%= inventory.filter(i=>i.status==='Low Stock').length %>
+                </div>
+                <div class="kpi-label">Low Stock</div>
+            </div>
+            <div class="kpi-card white">
+                <div class="kpi-value text-red">
+                    <%= inventory.filter(i=>i.status==='Near Expiry').length %>
+                </div>
+                <div class="kpi-label">Near Expiry</div>
+            </div>
+            <div class="kpi-card white">
+                <div class="kpi-value">
+                    <%= inventory.reduce((s,i)=>s+i.qty,0) %>
+                </div>
+                <div class="kpi-label">Total Units</div>
+            </div>
+        </div>
 
-                // IMPORTANT: The path MUST match the app.use mounting point
-                form.action = '/inventory/edit/' + item.id;
+        <!-- Table Card -->
+        <div class="table-card">
+            <div class="table-header">
+                <h2>Product Inventory</h2>
+                <div class="flex gap-3">
+                    <input type="text" placeholder="Search products…"
+                        style="padding:7px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:0.8rem"
+                        id="searchBox" oninput="filterTable()" />
+                </div>
+            </div>
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Batch</th>
+                        <th>Qty</th>
+                        <th>Unit</th>
+                        <th>Expiry Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table Section (Inside your existing EJS) -->
+                    <% inventory.forEach(item=> { %>
+                    <tr>
+                        <!-- Clean display of ID -->
+                        <td><span style="font-size:0.72rem; color:var(--gray-400)">
+                                <%= item.id %>
+                            </span></td>
+                        <td><strong>
+                                <%= item.name %>
+                            </strong></td>
+                        <td>
+                            <%= item.category %>
+                        </td>
+                        <td>
+                            <%= item.batch %>
+                        </td>
+                        <td><strong>
+                                <%= item.qty %>
+                            </strong></td>
+                        <td>
+                            <%= item.unit %>
+                        </td>
+                        <td>
+                            <%= item.expiry %>
+                        </td>
+                        <td>
+                            <% if(item.status==='Good' ) { %><span class="badge badge-success">Good</span>
+                            <% } else if(item.status==='Low Stock' ) { %><span class="badge badge-warning">Low
+                                Stock</span>
+                            <% } else { %><span class="badge badge-danger">Near Expiry</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <div class="flex gap-2">
+                                <!-- EDIT BUTTON: Passes the item object to JS -->
+                                <button class="btn btn-outline btn-sm"
+                                    onclick='editItem(`<%- JSON.stringify(item) %>`)'>Edit</button>
 
-                // Fill the inputs
-                form.querySelector('[name="name"]').value = item.name;
-                form.querySelector('[name="category"]').value = item.category;
-                form.querySelector('[name="batch"]').value = item.batch;
-                form.querySelector('[name="qty"]').value = item.qty;
-                form.querySelector('[name="unit"]').value = item.unit;
-                form.querySelector('[name="expiry"]').value = item.expiry;
+                                <!-- DELETE LINK: Absolute path to /inventory/delete/ID -->
+                                <a href="/inventory/delete/<%= item.id %>" class="btn btn-outline btn-sm"
+                                    style="color:var(--red); border-color:var(--red)"
+                                    onclick="return confirm('Delete this product permanently?')">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
 
-                // Change UI to "Edit Mode"
-                title.innerHTML = "✏️ Editing Product: " + item.id;
-                submitBtn.innerHTML = "Update Product Info";
-                submitBtn.style.background = "#2563eb";
+        <!-- Form Card (Add / Edit) -->
+        <div class="form-card mt-6" id="addForm">
+            <div class="form-title">➕ Add New Product / Batch</div>
+            <form method="POST" action="/inventory/add">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" name="name" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category">
+                            <option>Medicine</option>
+                            <option>Consumable</option>
+                            <option>Equipment</option>
+                            <option>PPE</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Batch Number</label>
+                        <input type="text" name="batch" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" name="qty" min="0" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Price (₱)</label>
+                        <input type="number" name="price" step="0.01" placeholder="0.00" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Unit</label>
+                        <select name="unit">
+                            <option>pcs</option>
+                            <option>tabs</option>
+                            <option>btls</option>
+                            <option>boxes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="date" name="expiry" required />
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="submitBtn" class="btn btn-primary">Save Product</button>
+                    <a href="/inventory" class="btn btn-outline">Cancel / Reset</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-                document.getElementById('addForm').scrollIntoView({ behavior: 'smooth' });
-            }
+<script>
+    function editItem(jsonStr) {
+        const item = JSON.parse(jsonStr);
+        const form = document.querySelector('#addForm form');
+        const title = document.querySelector('.form-title');
+        const submitBtn = document.getElementById('submitBtn');
 
-            function filterTable() {
-                const q = document.getElementById('searchBox').value.toLowerCase();
-                document.querySelectorAll('#inventoryTable tbody tr').forEach(row => {
-                    row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
-                });
-            }
-        </script>
+        form.action = '/inventory/edit/' + item.id;
 
-        <%- include('../../partials/footer') %>
+        // Fill the inputs
+        form.querySelector('[name="name"]').value = item.name;
+        form.querySelector('[name="category"]').value = item.category;
+        form.querySelector('[name="batch"]').value = item.batch;
+        form.querySelector('[name="qty"]').value = item.qty;
+        form.querySelector('[name="unit"]').value = item.unit;
+        form.querySelector('[name="expiry"]').value = item.expiry;
+
+        // Change UI to "Edit Mode"
+        title.innerHTML = "✏️ Editing Product: " + item.id;
+        submitBtn.innerHTML = "Update Product Info";
+        submitBtn.style.background = "#2563eb";
+
+        document.getElementById('addForm').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+    function filterTable() {
+        const q = document.getElementById('searchBox').value.toLowerCase();
+        document.querySelectorAll('#inventoryTable tbody tr').forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
+        });
+    }
+</script>
+
+<%- include('../../partials/footer') %>

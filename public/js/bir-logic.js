@@ -1,5 +1,3 @@
-// public/js/bir-logic.js
-
 function previewOR(orNumber) {
     // Correctly search the global array
     const record = window.allSalesData.find(r => r.orNo == orNumber);

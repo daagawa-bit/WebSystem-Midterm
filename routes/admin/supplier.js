@@ -42,18 +42,17 @@ router.post('/edit/:id', (req, res) => {
     const index = suppliers.findIndex(s => s.id === req.params.id);
 
     if (index !== -1) {
-        // We update the specific supplier at this index
         suppliers[index] = { 
-            id: req.params.id,               // Keep original ID
-            name: req.body.name,             // From form
-            email: req.body.email,           // From form
-            password: req.body.password,     // From form
-            leadTime: req.body.leadTime,     // From form
-            phone: req.body.phone,           // From form
-            address: req.body.address,       // From form
-            suppliedProducts: req.body.suppliedProducts, // THE NEW FEATURE
-            rating: suppliers[index].rating, // Preserved (Not from form)
-            status: suppliers[index].status  // Preserved (Not from form)
+            id: req.params.id,              
+            name: req.body.name,           
+            email: req.body.email,          
+            password: req.body.password,     
+            leadTime: req.body.leadTime,     
+            phone: req.body.phone,          
+            address: req.body.address,     
+            suppliedProducts: req.body.suppliedProducts,
+            rating: suppliers[index].rating, 
+            status: suppliers[index].status  
         };
 
         fs.writeFileSync(supPath, JSON.stringify(suppliers, null, 2));
@@ -75,7 +74,7 @@ router.post('/po/add', (req, res) => {
     
     const qty = parseInt(req.body.items);
     const unitPrice = parseFloat(req.body.unitPrice);
-    const total = qty * unitPrice; // Logic calculation on server side
+    const total = qty * unitPrice; 
 
     const newPO = {
         id: "PO-" + Math.floor(1000 + Math.random() * 9000),
@@ -84,7 +83,7 @@ router.post('/po/add', (req, res) => {
         date: new Date().toISOString().split('T')[0],
         qty: qty,
         unitPrice: unitPrice,
-        total: total, // Final cost for the budget
+        total: total, 
         status: "Pending"
     };
 

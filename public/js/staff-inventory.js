@@ -1,6 +1,3 @@
-/**
- * Real-time filter for search and category
- */
 function staffFilter() {
     const q = document.getElementById('staffSearch').value.toLowerCase();
     const cat = document.getElementById('catFilter').value.toLowerCase();
@@ -17,14 +14,10 @@ function staffFilter() {
     });
 }
 
-/**
- * Quick Filter for Low Stock and Expiring items
- */
 function filterBy(type) {
     const cards = document.querySelectorAll('.item-card');
     const buttons = document.querySelectorAll('.quick-filter-btn');
     
-    // Toggle active state for UI
     buttons.forEach(btn => btn.classList.remove('active-filter'));
     event.currentTarget.classList.add('active-filter');
 

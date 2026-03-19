@@ -28,7 +28,6 @@ router.get('/', (req, res) => {
             title: 'Staff Terminal',
             active: 'dashboard',
             userRole: 'Staff',
-            // Passing Real Data
             stats: {
                 lowStock: lowStockCount,
                 pendingOrders: pendingFulfillment,

@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
         title: 'Staff Management',
         active: 'manage-staff',
         userRole: 'Admin',
-        users: [...admins, ...staff] // Merge for the view
+        users: [...admins, ...staff] 
     });
 });
 
@@ -48,14 +48,13 @@ router.post('/edit/:email', (req, res) => {
     let staff = getData(staffPath);
     const email = req.params.email;
 
-    // Remove user from both first (to handle role change)
     admins = admins.filter(u => u.email !== email);
     staff = staff.filter(u => u.email !== email);
 
     // Create updated user object
     const updatedUser = {
         name: req.body.name,
-        email: email, // Email stays as ID
+        email: email, 
         password: req.body.password,
         role: req.body.role,
         status: "Active",

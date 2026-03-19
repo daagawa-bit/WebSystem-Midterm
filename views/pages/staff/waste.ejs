@@ -1,35 +1,41 @@
 <%- include('../../staffpartials/head') %>
 <%- include('../../staffpartials/sidebar') %>
 
-<!-- Fixed: Main container uses flex-1 and w-full to ensure header stretches -->
 <main class="ml-60 flex-1 flex flex-col h-screen bg-slate-50 overflow-hidden">
     <%- include('../../partials/header') %>
 
     <div class="p-6 flex flex-col flex-1 overflow-hidden">
-        
+
         <!-- Smart Page Header -->
         <div class="mb-6 flex justify-between items-end px-2">
             <div>
                 <nav class="text-[9px] font-black text-slate-400 uppercase tracking-[2px] mb-1 mt-3">
                     Logistics / <span class="text-pharma-red">Waste Tracking</span>
                 </nav>
-                <h1 class="text-3xl font-black text-slate-800 tracking-tighter">Disposal <span class="text-pharma-red">Log</span></h1>
-                <p class="text-[11px] font-bold text-slate-400 tracking-widest mt-1 uppercase">Responsible Medical Supply Management</p>
+                <h1 class="text-3xl font-black text-slate-800 tracking-tighter">Disposal <span
+                        class="text-pharma-red">Log</span></h1>
+                <p class="text-[11px] font-bold text-slate-400 tracking-widest mt-1 uppercase">Responsible Medical
+                    Supply Management</p>
             </div>
             <div class="flex gap-2">
-                <span class="badge badge-success" style="font-size: 9px; padding: 6px 12px; background:#10b981; color:white; border-radius:20px; font-weight:900;">Audit Mode Active</span>
+                <span class="badge badge-success"
+                    style="font-size: 9px; padding: 6px 12px; background:#10b981; color:white; border-radius:20px; font-weight:900;">Audit
+                    Mode Active</span>
             </div>
         </div>
 
         <!-- MAIN GRID -->
         <div class="grid grid-cols-12 gap-6 flex-1 min-h-0">
-            
+
             <!-- LEFT: INVENTORY SELECTION (Scrollable) -->
-            <div class="col-span-8 flex flex-col bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden h-full">
+            <div
+                class="col-span-8 flex flex-col bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden h-full">
                 <div class="p-5 border-b border-slate-50 flex justify-between items-center bg-white">
-                    <h3 class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Available Stock for Logging</h3>
+                    <h3 class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Available Stock for
+                        Logging</h3>
                     <div class="relative w-64">
-                        <input type="text" id="wasteSearch" onkeyup="filterWasteTable()" placeholder="Search registry..." 
+                        <input type="text" id="wasteSearch" onkeyup="filterWasteTable()"
+                            placeholder="Search registry..."
                             class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold outline-none focus:ring-2 focus:ring-red-500/10 transition-all">
                     </div>
                 </div>
@@ -46,26 +52,28 @@
                         </thead>
                         <tbody class="divide-y divide-slate-50">
                             <% inventory.forEach(p => { %>
-                                <tr class="hover:bg-pharma-red-pale transition-colors group">
-                                    <td class="p-5">
-                                        <div class="font-bold text-slate-800 text-xs"><%= p.name %></div>
-                                        <div class="text-[9px] text-slate-400 font-mono tracking-tighter">#<%= p.id %></div>
-                                    </td>
-                                    <td class="p-5 text-[10px] font-bold text-slate-500"><%= p.batch %></td>
-                                    <td class="p-5 font-black text-slate-800 text-xs"><%= p.qty %> <span class="text-[9px] text-slate-400 uppercase"><%= p.unit %></span></td>
-                                    <td class="p-5">
-                                        <% if(p.status === 'Near Expiry' || p.status === 'Low Stock') { %>
-                                            <span class="text-[9px] font-black text-red-600 bg-red-100 px-2 py-0.5 rounded uppercase animate-pulse"><%= p.status %></span>
-                                        <% } else { %>
-                                            <span class="text-[9px] font-black text-slate-400 uppercase"><%= p.expiry %></span>
-                                        <% } %>
-                                    </td>
-                                    <td class="p-5 text-right">
-                                        <!-- CHANGED: bg-black to bg-pharma-red -->
-                                        <button onclick="selectForWaste('<%= p.id %>', '<%= p.name %>', <%= p.qty %>)" 
-                                            class="px-5 py-2 bg-red-600 text-white font-black text-[9px] uppercase rounded-lg shadow-md hover:bg-pharma-red-dark transition-all">Select</button>
-                                    </td>
-                                </tr>
+                            <tr class="hover:bg-pharma-red-pale transition-colors group">
+                                <td class="p-5">
+                                    <div class="font-bold text-slate-800 text-xs"><%= p.name %></div>
+                                    <div class="text-[9px] text-slate-400 font-mono tracking-tighter">#<%= p.id %></div>
+                                </td>
+                                <td class="p-5 text-[10px] font-bold text-slate-500"><%= p.batch %></td>
+                                <td class="p-5 font-black text-slate-800 text-xs"><%= p.qty %> <span
+                                        class="text-[9px] text-slate-400 uppercase"><%= p.unit %></span></td>
+                                <td class="p-5">
+                                    <% if(p.status === 'Near Expiry' || p.status === 'Low Stock') { %>
+                                    <span
+                                        class="text-[9px] font-black text-red-600 bg-red-100 px-2 py-0.5 rounded uppercase animate-pulse"><%= p.status %></span>
+                                    <% } else { %>
+                                    <span class="text-[9px] font-black text-slate-400 uppercase"><%= p.expiry %></span>
+                                    <% } %>
+                                </td>
+                                <td class="p-5 text-right">
+                                    <!-- CHANGED: bg-black to bg-pharma-red -->
+                                    <button onclick="selectForWaste('<%= p.id %>', '<%= p.name %>', <%= p.qty %>)"
+                                        class="px-5 py-2 bg-red-600 text-white font-black text-[9px] uppercase rounded-lg shadow-md hover:bg-pharma-red-dark transition-all">Select</button>
+                                </td>
+                            </tr>
                             <% }) %>
                         </tbody>
                     </table>
@@ -79,21 +87,25 @@
                     <h3 class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-6">Entry Panel</h3>
                     <form action="/staff/waste/record" method="POST" class="space-y-5">
                         <input type="hidden" name="productId" id="input-id">
-                        
+
                         <div class="p-5 bg-red-50/50 rounded-2xl border border-red-100/50">
                             <p class="text-[8px] font-black text-pharma-red uppercase tracking-widest">Target Supply</p>
-                            <p id="display-name" class="text-sm font-black text-slate-800 mt-1 truncate italic">Please select item →</p>
+                            <p id="display-name" class="text-sm font-black text-slate-800 mt-1 truncate italic">Please
+                                select item →</p>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Log Quantity</label>
-                                <input type="number" name="qty" id="input-qty" required min="1" 
+                                <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Log
+                                    Quantity</label>
+                                <input type="number" name="qty" id="input-qty" required min="1"
                                     class="w-full mt-1 p-4 bg-slate-50 border-0 rounded-2xl outline-none text-xs font-black focus:ring-2 focus:ring-red-500/10">
                             </div>
                             <div>
-                                <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Reason</label>
-                                <select name="reason" class="w-full mt-1 p-4 bg-slate-50 border-0 rounded-2xl outline-none text-[10px] font-black uppercase text-slate-500">
+                                <label
+                                    class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Reason</label>
+                                <select name="reason"
+                                    class="w-full mt-1 p-4 bg-slate-50 border-0 rounded-2xl outline-none text-[10px] font-black uppercase text-slate-500">
                                     <option>Expired</option>
                                     <option>Damaged</option>
                                     <option>Recall</option>
@@ -102,7 +114,8 @@
                         </div>
 
                         <!-- CHANGED: bg-black to bg-pharma-red -->
-                        <button type="submit" class="w-full bg-red-600 text-white py-5 rounded-2xl font-black text-[10px] uppercase tracking-[3px] shadow-xl shadow-pharma-red/30 hover:bg-pharma-red-dark transition-all hover:scale-[1.02] active:scale-95">
+                        <button type="submit"
+                            class="w-full bg-red-600 text-white py-5 rounded-2xl font-black text-[10px] uppercase tracking-[3px] shadow-xl shadow-pharma-red/30 hover:bg-pharma-red-dark transition-all hover:scale-[1.02] active:scale-95">
                             Submit Log Entry
                         </button>
                     </form>
@@ -111,24 +124,26 @@
                 <!-- RECENT DISPOSAL FEED -->
                 <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white flex-shrink-0">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-[10px] font-white uppercase text-white/60 tracking-widest italic">History Buffer</h3>
+                        <h3 class="text-[10px] font-white uppercase text-white/60 tracking-widest italic">History Buffer
+                        </h3>
                         <span class="text-[8px] font-black bg-white/10 px-2 py-1 rounded uppercase">Real-time</span>
                     </div>
                     <div class="space-y-5">
                         <% logs.slice(0,8).forEach(l => { %>
-                            <div class="pb-4 border-b border-white/5 last:border-0">
-                                <div class="flex justify-between items-start">
-                                    <strong class="text-xs text-white/90 font-black"><%= l.productName %></strong>
-                                    <span class="text-pharma-red font-black text-[10px]">-<%= l.qty %></span>
-                                </div>
-                                <div class="flex justify-between mt-2">
-                                    <span class="text-[8px] text-white/40 uppercase font-bold tracking-widest"><%= l.reason %></span>
-                                    <span class="text-[8px] text-white/20 uppercase font-bold"><%= l.date %></span>
-                                </div>
+                        <div class="pb-4 border-b border-white/5 last:border-0">
+                            <div class="flex justify-between items-start">
+                                <strong class="text-xs text-white/90 font-black"><%= l.productName %></strong>
+                                <span class="text-pharma-red font-black text-[10px]">-<%= l.qty %></span>
                             </div>
+                            <div class="flex justify-between mt-2">
+                                <span
+                                    class="text-[8px] text-white/40 uppercase font-bold tracking-widest"><%= l.reason %></span>
+                                <span class="text-[8px] text-white/20 uppercase font-bold"><%= l.date %></span>
+                            </div>
+                        </div>
                         <% }) %>
                         <% if(logs.length === 0) { %>
-                            <p class="text-center text-[10px] text-white/20 italic">No records in current buffer</p>
+                        <p class="text-center text-[10px] text-white/20 italic">No records in current buffer</p>
                         <% } %>
                     </div>
                 </div>

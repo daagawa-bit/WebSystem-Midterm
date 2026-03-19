@@ -1,4 +1,3 @@
-// public/js/staff.js
 let cart = [];
 let selectedMethod = 'Cash';
 let grandTotalValue = 0;

@@ -75,18 +75,6 @@
       "delivery": "Pending",
       "status": "Active",
       "batchNo": "BN-7830"
-    },
-    {
-      "id": "SO-101",
-      "client": "LGU Iriga City",
-      "total": 45000,
-      "status": "Active"
-    },
-    {
-      "id": "SO-102",
-      "client": "RHU Baao",
-      "total": 12500,
-      "status": "Completed"
     }
   ]
 }
