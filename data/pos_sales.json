@@ -1,5 +1,58 @@
 [
   {
+    "orNumber": "OR-347711",
+    "date": "3/19/2026",
+    "time": "08:33 AM",
+    "itemsList": [
+      {
+        "id": "SKU-9936",
+        "name": "Paracetamol",
+        "price": 40,
+        "qty": 1
+      },
+      {
+        "id": "PROD-102",
+        "name": "Surgical Mask",
+        "price": 50,
+        "qty": 1
+      },
+      {
+        "id": "PROD-101",
+        "name": "Nebulizer Kit",
+        "price": 4500,
+        "qty": 1
+      }
+    ],
+    "subtotal": 4590,
+    "vat": 550.8,
+    "total": 5140.8,
+    "method": "Cash",
+    "cashReceived": 10000,
+    "change": 4859.2
+  },
+  {
+    "orNumber": "OR-974329",
+    "date": "3/19/2026",
+    "time": "08:23 AM",
+    "items": 1,
+    "subtotal": 40,
+    "vat": 4.8,
+    "total": 44.8,
+    "method": "Cash",
+    "change": 5.200000000000003
+  },
+  {
+    "orNumber": "OR-414257",
+    "date": "3/19/2026",
+    "time": "07:59 AM",
+    "items": 1,
+    "subtotal": 80,
+    "vat": 9.6,
+    "total": 89.6,
+    "method": "Cash",
+    "change": 10.400000000000006
+  },
+  {
     "id": "OR-580629",
     "date": "3/18/2026",
     "time": "9:33:00 PM",

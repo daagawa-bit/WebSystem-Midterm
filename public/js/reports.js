@@ -1,21 +1,35 @@
 // public/js/reports.js
 function exportReport(type) {
     const btn = event.currentTarget;
-    btn.innerText = "Generating...";
-    btn.disabled = true;
+    const originalText = btn.innerHTML;
+    
+    if (type === 'pdf') {
+        btn.innerText = "Generating Document...";
+        btn.disabled = true;
 
-    setTimeout(() => {
-        if (type === 'pdf') {
-            window.print();
-        } else {
-            alert("BIR 2550M Monthly VAT Return has been generated and ready for submission.");
-        }
-        btn.innerText = type === 'pdf' ? "📥 Export PDF" : "📊 Generate BIR 2550M";
-        btn.disabled = false;
-    }, 1500);
+        // TARGET THE HIDDEN PROFESSIONAL TEMPLATE
+        const element = document.getElementById('pro-report-template');
+        
+        // Temporarily make it visible for the capture
+        element.parentElement.style.display = 'block';
+
+        const opt = {
+            margin:       [10, 10, 10, 10], // top, left, buttom, right
+            filename:     'PharMediSync_Official_Report.pdf',
+            image:        { type: 'jpeg', quality: 1 },
+            html2canvas:  { scale: 2, logging: false, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Run download sequence
+        html2pdf().set(opt).from(element).save().then(() => {
+            // Re-hide it
+            element.parentElement.style.display = 'none';
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+
+    } else {
+        alert("BIR Excel Template generation is processing...");
+    }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("Strategic Intelligence System: Online");
-    // You could add logic here to animate bars on load
-});

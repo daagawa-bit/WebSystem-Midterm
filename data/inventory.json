@@ -2,9 +2,9 @@
   {
     "id": "PROD-101",
     "name": "Nebulizer Kit",
-    "category": "Medicine",
+    "category": "Equipment",
     "batch": "B-2025-01",
-    "qty": 44,
+    "qty": 43,
     "price": 4500,
     "unit": "pcs",
     "expiry": "2026-12-30",
@@ -15,21 +15,120 @@
     "name": "Surgical Mask",
     "category": "PPE",
     "batch": "B-2025-02",
-    "qty": 1,
+    "qty": 0,
     "price": 50,
     "unit": "boxes",
     "expiry": "2026-08-20",
-    "status": "Low Stock"
+    "status": "Out of Stock"
   },
   {
     "id": "SKU-9936",
-    "name": "Paracetamol",
+    "name": "Paracetamol 500mg",
     "category": "Medicine",
     "batch": "B-2026-1",
-    "qty": 5,
+    "qty": 1,
     "price": 40,
-    "unit": "pcs",
+    "unit": "tabs",
     "expiry": "2026-03-31",
     "status": "Low Stock"
+  },
+  {
+    "id": "SKU-8743",
+    "name": "Digital BP Monitor",
+    "category": "Diagnostic",
+    "batch": "B-2025-11",
+    "qty": 8,
+    "price": 1850,
+    "unit": "pcs",
+    "expiry": "N/A",
+    "status": "Low Stock"
+  },
+  {
+    "id": "SKU-4412",
+    "name": "Pulse Oximeter",
+    "category": "Diagnostic",
+    "batch": "B-2025-09",
+    "qty": 25,
+    "price": 850,
+    "unit": "pcs",
+    "expiry": "2027-01-15",
+    "status": "Good"
+  },
+  {
+    "id": "SKU-1120",
+    "name": "Isopropyl Alcohol 70%",
+    "category": "Consumable",
+    "batch": "B-2026-05",
+    "qty": 120,
+    "price": 110,
+    "unit": "btls",
+    "expiry": "2026-05-20",
+    "status": "Good"
+  },
+  {
+    "id": "SKU-5501",
+    "name": "Latex Gloves (Box of 100)",
+    "category": "PPE",
+    "batch": "B-2025-04",
+    "qty": 5,
+    "price": 320,
+    "unit": "boxes",
+    "expiry": "2025-11-12",
+    "status": "Low Stock"
+  },
+  {
+    "id": "SKU-6672",
+    "name": "Sterile Syringe 5ml",
+    "category": "Consumable",
+    "batch": "B-2026-10",
+    "qty": 500,
+    "price": 15,
+    "unit": "pcs",
+    "expiry": "2028-06-30",
+    "status": "Good"
+  },
+  {
+    "id": "SKU-2290",
+    "name": "Glucometer Test Strips",
+    "category": "Diagnostic",
+    "batch": "B-2025-01",
+    "qty": 15,
+    "price": 1100,
+    "unit": "boxes",
+    "expiry": "2025-05-22",
+    "status": "Good"
+  },
+  {
+    "id": "SKU-3381",
+    "name": "Oxygen Canister 10L",
+    "category": "Equipment",
+    "batch": "B-2024-12",
+    "qty": 12,
+    "price": 3500,
+    "unit": "pcs",
+    "expiry": "N/A",
+    "status": "Good"
+  },
+  {
+    "id": "SKU-7714",
+    "name": "Amoxicillin 500mg",
+    "category": "Medicine",
+    "batch": "B-2026-08",
+    "qty": 200,
+    "price": 12,
+    "unit": "tabs",
+    "expiry": "2026-09-15",
+    "status": "Good"
+  },
+  {
+    "id": "SKU-0092",
+    "name": "Elastic Bandage 4x5",
+    "category": "Consumable",
+    "batch": "B-2025-06",
+    "qty": 45,
+    "price": 85,
+    "unit": "rolls",
+    "expiry": "2027-12-01",
+    "status": "Good"
   }
 ]

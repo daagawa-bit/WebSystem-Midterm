@@ -6,7 +6,6 @@ const path = require('path');
 const invPath = path.join(__dirname, '../../data/inventory.json');
 const salesPath = path.join(__dirname, '../../data/pos_sales.json');
 
-// Helper to read JSON safely
 const readDB = (p) => fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : [];
 
 router.get('/', (req, res) => {
@@ -17,7 +16,7 @@ router.get('/', (req, res) => {
         active: 'pos',
         userRole: 'Admin',
         products: inventory,
-        transactions: history.slice(0, 5) // Show last 5 sales
+        transactions: history.slice(0, 10) 
     });
 });
 
@@ -26,7 +25,6 @@ router.post('/checkout', (req, res) => {
     let inventory = readDB(invPath);
     let sales = readDB(salesPath);
 
-    // 1. Deduct Inventory & Update Status
     cart.forEach(item => {
         const idx = inventory.findIndex(p => p.id === item.id);
         if (idx !== -1) {
@@ -36,26 +34,24 @@ router.post('/checkout', (req, res) => {
         }
     });
 
-    // 2. Create Official Receipt (BIR Compliant Format)
     const newSale = {
         orNumber: "OR-" + Math.floor(100000 + Math.random() * 900000),
         date: new Date().toLocaleDateString(),
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        items: cart.length,
+        itemsList: cart, // Added for receipt printing
         subtotal: subtotal,
         vat: vat,
         total: total,
         method: method,
+        cashReceived: cashReceived,
         change: parseFloat(cashReceived) - total
     };
 
-    sales.unshift(newSale); // Add to top of history
-
-    // 3. Persist to Database
+    sales.unshift(newSale);
     fs.writeFileSync(invPath, JSON.stringify(inventory, null, 2));
     fs.writeFileSync(salesPath, JSON.stringify(sales, null, 2));
 
-    res.json({ success: true, or: newSale.orNumber });
+    res.json({ success: true, or: newSale.orNumber, receipt: newSale });
 });
 
 module.exports = router;

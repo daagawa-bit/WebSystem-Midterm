@@ -40,8 +40,8 @@
     },
     {
       "id": "CHAT-102",
-      "client": "Makati Medical",
-      "email": "admin@makatimed.ph",
+      "client": "Iriga Medical",
+      "email": "admin@irigamed.ph",
       "type": "Hospital",
       "status": "Bot Handling",
       "sentiment": "Normal",

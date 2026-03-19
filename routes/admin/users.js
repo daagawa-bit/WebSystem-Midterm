@@ -3,63 +3,84 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-const usersPath = path.join(__dirname, '../../data/users.json');
+const adminPath = path.join(__dirname, '../../data/admins.json');
+const staffPath = path.join(__dirname, '../../data/staff_members.json');
 
-// Helper to read JSON
-const readUsers = () => {
-    if (!fs.existsSync(usersPath)) return [];
-    return JSON.parse(fs.readFileSync(usersPath, 'utf8'));
-};
+// Helper to read JSON safely
+const getData = (p) => fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : [];
 
-// 1. READ - List all users
+// 1. READ - Combines both files for the table
 router.get('/', (req, res) => {
-    const users = readUsers(); // Reads your users.json
+    const admins = getData(adminPath);
+    const staff = getData(staffPath);
+    
     res.render('pages/admin/users', {
         title: 'Staff Management',
         active: 'manage-staff',
         userRole: 'Admin',
-        users: users
+        users: [...admins, ...staff] // Merge for the view
     });
 });
 
-// 2. CREATE - Add new staff
+// 2. CREATE - Saves to the correct file based on role
 router.post('/add', (req, res) => {
-    const users = readUsers();
+    const role = req.body.role;
+    const targetPath = (role === 'Admin') ? adminPath : staffPath;
+    let users = getData(targetPath);
+
     const newUser = {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        role: req.body.role,
+        role: role,
         status: "Active",
         lastLogin: "Never"
     };
+
     users.push(newUser);
-    fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+    fs.writeFileSync(targetPath, JSON.stringify(users, null, 2));
     res.redirect('/users');
 });
 
-// 3. UPDATE - Edit existing staff
+// 3. UPDATE - Handles editing and potential role-switching
 router.post('/edit/:email', (req, res) => {
-    let users = readUsers();
-    const index = users.findIndex(u => u.email === req.params.email);
-    if (index !== -1) {
-        users[index] = {
-            ...users[index],
-            name: req.body.name,
-            password: req.body.password,
-            role: req.body.role
-            // Email is the ID, so we don't change it
-        };
-        fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+    let admins = getData(adminPath);
+    let staff = getData(staffPath);
+    const email = req.params.email;
+
+    // Remove user from both first (to handle role change)
+    admins = admins.filter(u => u.email !== email);
+    staff = staff.filter(u => u.email !== email);
+
+    // Create updated user object
+    const updatedUser = {
+        name: req.body.name,
+        email: email, // Email stays as ID
+        password: req.body.password,
+        role: req.body.role,
+        status: "Active",
+        lastLogin: "Updated"
+    };
+
+    // Save to the NEWLY selected role file
+    if (req.body.role === 'Admin') {
+        admins.push(updatedUser);
+    } else {
+        staff.push(updatedUser);
     }
+
+    fs.writeFileSync(adminPath, JSON.stringify(admins, null, 2));
+    fs.writeFileSync(staffPath, JSON.stringify(staff, null, 2));
     res.redirect('/users');
 });
 
-// 4. DELETE - Remove staff
+// 4. DELETE - Checks both files
 router.get('/delete/:email', (req, res) => {
-    let users = readUsers();
-    users = users.filter(u => u.email !== req.params.email);
-    fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
+    let admins = getData(adminPath).filter(u => u.email !== req.params.email);
+    let staff = getData(staffPath).filter(u => u.email !== req.params.email);
+
+    fs.writeFileSync(adminPath, JSON.stringify(admins, null, 2));
+    fs.writeFileSync(staffPath, JSON.stringify(staff, null, 2));
     res.redirect('/users');
 });
 

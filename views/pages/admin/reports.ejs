@@ -1,23 +1,26 @@
 <%- include('../../partials/head') %>
 <%- include('../../partials/sidebar') %>
 
+<!-- 1. ADDED PDF LIBRARY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <div class="main-area bg-[#F8FAFC]">
 <%- include('../../partials/header') %>
 
-<div class="content">
-    <!-- Header Section -->
+<!-- 2. ADDED ID FOR PDF TARGETING -->
+<div class="content" id="report-container">
     <div class="page-header">
         <div>
             <h1 class="text-3xl font-black text-slate-800 italic">Strategic <span class="text-pharma-red">Intelligence</span></h1>
             <p class="kpi-label-sm">Decision Support System & BIR Reporting</p>
         </div>
         <div class="report-actions">
+            <!-- 3. UPDATED BUTTON ACTION -->
             <button class="btn btn-outline" onclick="exportReport('pdf')">📥 Export PDF</button>
-            <button class="btn btn-primary" onclick="exportReport('bir')">📊 Generate BIR 2550M</button>
         </div>
     </div>
 
-    <!-- KPI ROW -->
+    <!-- KPI ROW (Keep as is) -->
     <div class="intel-grid">
         <div class="intel-card">
             <p class="kpi-label-sm">Gross Revenue</p>
@@ -58,14 +61,15 @@
                         <span class="text-xs font-black text-pharma-red">Order +<%= item.suggested %> units</span>
                     </div>
                     <div class="progress-track">
-                        <div class="progress-fill" style="width: '<%= 100 - (item.suggested * 1.5) %>%'"></div>
+                        <!-- FIXED: Removed quotes around the percentage -->
+                        <div class="progress-fill" style="width: <%= 100 - (item.suggested * 1.5) %>%"></div>
                     </div>
                 </div>
                 <% }) %>
             </div>
         </div>
 
-        <!-- SUPPLIER SCORECARD -->
+        <!-- SUPPLIER SCORECARD (Keep as is) -->
         <div class="dark-panel shadow-2xl" style="margin-bottom: 20px;">
             <h3 class="kpi-label-sm text-white/40 mb-6">Supplier Scorecard</h3>
             <div class="space-y-2">
@@ -93,10 +97,11 @@
                    const count = inventory.filter(p => p.category === cat).length;
                 %>
                 <div class="chart-bar-wrapper">
-                    <div class="chart-bar" style="height: '<%= count * 40 %>'px">
+                    <!-- FIXED: Removed quotes around the calculation -->
+                    <div class="chart-bar" style="height: <%= count * 40 %>px">
                         <span class="chart-val"><%= count %></span>
                     </div>
-                    <span class="chart-label"><%= cat %></span>
+                    <span class="chart-label text-center"><%= cat %></span>
                 </div>
                 <% }) %>
             </div>
@@ -104,6 +109,89 @@
     </div>
 </div>
 </div>
+
+<!-- ... rest of your existing EJS code ... -->
+
+<!-- HIDDEN PROFESSIONAL DOCUMENT TEMPLATE -->
+<div style="display: none;">
+    <div id="pro-report-template" style="padding: 40px; font-family: 'Times New Roman', Times, serif; color: #000; background: #fff;">
+        
+        <!-- Header -->
+        <div style="text-align: center; border-bottom: 2px solid #000; pb-4; margin-bottom: 30px;">
+            <h1 style="font-size: 24px; margin: 0; text-transform: uppercase;">Robin Rose Trading</h1>
+            <p style="font-size: 12px; margin: 5px 0;">Integrated Operations & Distribution System</p>
+            <p style="font-size: 10px; margin: 0;">TIN: 123-456-789-000 | Contact: (02) 8888-1234</p>
+            <h2 style="font-size: 18px; margin-top: 20px; text-decoration: underline;">OPERATIONAL INTELLIGENCE REPORT</h2>
+            <p style="text-align: right; font-size: 10px;">Generated: <%= new Date().toLocaleString() %></p>
+        </div>
+
+        <!-- Section 1: Financial Summary -->
+        <h3 style="font-size: 14px; border-bottom: 1px solid #eee; pb-2;">I. FINANCIAL PERFORMANCE SUMMARY</h3>
+        <table style="width: 100%; font-size: 12px; margin-bottom: 20px; border-collapse: collapse;">
+            <tr>
+                <td style="padding: 5px; font-weight: bold; width: 40%;">Gross Revenue (Current Period):</td>
+                <td style="padding: 5px;">₱<%= metrics.gross.toLocaleString() %></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px; font-weight: bold;">Output VAT (12%):</td>
+                <td style="padding: 5px;">₱<%= metrics.vat.toLocaleString() %></td>
+            </tr>
+            <tr>
+                <td style="padding: 5px; font-weight: bold;">Net Operational Value:</td>
+                <td style="padding: 5px;">₱<%= metrics.net.toLocaleString() %></td>
+            </tr>
+        </table>
+
+        <!-- Section 2: Reorder Forecast -->
+        <h3 style="font-size: 14px; border-bottom: 1px solid #eee; pb-2;">II. PREDICTIVE REORDER FORECAST</h3>
+        <table style="width: 100%; font-size: 11px; margin-bottom: 20px; border-collapse: collapse;" border="1">
+            <thead style="background: #ef3535;">
+                <tr>
+                    <th style="padding: 8px;">Product Description</th>
+                    <th style="padding: 8px;">Recommendation</th>
+                    <th style="padding: 8px;">Priority Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% forecast.forEach(item => { %>
+                <tr>
+                    <td style="padding: 8px;"><%= item.name %></td>
+                    <td style="padding: 8px;">Restock +<%= item.suggested %> units</td>
+                    <td style="padding: 8px;"><%= item.urgency.toUpperCase() %></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <!-- Section 3: Inventory Distribution -->
+        <h3 style="font-size: 14px; border-bottom: 1px solid #eee; pb-2;">III. STOCK DISTRIBUTION BY CATEGORY</h3>
+        <table style="width: 100%; font-size: 11px; margin-bottom: 20px; border-collapse: collapse;" border="1">
+            <thead>
+                <tr style="background: #ef3535;">
+                    <th style="padding: 8px;">Medicine</th>
+                    <th style="padding: 8px;">PPE</th>
+                    <th style="padding: 8px;">Diagnostic</th>
+                    <th style="padding: 8px;">Equipment</th>
+                </tr>
+            </thead>
+            <tr style="text-align: center;">
+                <td style="padding: 8px;"><%= inventory.filter(p => p.category === 'Medicine').length %></td>
+                <td style="padding: 8px;"><%= inventory.filter(p => p.category === 'PPE').length %></td>
+                <td style="padding: 8px;"><%= inventory.filter(p => p.category === 'Diagnostic').length %></td>
+                <td style="padding: 8px;"><%= inventory.filter(p => p.category === 'Equipment').length %></td>
+            </tr>
+        </table>
+
+        <!-- Footer -->
+        <div style="margin-top: 50px; font-size: 10px;">
+            <p>Certified Correct by:</p>
+            <br><br>
+            <p style="border-top: 1px solid #000; width: 200px; text-align: center;">Authorized Administrator</p>
+            <p style="font-style: italic; color: #777;">This is a computer-generated document from PharMediSync ERP.</p>
+        </div>
+    </div>
+</div>
+
 
 <script src="/js/reports.js"></script>
 <%- include('../../partials/footer') %>
