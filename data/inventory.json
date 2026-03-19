@@ -4,7 +4,7 @@
     "name": "Nebulizer Kit",
     "category": "Medicine",
     "batch": "B-2025-01",
-    "qty": 45,
+    "qty": 44,
     "price": 4500,
     "unit": "pcs",
     "expiry": "2026-12-30",
@@ -15,7 +15,7 @@
     "name": "Surgical Mask",
     "category": "PPE",
     "batch": "B-2025-02",
-    "qty": 3,
+    "qty": 1,
     "price": 50,
     "unit": "boxes",
     "expiry": "2026-08-20",
@@ -26,21 +26,10 @@
     "name": "Paracetamol",
     "category": "Medicine",
     "batch": "B-2026-1",
-    "qty": 6,
+    "qty": 5,
     "price": 40,
     "unit": "pcs",
     "expiry": "2026-03-31",
-    "status": "Low Stock"
-  },
-  {
-    "id": "SKU-8743",
-    "name": "dan",
-    "category": "Equipment",
-    "batch": "ssssaa",
-    "qty": 0,
-    "price": 400,
-    "unit": "boxes",
-    "expiry": "2026-03-17",
     "status": "Low Stock"
   }
 ]

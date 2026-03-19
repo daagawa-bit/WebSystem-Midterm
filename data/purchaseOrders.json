@@ -5,7 +5,7 @@
     "date": "2024-03-17",
     "items": 5,
     "total": 25000,
-    "status": "Pending"
+    "status": "Delivered"
   },
   {
     "id": "PO-7810",
@@ -22,5 +22,21 @@
     "items": 2,
     "total": 100,
     "status": "Delivered"
+  },
+  {
+    "id": "PO-3777",
+    "supplier": "dani",
+    "date": "2026-03-19",
+    "items": "10",
+    "total": 10000,
+    "status": "Delivered"
+  },
+  {
+    "id": "PO-3178",
+    "supplier": "MedPharma Distribution",
+    "date": "2026-03-19",
+    "items": "10",
+    "total": 10000,
+    "status": "Pending"
   }
 ]

@@ -25,6 +25,7 @@ router.get('/', (req, res) => {
 router.post('/add', (req, res) => {
     const suppliers = readData(supPath);
     const newSup = {
+        ...req.body,
         id: "SUP-" + Math.floor(1000 + Math.random() * 9000),
         ...req.body,
         rating: 5.0,
@@ -39,8 +40,22 @@ router.post('/add', (req, res) => {
 router.post('/edit/:id', (req, res) => {
     let suppliers = readData(supPath);
     const index = suppliers.findIndex(s => s.id === req.params.id);
+
     if (index !== -1) {
-        suppliers[index] = { id: req.params.id, ...req.body, rating: suppliers[index].rating, status: suppliers[index].status };
+        // We update the specific supplier at this index
+        suppliers[index] = { 
+            id: req.params.id,               // Keep original ID
+            name: req.body.name,             // From form
+            email: req.body.email,           // From form
+            password: req.body.password,     // From form
+            leadTime: req.body.leadTime,     // From form
+            phone: req.body.phone,           // From form
+            address: req.body.address,       // From form
+            suppliedProducts: req.body.suppliedProducts, // THE NEW FEATURE
+            rating: suppliers[index].rating, // Preserved (Not from form)
+            status: suppliers[index].status  // Preserved (Not from form)
+        };
+
         fs.writeFileSync(supPath, JSON.stringify(suppliers, null, 2));
     }
     res.redirect('/supplier');
@@ -57,14 +72,22 @@ router.get('/delete/:id', (req, res) => {
 // 5. CREATE Purchase Order
 router.post('/po/add', (req, res) => {
     const pos = readData(poPath);
+    
+    const qty = parseInt(req.body.items);
+    const unitPrice = parseFloat(req.body.unitPrice);
+    const total = qty * unitPrice; // Logic calculation on server side
+
     const newPO = {
         id: "PO-" + Math.floor(1000 + Math.random() * 9000),
         supplier: req.body.supplier,
+        product: req.body.product,
         date: new Date().toISOString().split('T')[0],
-        items: req.body.items,
-        total: parseFloat(req.body.total),
+        qty: qty,
+        unitPrice: unitPrice,
+        total: total, // Final cost for the budget
         status: "Pending"
     };
+
     pos.push(newPO);
     fs.writeFileSync(poPath, JSON.stringify(pos, null, 2));
     res.redirect('/supplier');

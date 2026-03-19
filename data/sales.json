@@ -1,6 +1,19 @@
 {
   "salesOrders": [
     {
+      "id": "SO-8572",
+      "client": "LGU Iriga City",
+      "date": "2026-03-19",
+      "total": 1000,
+      "subtotal": 892.86,
+      "vat": 107.14,
+      "payment": "Unpaid",
+      "method": "Cash",
+      "delivery": "Pending",
+      "status": "Active",
+      "batchNo": "BN-7219"
+    },
+    {
       "id": "SO-2511",
       "client": "haha",
       "date": "2026-03-18",

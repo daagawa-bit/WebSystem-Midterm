@@ -5,7 +5,7 @@
       "client": "St. Luke's Medical",
       "email": "procurement@stlukes.ph",
       "type": "Hospital",
-      "status": "Waiting for Staff",
+      "status": "Staff Handling",
       "sentiment": "Urgent",
       "messages": [
         {
@@ -25,6 +25,16 @@
           "text": "We need an answer soon as we are finalizing our budget today.",
           "time": "10:50 AM",
           "type": "public"
+        },
+        {
+          "sender": "Admin",
+          "text": "Stock is Available",
+          "time": "09:25 PM"
+        },
+        {
+          "sender": "Admin",
+          "text": "Discount Approved",
+          "time": "09:41 PM"
         }
       ]
     },

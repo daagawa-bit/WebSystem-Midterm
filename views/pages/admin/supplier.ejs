@@ -1,220 +1,289 @@
 <%- include('../../partials/head') %>
-    <%- include('../../partials/sidebar') %>
+<%- include('../../partials/sidebar') %>
 
-        <div class="main-area">
-            <%- include('../../partials/header') %>
-                <div class="content">
+<div class="main-area">
+    <%- include('../../partials/header') %>
+    <div class="content">
 
-                    <div class="page-header">
-                        <div>
-                            <h1>Supplier Management</h1>
-                            <p>Manage partnerships and procurement orders.</p>
-                        </div>
-                        <button class="btn btn-primary" onclick="resetForm()">＋ Register Supplier</button>
-                    </div>
-
-                    <!-- Summary -->
-                    <div class="kpi-row"
-                        style="display: grid; grid-template-columns:repeat(3,1fr); gap: 20px; margin-bottom:24px;">
-                        <div class="kpi-card white">
-                            <div class="kpi-value">
-                                <%= suppliers.length %>
-                            </div>
-                            <div class="kpi-label">Active Partners</div>
-                        </div>
-                        <div class="kpi-card white">
-                            <div class="kpi-value text-red">
-                                <%= purchaseOrders.filter(p=>p.status==='Pending').length %>
-                            </div>
-                            <div class="kpi-label">Pending POs</div>
-                        </div>
-                        <div class="kpi-card white">
-                            <div class="kpi-value">₱<%= purchaseOrders.reduce((s,p)=>s+p.total, 0).toLocaleString() %>
-                            </div>
-                            <div class="kpi-label">Total Volume</div>
-                        </div>
-                    </div>
-
-                    <!-- Suppliers Table -->
-                    <div class="table-card">
-                        <div class="table-header">
-                            <h2>Supply Chain Partners</h2>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Supplier Name</th>
-                                    <th>Lead Time</th>
-                                    <th>Phone</th>
-                                    <th>Rating</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% suppliers.forEach(s=> { %>
-                                    <tr>
-                                        <td><span style="font-size:0.72rem;color:var(--gray-400)">
-                                                <%= s.id %>
-                                            </span></td>
-                                        <td><strong>
-                                                <%= s.name %>
-                                            </strong><br /><span style="font-size:0.65rem;">
-                                                <%= s.email %>
-                                            </span></td>
-                                        <td>
-                                            <%= s.leadTime %>
-                                        </td>
-                                        <td>
-                                            <%= s.phone %>
-                                        </td>
-                                        <td><span style="color:var(--red);font-weight:700">★ <%= s.rating %></span></td>
-                                        <td><span class="badge badge-success">
-                                                <%= s.status %>
-                                            </span></td>
-                                        <td>
-                                            <div class="flex gap-2">
-                                                <button class="btn btn-outline btn-sm"
-                                                    onclick='editSupplier(`<%- JSON.stringify(s) %>`)'>Edit</button>
-                                                <!-- FIXED DELETE LINK WITH LEADING SLASH -->
-                                                <a href="/supplier/delete/<%= s.id %>" class="btn btn-outline btn-sm"
-                                                    style="color:var(--red); border-color:var(--red)"
-                                                    onclick="return confirm('Delete this supplier?')">Delete</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Purchase Orders -->
-                    <div class="table-card mt-6">
-                        <div class="table-header">
-                            <h2>Recent Purchase Orders</h2>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>PO No.</th>
-                                    <th>Supplier</th>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% purchaseOrders.forEach(po=> { %>
-                                    <tr>
-                                        <td><strong>
-                                                <%= po.id %>
-                                            </strong></td>
-                                        <td>
-                                            <%= po.supplier %>
-                                        </td>
-                                        <td>
-                                            <%= po.date %>
-                                        </td>
-                                        <td>₱<%= po.total.toLocaleString() %>
-                                        </td>
-                                        <td><span class="badge badge-info">
-                                                <%= po.status %>
-                                            </span></td>
-                                        <td><a href="/supplier/po/status/<%= po.id %>/Delivered"
-                                                class="btn btn-outline btn-sm">Receive</a></td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="dashboard-grid mt-6">
-                        <!-- 1. Add/Edit Supplier Form -->
-                        <div class="form-card" id="addSupplier">
-                            <div class="form-title">➕ Register New Partner</div>
-                            <form method="POST" action="/supplier/add">
-                                <div class="form-grid">
-                                    <div class="form-group full"><label>Company Name</label><input type="text"
-                                            name="name" required /></div>
-                                    <div class="form-group"><label>Email (Username)</label><input type="email"
-                                            name="email" required /></div>
-                                    <div class="form-group"><label>Portal Password</label><input type="password"
-                                            name="password" required /></div>
-                                    <div class="form-group"><label>Lead Time</label><input type="text" name="leadTime"
-                                            placeholder="e.g. 3 Days" required /></div>
-                                    <div class="form-group"><label>Phone</label><input type="text" name="phone"
-                                            required /></div>
-                                    <div class="form-group full"><label>Office Address</label><input type="text"
-                                            name="address" required /></div>
-                                </div>
-                                <div class="form-actions">
-                                    <button type="submit" id="supSubmitBtn" class="btn btn-primary">Save
-                                        Partner</button>
-                                    <button type="button" onclick="resetForm()" class="btn btn-outline">Cancel</button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- 2. THE RESTORED PURCHASE ORDER FORM -->
-                        <div class="form-card" id="newPO">
-                            <div class="form-title">🛒 New Purchase Order</div>
-                            <form method="POST" action="/supplier/po/add">
-                                <div class="form-group">
-                                    <label>Select Supplier</label>
-                                    <select name="supplier" required>
-                                        <% suppliers.forEach(s=> { %> <option>
-                                                <%= s.name %>
-                                            </option>
-                                            <% }) %>
-                                    </select>
-                                </div>
-                                <div class="form-grid mt-4">
-                                    <div class="form-group"><label>No. of Items</label><input type="number" name="items"
-                                            required /></div>
-                                    <div class="form-group"><label>Total Amount (₱)</label><input type="number"
-                                            name="total" required /></div>
-                                </div>
-                                <div class="form-actions"><button type="submit" class="btn btn-primary">Submit
-                                        PO</button></div>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
+        <div class="page-header">
+            <div>
+                <h1>Supplier Management</h1>
+                <p>Manage partnerships and procurement orders.</p>
+            </div>
+            <button class="btn btn-primary" onclick="resetForm()">＋ Register Supplier</button>
         </div>
 
-        <script>
-            function editSupplier(jsonStr) {
-                const s = JSON.parse(jsonStr);
-                const form = document.querySelector('#addSupplier form');
-                const title = document.querySelector('#addSupplier .form-title');
-                const submitBtn = document.getElementById('supSubmitBtn');
+        <!-- Summary -->
+        <div class="kpi-row" style="display: grid; grid-template-columns:repeat(3,1fr); gap: 20px; margin-bottom:24px;">
+            <div class="kpi-card white">
+                <div class="kpi-value">
+                    <%= suppliers.length %>
+                </div>
+                <div class="kpi-label">Active Partners</div>
+            </div>
+            <div class="kpi-card white">
+                <div class="kpi-value text-red">
+                    <%= purchaseOrders.filter(p=>p.status==='Pending').length %>
+                </div>
+                <div class="kpi-label">Pending POs</div>
+            </div>
+            <div class="kpi-card white">
+                <div class="kpi-value">₱<%= purchaseOrders.reduce((s,p)=>s+p.total, 0).toLocaleString() %>
+                </div>
+                <div class="kpi-label">Total Volume</div>
+            </div>
+        </div>
 
-                form.action = '/supplier/edit/' + s.id;
-                form.querySelector('[name="name"]').value = s.name;
-                form.querySelector('[name="email"]').value = s.email;
-                form.querySelector('[name="password"]').value = s.password || '';
-                form.querySelector('[name="leadTime"]').value = s.leadTime;
-                form.querySelector('[name="phone"]').value = s.phone || '';
-                form.querySelector('[name="address"]').value = s.address;
+        <!-- Suppliers Table -->
+        <div class="table-card">
+            <div class="table-header">
+                <h2>Supply Chain Partners</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Supplier Name</th>
+                        <th>Supplied Goods</th>
+                        <th>Lead Time</th>
+                        <th>Phone</th>
+                        <th>Rating</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% suppliers.forEach(s=> { %>
+                    <tr>
+                        <td><span style="font-size:0.72rem;color:var(--gray-400)">
+                                <%= s.id %>
+                            </span></td>
+                        <td><strong>
+                                <%= s.name %>
+                            </strong><br /><span style="font-size:0.65rem;">
+                                <%= s.email %>
+                            </span></td>
+                        <td>
+                            <span
+                                style="font-size:0.7rem; color:var(--red); font-weight:700;"><%= s.suppliedProducts || 'General Supplies' %></span>
+                        </td>
+                        <td>
+                            <%= s.leadTime %>
+                        </td>
+                        <td>
+                            <%= s.phone %>
+                        </td>
+                        <td><span style="color:var(--red);font-weight:700">★ <%= s.rating %></span></td>
+                        <td><span class="badge badge-success">
+                                <%= s.status %>
+                            </span></td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button class="btn btn-outline btn-sm"
+                                    onclick='editSupplier(`<%- JSON.stringify(s) %>`)'>Edit</button>
+                                <!-- FIXED DELETE LINK WITH LEADING SLASH -->
+                                <a href="/supplier/delete/<%= s.id %>" class="btn btn-outline btn-sm"
+                                    style="color:var(--red); border-color:var(--red)"
+                                    onclick="return confirm('Delete this supplier?')">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
 
-                title.innerHTML = "✏️ Editing Partner: " + s.id;
-                submitBtn.innerHTML = "Update Supplier";
-                document.getElementById('addSupplier').scrollIntoView({ behavior: 'smooth' });
-            }
+        <!-- Purchase Orders -->
+        <div class="table-card mt-6">
+            <div class="table-header">
+                <h2>Recent Purchase Orders</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>PO No.</th>
+                        <th>Supplier</th>
+                        <th>Ordered Item</th> <!-- NEW COLUMN -->
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% purchaseOrders.forEach(po => { %>
+                    <tr>
+                        <td><strong><%= po.id %></strong></td>
+                        <td><%= po.supplier %></td>
+                        <!-- Show what was actually bought -->
+                        <td><span
+                                style="font-size:0.7rem; font-weight:700; color:var(--gray-600);"><%= po.product || 'General Supplies' %></span>
+                        </td>
+                        <td><%= po.date %></td>
+                        <td>₱<%= po.total.toLocaleString() %></td>
+                        <td><span class="badge badge-info"><%= po.status %></span></td>
+                        <td><a href="/supplier/po/status/<%= po.id %>/Delivered"
+                                class="btn btn-outline btn-sm">Receive</a></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
 
-            function resetForm() {
-                const form = document.querySelector('#addSupplier form');
-                const title = document.querySelector('#addSupplier .form-title');
-                const submitBtn = document.getElementById('supSubmitBtn');
-                form.action = '/supplier/add';
-                form.reset();
-                title.innerHTML = "➕ Register New Partner";
-                submitBtn.innerHTML = "Save Partner";
-                document.getElementById('addSupplier').scrollIntoView({ behavior: 'smooth' });
-            }
-        </script>
+        <div class="dashboard-grid mt-6">
+            <!-- 1. Add/Edit Supplier Form -->
+            <div class="form-card" id="addSupplier">
+                <div class="form-title">➕ Register New Partner</div>
+                <form method="POST" action="/supplier/add">
+                    <div class="form-grid">
+                        <div class="form-group full"><label>Company Name</label><input type="text" name="name"
+                                required /></div>
+                        <div class="form-group full">
+                            <label>Procurement Specialization (What do we buy from them?)</label>
+                            <input type="text" name="suppliedProducts" placeholder="e.g. Oxygen Tanks, PPE, Syringes"
+                                required />
+                        </div>
+                        <div class="form-group"><label>Email (Username)</label><input type="email" name="email"
+                                required /></div>
+                        <div class="form-groupp"><label>Portal Password</label><input type="password" name="password"
+                                required /></div>
+                        <div class="form-group"><label>Lead Time</label><input type="text" name="leadTime"
+                                placeholder="e.g. 3 Days" required /></div>
+                        <div class="form-group"><label>Phone</label><input type="text" name="phone" required /></div>
+                        <div class="form-group full"><label>Office Address</label><input type="text" name="address"
+                                required /></div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="supSubmitBtn" class="btn btn-primary">Save
+                            Partner</button>
+                        <button type="button" onclick="resetForm()" class="btn btn-outline">Cancel</button>
+                    </div>
+                </form>
+            </div>
 
-        <%- include('../../partials/footer') %>
+            <!-- 2. THE RESTORED PURCHASE ORDER FORM -->
+            <div class="form-card" id="newPO">
+                <div class="form-title">🛒 New Purchase Order</div>
+                <form method="POST" action="/supplier/po/add">
+                    <div class="form-group">
+                        <label>Select Supplier</label>
+                        <select name="supplier" id="supplierSelect" onchange="updateSpecHint()" required>
+                            <option value="" disabled selected>Choose a partner...</option>
+                            <% suppliers.forEach(s => { %>
+                            <option value="<%= s.name %>" data-spec="<%= s.suppliedProducts %>"><%= s.name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <label style="margin-top: 25px">Product to Procure</label>
+                        <input type="text" name="product" id="productInput" placeholder="e.g. Oxygen Tanks" required />
+                        <p id="specHint"
+                            style="font-size: 0.6rem; color: var(--red); font-weight: 700; margin-top: 5px;"></p>
+                    </div>
+
+                    <div class="form-grid mt-4">
+                        <!-- Quantity -->
+                        <div class="form-group">
+                            <label>Order Quantity</label>
+                            <input type="number" name="items" id="poQty" oninput="calculatePOTotal()" placeholder="0"
+                                required />
+                        </div>
+                        <!-- Unit Price -->
+                        <div class="form-group">
+                            <label>Unit Price (₱)</label>
+                            <input type="number" name="unitPrice" id="poPrice" step="0.01" oninput="calculatePOTotal()"
+                                placeholder="0.00" required />
+                        </div>
+                    </div>
+
+                    <!-- Smarter Feature: Auto-Calculated Total (Read Only) -->
+                    <div class="form-group mt-4">
+                        <label style="margin-top: 25px">Calculated Total (Final Budget)</label>
+                        <div
+                            style="display: flex; align-items: center; gap: 10px; background: var(--gray-50); padding: 10px; border-radius: 8px; border: 1.5px solid var(--gray-200);">
+                            <span style="font-weight: 900; color: var(--red);">₱</span>
+                            <input type="text" id="poTotalDisplay" value="0.00" readonly
+                                style="border: none; background: transparent; font-weight: 900; color: var(--gray-800); width: 100%; outline: none;" />
+                        </div>
+                        <p style="font-size: 0.55rem; color: #999; margin-top: 5px; text-transform: uppercase;">Total is
+                            auto-calculated: Qty × Unit Price</p>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Submit Purchase Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function editSupplier(jsonStr) {
+        const s = JSON.parse(jsonStr);
+        const form = document.querySelector('#addSupplier form');
+        const title = document.querySelector('#addSupplier .form-title');
+        const submitBtn = document.getElementById('supSubmitBtn');
+
+        form.action = '/supplier/edit/' + s.id;
+        form.querySelector('[name="name"]').value = s.name;
+        form.querySelector('[name="email"]').value = s.email;
+        form.querySelector('[name="suppliedProducts"]').value = s.suppliedProducts || '';
+        form.querySelector('[name="password"]').value = s.password || '';
+        form.querySelector('[name="leadTime"]').value = s.leadTime;
+        form.querySelector('[name="phone"]').value = s.phone || '';
+        form.querySelector('[name="address"]').value = s.address;
+
+        title.innerHTML = "✏️ Editing Partner: " + s.id;
+        submitBtn.innerHTML = "Update Supplier";
+        document.getElementById('addSupplier').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+    function resetForm() {
+        const form = document.querySelector('#addSupplier form');
+        const title = document.querySelector('#addSupplier .form-title');
+        const submitBtn = document.getElementById('supSubmitBtn');
+        form.action = '/supplier/add';
+        form.reset();
+        title.innerHTML = "➕ Register New Partner";
+        submitBtn.innerHTML = "Save Partner";
+        document.getElementById('addSupplier').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+    function calculatePOTotal() {
+        const qty = parseFloat(document.getElementById('poQty').value) || 0;
+        const price = parseFloat(document.getElementById('poPrice').value) || 0;
+
+        const total = qty * price;
+
+        // Update the visual display
+        document.getElementById('poTotalDisplay').value = total.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    function updateSpecHint() {
+        const select = document.getElementById('supplierSelect');
+        const hint = document.getElementById('specHint');
+        const productInput = document.getElementById('productInput');
+
+        const selectedOption = select.options[select.selectedIndex];
+        const specialization = selectedOption.getAttribute('data-spec');
+
+        if (specialization) {
+            hint.innerHTML = "💡 Specializes in: " + specialization;
+            productInput.placeholder = "e.g. " + specialization.split(',')[0];
+        } else {
+            hint.innerHTML = "";
+        }
+    }
+</script>
+
+<%- include('../../partials/footer') %>

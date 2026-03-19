@@ -44,7 +44,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-10 items-start">
         
         <!-- AUTO-REORDER FORECAST -->
-        <div class="lg:col-span-3 intel-card mt-6">
+        <div class="lg:col-span-3 intel-card mt-6" style="margin-bottom: 20px;">
             <div class="flex justify-between items-center mb-10">
                 <h3 class="font-black text-slate-800 text-xs uppercase tracking-widest">Predictive Auto-Reorder</h3>
                 <span class="bg-red-50 text-pharma-red px-3 py-1 rounded-full text-[9px] font-black italic">AI Model Active</span>
@@ -66,7 +66,7 @@
         </div>
 
         <!-- SUPPLIER SCORECARD -->
-        <div class="dark-panel shadow-2xl">
+        <div class="dark-panel shadow-2xl" style="margin-bottom: 20px;">
             <h3 class="kpi-label-sm text-white/40 mb-6">Supplier Scorecard</h3>
             <div class="space-y-2">
                 <% suppliers.forEach(s => { %>
@@ -85,7 +85,7 @@
         </div>
 
         <!-- CATEGORY DISTRIBUTION BAR CHART -->
-        <div class="lg:col-span-3 intel-card mt-6">
+        <div class="lg:col-span-3 intel-card mt-6" style="margin-bottom: 20px;">
             <h3 class="kpi-label-sm text-center mb-4">Inventory Distribution by Category</h3>
             <div class="chart-container">
                 <% const cats = ['Medicine', 'PPE', 'Diagnostic', 'Equipment']; 
