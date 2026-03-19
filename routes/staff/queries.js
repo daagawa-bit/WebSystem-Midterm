@@ -9,7 +9,6 @@ const readData = () => {
     return JSON.parse(fs.readFileSync(chatPath, 'utf8'));
 };
 
-// 1. GET - Main Terminal View (localhost:3000/staff/chatbot)
 router.get('/', (req, res) => {
     const data = readData();
     const activeId = req.query.id || (data.activeChats.length > 0 ? data.activeChats[0].id : null);
@@ -19,7 +18,7 @@ router.get('/', (req, res) => {
 
     res.render('pages/staff/queries', {
         title: 'Query Terminal',
-        active: 'chatbot', // Sidebar highlighting
+        active: 'chatbot', 
         userRole: 'Staff',
         chats: data.activeChats,
         currentChat: currentChat,
@@ -28,7 +27,6 @@ router.get('/', (req, res) => {
     });
 });
 
-// 2. POST - Staff Reply (This was causing the 404)
 router.post('/reply/:id', (req, res) => {
     let data = readData();
     const index = data.activeChats.findIndex(c => c.id === req.params.id);
@@ -39,15 +37,12 @@ router.post('/reply/:id', (req, res) => {
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             type: req.body.isInternal === "true" ? "internal" : "public"
         });
-        // Update status
         data.activeChats[index].status = "Staff Handling";
         fs.writeFileSync(chatPath, JSON.stringify(data, null, 2));
     }
-    // Redirect back to same chat
     res.redirect('/staff/chatbot?id=' + req.params.id);
 });
 
-// 3. GET - Resolve/End Chat
 router.get('/resolve/:id', (req, res) => {
     let data = readData();
     data.activeChats = data.activeChats.filter(c => c.id !== req.params.id);

@@ -118,16 +118,37 @@ function selectForWaste(id, name, currentStock) {
     document.getElementById('display-name').innerText = name;
     
     const qtyInput = document.getElementById('input-qty');
-    qtyInput.max = currentStock; // Prevents wasting more than exists
+    qtyInput.max = currentStock;
+    qtyInput.value = 1; 
     qtyInput.placeholder = "Max: " + currentStock;
-    qtyInput.focus();
+    
+    const formCard = document.getElementById('waste-form-card');
+    formCard.style.borderColor = "var(--red)";
+    setTimeout(() => formCard.style.borderColor = "#e2e8f0", 1000);
 }
 
 function filterWasteTable() {
     const q = document.getElementById('wasteSearch').value.toLowerCase();
     const rows = document.querySelectorAll('#wasteTable tbody tr');
-    
     rows.forEach(row => {
         row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
     });
+}
+
+function validatePicking(orderId) {
+    const card = document.getElementById(`order-card-${orderId}`);
+    const checks = card.querySelectorAll('.picking-check');
+    const btn = card.querySelector('.btn-fulfillment');
+    
+    const checkedCount = Array.from(checks).filter(c => c.checked).length;
+    
+    if(checkedCount === checks.length) {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        btn.innerText = "Confirm Packing Complete";
+    } else {
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        btn.innerText = `Check Items (${checkedCount}/${checks.length})`;
+    }
 }

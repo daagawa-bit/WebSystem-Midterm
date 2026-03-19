@@ -35,6 +35,12 @@
           "sender": "Admin",
           "text": "Discount Approved",
           "time": "09:41 PM"
+        },
+        {
+          "sender": "Staff",
+          "text": "Order Processed",
+          "time": "02:41 PM",
+          "type": "public"
         }
       ]
     },
@@ -65,7 +71,7 @@
       "client": "Brgy. 143 Health Center",
       "email": "health@brgy143.gov.ph",
       "type": "Clinic",
-      "status": "Waiting for Staff",
+      "status": "Staff Handling",
       "sentiment": "Normal",
       "messages": [
         {

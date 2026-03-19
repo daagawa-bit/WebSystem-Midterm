@@ -1,20 +1,10 @@
-
-/* Medical Background */
-.medical-bg {
-    background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
-                url('/images/adminstaff.avif');
-    background-size: cover;
-    background-position: center;
-}
-
-/* Layering logic */
+.medical-bg {background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('/images/adminstaff.avif'); background-size: cover; background-position: center;}
 .form-wrapper { animation: hideLayer .3s ease-out forwards; }
 .form-wrapper.is-active { animation: showLayer .3s ease-in forwards; z-index: 10; }
 
 @keyframes showLayer { 50% { z-index: 10; } 100% { z-index: 10; } }
 @keyframes hideLayer { 0% { z-index: 10; } 49% { z-index: 10; } 50% { z-index: 1; } }
 
-/* Sliding Animations */
 .form-login { animation: hideLogin .3s ease-out forwards; }
 .is-active .form-login { animation: showLogin .3s ease-in forwards; }
 

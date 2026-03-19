@@ -1,70 +1,101 @@
 <%- include('../../staffpartials/head') %>
 <%- include('../../staffpartials/sidebar') %>
 
-<main class="staff-main-area">
-    <%- include('../../staffpartials/header') %>
+<!-- Using Tailwind to force margin and height -->
+<main class="ml-60 flex-1 flex flex-col min-h-screen bg-slate-50 overflow-hidden">
+    <%- include('../../partials/header') %>
 
-    <div class="content">
-        <div class="page-header">
+    <div class="p-6 overflow-y-auto no-sb">
+        <!-- HEADER -->
+        <div class="flex justify-between items-center mb-6">
             <div>
-                <h1 style="font-family: 'Nunito', sans-serif; font-weight: 900;">Operations <span style="color: var(--red);">Terminal</span></h1>
-                <p class="staff-label">Personal Dashboard & Duty Summary</p>
+                <h1 class="text-2xl font-black text-slate-800 tracking-tighter mt-3">Operations <span class="text-pharma-red">Terminal</span></h1>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[2px] mt-3">Real-time Duty Dashboard & Inventory Health</p>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <a href="/staff/inventory" class="btn btn-primary" style="font-size: 0.7rem; padding: 10px 20px;">⚡ Quick Look-up</a>
-            </div>
-        </div>
-
-        <!-- NEW: Performance Metrics -->
-        <div class="kpi-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
-            <div class="kpi-card white">
-                <div class="kpi-value">3</div>
-                <div class="kpi-label">Tasks Pending</div>
-            </div>
-            <div class="kpi-card white">
-                <div class="kpi-value" style="color: var(--red);">85%</div>
-                <div class="kpi-label">Duty Efficiency</div>
-            </div>
-            <div class="kpi-card white">
-                <div class="kpi-value">12</div>
-                <div class="kpi-label">Items Handled</div>
-            </div>
-            <div class="kpi-card white">
-                <div class="kpi-value">Active</div>
-                <div class="kpi-label">Shift Status</div>
+            <div class="flex gap-3">
+                <a href="/staff/inventory" class="px-4 py-2 bg-white border border-slate-200 text-slate-500 rounded-xl text-[10px] font-black uppercase hover:border-pharma-red transition-all">Stock Look-up</a>
+                <a href="/staff/pos" class="px-4 py-2 bg-white border border-slate-200 text-slate-500 rounded-xl text-[10px] font-black uppercase hover:border-pharma-red transition-all">Open Register</a>
             </div>
         </div>
 
-        <div class="dashboard-grid" style="grid-template-columns: 1.5fr 1fr;">
+        <!-- KPI ROW (TAILWIND GRID) -->
+        <div class="grid grid-cols-4 gap-4 mb-6">
+            <div class="bg-white p-5 rounded-[1.5rem] border border-slate-100 shadow-sm">
+                <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Stock Alerts</span>
+                <h2 class="text-xl font-black text-pharma-red"><%= stats.lowStock %> Items</h2>
+            </div>
+            <div class="bg-white p-5 rounded-[1.5rem] border border-slate-100 shadow-sm">
+                <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">To Fulfill</span>
+                <h2 class="text-xl font-black text-slate-800"><%= stats.pendingOrders %> Orders</h2>
+            </div>
+            <div class="bg-white p-5 rounded-[1.5rem] border border-slate-100 shadow-sm">
+                <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Sales Today</span>
+                <h2 class="text-xl font-black text-slate-800"><%= stats.itemsHandled %> Transactions</h2>
+            </div>
+            <div class="bg-white p-5 rounded-[1.5rem] border border-slate-100 shadow-sm">
+                <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">Duty Efficiency</span>
+                <h2 class="text-xl font-black text-slate-800"><%= stats.efficiency %></h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6 items-start">
             
-            <!-- Daily Task Management -->
-            <div class="col-span-1">
-                <span class="staff-label">Operation Tasks</span>
-                <div class="staff-task-card urgent">
-                    <strong style="font-size: 0.8rem;">Verify Batch B-2025</strong>
-                    <p style="font-size: 0.7rem; color: #666;">Check expiry dates on all Paracetamol stocks.</p>
+            <!-- LEFT: OPERATION TASKS -->
+            <div class="col-span-4 space-y-3">
+                <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-[2px] ml-2 mb-4">Assigned Tasks</h3>
+                <div class="bg-white p-5 rounded-[2rem] border-l-4 border-l-pharma-red shadow-sm group hover:translate-x-1 transition-transform">
+                    <div class="flex justify-between">
+                        <strong class="text-xs font-black text-slate-700">INVENTORY COUNT</strong>
+                        <span class="text-[8px] font-bold text-pharma-red italic">URGENT</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1">Verify batch #BN-5466 for LGU Iriga delivery.</p>
                 </div>
-                <div class="staff-task-card">
-                    <strong style="font-size: 0.8rem;">Restock Bay 4</strong>
-                    <p style="font-size: 0.7rem; color: #666;">Move 50 units of Face Masks to front shelf.</p>
+                <div class="bg-white p-5 rounded-[2rem] border-l-4 border-l-slate-200 shadow-sm">
+                    <strong class="text-xs font-black text-slate-700">BAY CLEANUP</strong>
+                    <p class="text-[10px] text-slate-400 mt-1">Maintenance of the Diagnostic equipment zone.</p>
                 </div>
             </div>
 
-            <!-- NEW: Staff Activity Log -->
-            <div class="col-span-1">
-                <div class="table-card">
-                    <div class="table-header"><h2>Recent Activity</h2></div>
-                    <div style="padding: 15px; display: flex; flex-direction: column; gap: 12px;">
-                        <div style="font-size: 0.7rem; padding-bottom: 8px; border-bottom: 1px solid #f1f1f1;">
-                            <span style="color: var(--red); font-weight: 800;">10:30 AM</span> - Searched for "Nebulizer"
-                        </div>
-                        <div style="font-size: 0.7rem; padding-bottom: 8px; border-bottom: 1px solid #f1f1f1;">
-                            <span style="color: var(--red); font-weight: 800;">09:15 AM</span> - Answered Client Query #102
-                        </div>
-                        <div style="font-size: 0.7rem;">
-                            <span style="color: var(--red); font-weight: 800;">08:00 AM</span> - Logged into Terminal
-                        </div>
-                    </div>
+            <!-- CENTER: LIVE INVENTORY LOGISTICS -->
+            <div class="col-span-5 bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-[2px]">Inventory Watch</h3>
+                    <span class="text-[8px] font-bold text-slate-300">CRITICAL ITEMS</span>
+                </div>
+                <div class="space-y-3">
+                    <% if(inventory.length > 0) { %>
+                        <% inventory.forEach(item => { %>
+                            <div class="flex justify-between items-center p-4 bg-red-50/50 rounded-2xl border border-red-100">
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-700 uppercase"><%= item.name %></p>
+                                    <p class="text-[8px] text-pharma-red font-bold italic"><%= item.qty %> Units Remaining</p>
+                                </div>
+                                <span class="text-xs animate-pulse">🚨</span>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="text-[10px] text-slate-400 italic">No inventory alerts found.</p>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- RIGHT: RECENT POS LOG -->
+            <div class="col-span-3 space-y-4">
+                <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-[2px] ml-2 mb-4">Counter Activity</h3>
+                <div class="bg-slate-900 rounded-[2rem] p-6 text-white shadow-2xl">
+                    <% if(recentSales.length > 0) { %>
+                        <% recentSales.forEach(sale => { %>
+                            <div class="mb-4 pb-4 border-b border-white/5 last:border-0 last:mb-0">
+                                <div class="flex justify-between text-[11px]">
+                                    <span class="font-bold text-white/90"><%= sale.id %></span>
+                                    <span class="text-pharma-red font-black">₱<%= (sale.total || 0).toLocaleString() %></span>
+                                </div>
+                                <p class="text-[8px] text-white/40 mt-1 uppercase font-bold tracking-widest"><%= sale.time %> | <%= sale.method %></p>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="text-[9px] text-white/20 italic">No transactions recorded today.</p>
+                    <% } %>
                 </div>
             </div>
 
@@ -72,3 +103,4 @@
     </div>
     <%- include('../../staffpartials/footer') %>
 </main>
+

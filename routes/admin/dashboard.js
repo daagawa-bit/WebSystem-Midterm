@@ -33,20 +33,37 @@ router.get('/', (req, res) => {
 
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
+    const inputEmail = email.toLowerCase().trim();
+    const inputPass = password.toString().trim();
+
     try {
         const admins = getSafeData(paths.admins, 'admins');
-        const adminUser = admins.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim() && u.password.toString() === password.toString());
-        if (adminUser) return res.redirect('/dashboard');
-        
+        const adminUser = admins.find(u => u.email.toLowerCase().trim() === inputEmail && u.password === inputPass);
+
+        if (adminUser) {
+            // SAVE TO SESSION
+            req.session.user = adminUser; 
+            return res.redirect('/dashboard');
+        }
+
         const staffMembers = getSafeData(paths.staff, 'staff');
-        const staffUser = staffMembers.find(u => u.email.toLowerCase().trim() === email.toLowerCase().trim() && u.password.toString() === password.toString());
-        if (staffUser) return res.redirect('/staff');
+        const staffUser = staffMembers.find(u => u.email.toLowerCase().trim() === inputEmail && u.password === inputPass);
+
+        if (staffUser) {
+            // SAVE TO SESSION
+            req.session.user = staffUser;
+            return res.redirect('/staff');
+        }
 
         res.send("<script>alert('Invalid Credentials'); window.location='/';</script>");
     } catch (err) { res.status(500).send("Login Error."); }
 });
 
+
 router.get('/dashboard', (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'Admin') {
+        return res.redirect('/');
+    }
     try {
         const inventory = getSafeData(paths.inventory, 'products');
         const clients = getSafeData(paths.clients, 'clients');
@@ -119,6 +136,9 @@ router.get('/dashboard', (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => { res.redirect('/'); });
+router.get('/logout', (req, res) => {
+    req.session.destroy(); // Deletes the session
+    res.redirect('/');
+});
 
 module.exports = router;

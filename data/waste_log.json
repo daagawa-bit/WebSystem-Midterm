@@ -1,5 +1,21 @@
 [
   {
+    "id": "WST-0669",
+    "productName": "Nebulizer Kit",
+    "qty": 1,
+    "reason": "Expired",
+    "date": "3/19/2026",
+    "time": "1:32:30 PM"
+  },
+  {
+    "id": "WST-7114",
+    "productName": "Paracetamol 500mg",
+    "qty": 1,
+    "reason": "Expired",
+    "date": "3/19/2026",
+    "time": "1:31:47 PM"
+  },
+  {
     "id": "WST-0138",
     "productName": "dan",
     "qty": 7,

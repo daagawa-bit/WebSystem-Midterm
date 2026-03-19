@@ -1,338 +1,76 @@
-/* ── STAFF PORTAL PHARMA RED THEME ── */
+.staff-main-area {margin-left: 220px; width: calc(100% - 220px);background: var(--gray-50);min-height: 100vh;display: flex;flex-direction: column;}
+.staff-label {font-size: 10px;font-weight: 800;text-transform: uppercase;letter-spacing: 1px;color: var(--gray-400);margin-bottom: 8px;display: block;}
+.staff-task-card {background: #fff;padding: 18px;border-radius: var(--radius);border-left: 5px solid var(--gray-200);box-shadow: var(--shadow);transition: 0.3s;margin-bottom: 12px;}
+.staff-task-card.urgent {border-left-color: var(--red);}
 
-.staff-main-area {
-    margin-left: 220px; /* Matches --sidebar-w */
-    width: calc(100% - 220px);
-    background: var(--gray-50);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Micro-Typography for Staff */
-.staff-label {
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--gray-400);
-    margin-bottom: 8px;
-    display: block;
-}
-
-/* Task Cards */
-.staff-task-card {
-    background: #fff;
-    padding: 18px;
-    border-radius: var(--radius);
-    border-left: 5px solid var(--gray-200);
-    box-shadow: var(--shadow);
-    transition: 0.3s;
-    margin-bottom: 12px;
-}
-
-.staff-task-card.urgent {
-    border-left-color: var(--red);
-}
-
-.staff-task-card:hover {
-    transform: translateX(5px);
-    box-shadow: var(--shadow-lg);
-}
-
-/* Red Alert Box */
-.staff-alert-box {
-    background: var(--red-pale);
-    border: 1px solid rgba(232, 52, 74, 0.1);
-    padding: 15px;
-    border-radius: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* ── STAFF INVENTORY INTELLIGENCE STYLES ── */
-
+.staff-task-card:hover {transform: translateX(5px);box-shadow: var(--shadow-lg);}
+.staff-alert-box {background: var(--red-pale);border: 1px solid rgba(232, 52, 74, 0.1);padding: 15px;border-radius: 12px;display: flex;justify-content: space-between;align-items: center;}
 .staff-inv-container { padding: 30px; background: #F8FAFC; min-height: 100vh; }
 
-/* Smart Card Design */
-.item-card {
-    background: #fff;
-    border: 1px solid #f1f5f9;
-    border-radius: 2rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: default;
-}
+.item-card {background: #fff;border: 1px solid #f1f5f9;border-radius: 2rem;transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);cursor: default;}
+.item-card:hover {transform: translateY(-5px);box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);border-color: var(--red);}
 
-.item-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-    border-color: var(--red);
-}
-
-/* Expiry Pulse Animation */
 @keyframes urgentPulse {
     0% { transform: scale(1); opacity: 1; }
     50% { transform: scale(1.05); opacity: 0.8; }
     100% { transform: scale(1); opacity: 1; }
 }
 
-.badge-urgent {
-    background: var(--red);
-    color: white;
-    animation: urgentPulse 1.5s infinite;
-    font-size: 0.55rem;
-    font-weight: 900;
-    padding: 2px 8px;
-    border-radius: 5px;
-}
-
-/* Micro-Typography */
-.meta-label {
-    font-size: 9px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #94a3b8;
-}
-
-.stock-val {
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: var(--gray-800);
-}
-
-/* ── STAFF TERMINAL UNIQUE LAYOUT ── */
-
-.st-workspace {
-    display: grid;
-    grid-template-columns: 250px 1fr 260px;
-    flex: 1;
-    background: #fff;
-    margin: 0 20px 10px 20px;
-    border-radius: 2rem;
-    overflow: hidden; /* Clips children to the rounded corners */
-    border: 1px solid #eef2f6;
-    max-height: calc(200vh - 0px); 
-}
-
-/* Panel 1: Inbox */
+.badge-urgent {background: var(--red);color: white;animation: urgentPulse 1.5s infinite;font-size: 0.55rem;font-weight: 900;padding: 2px 8px;border-radius: 5px;}
+.meta-label {font-size: 9px;font-weight: 800;text-transform: uppercase;letter-spacing: 1px;color: #94a3b8;}
+.stock-val {font-size: 1.2rem;font-weight: 900;color: var(--gray-800);}
+.st-workspace {display: grid;grid-template-columns: 250px 1fr 260px;flex: 1;background: #fff;margin: 0 20px 10px 20px;border-radius: 2rem;overflow: hidden; /* Clips children to the rounded corners */border: 1px solid #eef2f6;max-height: calc(200vh - 0px);}
 .st-inbox { background: white; border-right: 1px solid #f1f5f9; display: flex; flex-direction: column; }
 .st-inbox-header { padding: 25px; border-bottom: 1px solid #f8fafc; background: #fafafa; }
 .st-inbox-card { padding: 20px; border-bottom: 1px solid #f8fafc; transition: 0.3s; text-decoration: none; display: block; border-left: 4px solid transparent; }
 .st-inbox-card:hover { background: #fafafa; }
 .st-inbox-card.active { background: #FFF5F6 !important; border-left-color: #E8344A; }
-
-/* Panel 2: Chat */
 .st-chat { background: #fcfdfe; display: flex; flex-direction: column; position: relative; }
 .st-chat-stream { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
-
-/* Smarter Bubble Styles */
 .st-bubble-client { align-self: flex-start; background: #fff; border: 1.5px solid #f1f5f9; color: #334155; border-radius: 20px 20px 20px 4px; padding: 15px; max-width: 80%; font-size: 0.78rem; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
 .st-bubble-staff { align-self: flex-end; background: #E8344A; color: white; border-radius: 20px 20px 4px 20px; padding: 15px; max-width: 80%; font-size: 0.78rem; box-shadow: 0 10px 15px -5px rgba(232, 52, 74, 0.2); }
 .st-bubble-internal { align-self: center; background: #FFFBEB; border: 1px dashed #FCD34D; color: #92400E; border-radius: 12px; padding: 10px 20px; width: 90%; font-size: 0.7rem; font-style: italic; text-align: center; }
-
-/* Panel 3: Intel */
 .st-intel { background: white; border-left: 1px solid #f1f5f9; padding: 25px; }
 .st-insight-card { padding: 15px; background: #f8fafc; border-radius: 15px; border: 1px solid #f1f5f9; margin-bottom: 12px; }
 .st-label-tiny { font-size: 9px; font-weight: 900; text-transform: uppercase; color: #94a3b8; letter-spacing: 1px; display: block; margin-bottom: 4px; }
-
-/* Global fix for sidebar overlap */
 .main-area-staff { margin-left: 220px; width: calc(100% - 220px); }
 
-/* ── STAFF FULFILLMENT & POS STYLES ── */
-
-/* Fulfillment Picking Checklist */
-.fulfillment-card {
-    background: #fff;
-    border-radius: 2rem;
-    padding: 20px;
-    border: 1px solid #f1f5f9;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+.fulfillment-card {background: #fff;border-radius: 2rem;padding: 20px;border: 1px solid #f1f5f9;display: flex;flex-direction: column;justify-content: space-between;transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
 .fulfillment-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--red); }
 
 .picking-list { margin-top: 15px; padding: 12px; background: var(--gray-50); border-radius: 15px; }
 .picking-item { display: flex; align-items: center; gap: 8px; font-size: 0.7rem; font-weight: 600; color: #475569; margin-bottom: 5px; }
 .picking-item input[type="checkbox"] { accent-color: var(--red); cursor: pointer; }
 
-/* Staff POS Terminal (High Density) */
-.staff-pos-container {
-    display: grid;
-    grid-template-columns: 1fr 320px; /* Wider catalog, narrower console for laptop fit */
-    gap: 15px;
-    height: calc(100vh - 120px);
-    overflow: hidden;
-}
-
-.staff-product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.staff-p-card {
-    background: #fff;
-    padding: 12px;
-    border-radius: 1.5rem;
-    border: 1px solid #f1f5f9;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.2s;
-}
+.staff-pos-container {display: grid;grid-template-columns: 1fr 320px;gap: 15px;height: calc(100vh - 120px);overflow: hidden;}
+.staff-product-grid {display: grid;grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));gap: 12px;overflow-y: auto;padding-right: 10px;}
+.staff-p-card {background: #fff;padding: 12px;border-radius: 1.5rem;border: 1px solid #f1f5f9;text-align: center;cursor: pointer;transition: 0.2s;}
 .staff-p-card:hover { border-color: var(--red); background: var(--red-pale); }
 .staff-p-card h4 { font-size: 0.7rem; font-weight: 800; color: var(--gray-800); margin: 8px 0; height: 30px; overflow: hidden; }
 .staff-p-price { font-size: 0.8rem; font-weight: 900; color: var(--red); }
+.staff-pos-layout {display: grid;grid-template-columns: 1fr minmax(300px, 25%); gap: 15px;height: calc(100vh - 140px); overflow: hidden;}
+.main-area-staff {margin-left: 220px;height: 100vh; overflow: hidden;display: flex;flex-direction: column;}
+.staff-pos-layout {display: grid;grid-template-columns: 1fr 360px;gap: 15px;flex: 1; padding: 10px 20px 20px;overflow: hidden; }
 
-.staff-pos-layout {
-    display: grid;
-    /* Grid: Catalog takes most space, Cart takes between 300px and 25% of screen */
-    grid-template-columns: 1fr minmax(300px, 25%); 
-    gap: 15px;
-    height: calc(100vh - 140px); /* Locks height to laptop viewport minus header/padding */
-    overflow: hidden; /* Prevents double scrollbars */
-}
-
-/* ─── PROFESSIONAL STAFF POS TERMINAL ─── */
-/* ─── PROFESSIONAL STAFF POS: SCROLL FIX ─── */
-
-.main-area-staff {
-    margin-left: 220px;
-    height: 100vh; /* Lock to full screen height */
-    overflow: hidden; /* Stop main page scroll */
-    display: flex;
-    flex-direction: column;
-}
-
-.staff-pos-layout {
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 15px;
-    flex: 1; /* Fills remaining height */
-    padding: 10px 20px 20px;
-    overflow: hidden; /* Lock the grid */
-}
-
-/* RIGHT CONSOLE: THE CART */
-.cart-console {
-    background: #fff;
-    border-radius: 2rem;
-    border: 1px solid #eef2f6;
-    display: flex;
-    flex-direction: column; /* Stack Header -> Items -> Footer */
-    height: 100%; /* Force full height of the grid row */
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-}
-
-.cart-header {
-    padding: 15px 20px;
-    border-bottom: 1px solid #f1f5f9;
-    flex-shrink: 0; /* DON'T let header shrink */
-}
-
-/* SCROLLABLE ITEMS AREA */
-#staffCartItems {
-    flex: 1; /* This takes all available space between header and footer */
-    overflow-y: auto; /* Enable scrolling for items only */
-    padding: 15px;
-    background: #f8fafc;
-    scrollbar-width: none; /* Hide scrollbar Firefox */
-}
-#staffCartItems::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome */
-
-/* FIXED FOOTER SECTION */
-.cart-footer {
-    padding: 20px;
-    background: #fff;
-    border-top: 1px solid #f1f5f9;
-    flex-shrink: 0; /* DON'T let checkout area shrink or hide */
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.02);
-}
-
-/* Elements inside cart */
-.cart-item-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    background: #fff;
-    border-radius: 1rem;
-    margin-bottom: 8px;
-    border: 1px solid #f1f5f9;
-}
+.cart-console {background: #fff;border-radius: 2rem;border: 1px solid #eef2f6;display: flex;flex-direction: column; height: 100%; overflow: hidden;box-shadow: 0 10px 30px rgba(0,0,0,0.05);}
+.cart-header {padding: 15px 20px;border-bottom: 1px solid #f1f5f9;flex-shrink: 0;}
+#staffCartItems {flex: 1; overflow-y: auto;padding: 15px;background: #f8fafc;scrollbar-width: none; }
+#staffCartItems::-webkit-scrollbar { display: none; } 
+.cart-footer {padding: 20px;background: #fff;border-top: 1px solid #f1f5f9;flex-shrink: 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.02);}
+.cart-item-row {display: flex;justify-content: space-between;align-items: center;padding: 12px;background: #fff;border-radius: 1rem;margin-bottom: 8px;border: 1px solid #f1f5f9;}
 
 .bill-line { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700; color: #94a3b8; margin-bottom: 4px; }
 .bill-line.grand { border-top: 1px dashed #eee; margin-top: 8px; padding-top: 8px; }
 .bill-line.grand strong { font-size: 1.3rem; color: var(--red); font-weight: 900; }
 
-.btn-checkout-final {
-    width: 100%;
-    background: var(--red);
-    color: white;
-    font-weight: 900;
-    padding: 14px;
-    border-radius: 1.2rem;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    margin-top: 12px;
-    box-shadow: 0 8px 15px rgba(232, 52, 74, 0.2);
-    border: none;
-    cursor: pointer;
-}
-
+.btn-checkout-final {width: 100%;background: var(--red);color: white;font-weight: 900;padding: 14px;border-radius: 1.2rem;text-transform: uppercase;font-size: 0.8rem;margin-top: 12px;box-shadow: 0 8px 15px rgba(232, 52, 74, 0.2);border: none;cursor: pointer;}
 .btn-checkout-final:hover { background: var(--red-dark); transform: translateY(-2px); }
-
 .no-sb::-webkit-scrollbar { display: none; }
 
-.staff-catalog {
-    background: #fff;
-    border-radius: 2rem;
-    border: 1px solid #eef2f6;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.staff-p-grid {
-    flex: 1;
-    overflow-y: auto;
-    display: grid;
-    /* Responsive columns: auto-fit based on item width */
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
-    gap: 10px;
-    padding: 15px;
-}
-
-.staff-p-card {
-    background: #fff; padding: 15px; border-radius: 1.5rem; border: 1.5px solid #f1f5f9;
-    text-align: center; cursor: pointer; transition: 0.2s;
-}
+.staff-catalog {background: #fff;border-radius: 2rem;border: 1px solid #eef2f6;display: flex;flex-direction: column;overflow: hidden;}
+.staff-p-grid {flex: 1;overflow-y: auto;display: grid;grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;padding: 15px;}
+.staff-p-card {background: #fff; padding: 15px; border-radius: 1.5rem; border: 1.5px solid #f1f5f9;text-align: center; cursor: pointer; transition: 0.2s;}
 .staff-p-card:hover { border-color: var(--red); transform: translateY(-3px); box-shadow: 0 10px 15px -5px rgba(0,0,0,0.05); }
 .staff-p-card h4 { font-size: 0.65rem; font-weight: 800; color: #334155; margin: 8px 0; height: 30px; overflow: hidden; line-height: 1.2; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -242,259 +242,57 @@ textarea{resize:vertical;min-height:76px}
 .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0.3; text-align: center; }
 .empty-art { font-size: 5rem; margin-bottom: 20px; }
 
-
 @media(max-width:900px){
   .dashboard-grid{grid-template-columns:1fr}
   .pos-layout{grid-template-columns:1fr}
 }
 
-.app-shell {
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-}
+.app-shell {display: flex;width: 100%;min-height: 100vh;}
+.sidebar {width: 220px;min-height: 100vh;position: fixed;left: 0;top: 0;}
+.main-area {margin-left: 220px; flex: 1;display: flex;flex-direction: column;min-height: 100vh;}
+.intel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.intel-card { background: #ffffff; padding: 20px; border-radius: 1.5rem; border: 1px solid rgba(226, 232, 240, 0.8); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); transition: all 0.3s ease;}
+.intel-card:hover { border-color: var(--red); transform: translateY(-2px); box-shadow: 0 12px 20px rgba(232, 52, 74, 0.05);}
 
-.sidebar {
-    width: 220px; /* var(--sidebar-w) */
-    min-height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-}
-
-.main-area {
-    margin-left: 220px; /* Must match sidebar width */
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* ── STRATEGIC INTELLIGENCE (ANALYTICS) ── */
-
-/* 1. Dashboard Layout & Cards */
-.intel-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-    gap: 16px; 
-    margin-bottom: 24px; 
-}
-
-.intel-card { 
-    background: #ffffff; 
-    padding: 20px; 
-    border-radius: 1.5rem; 
-    border: 1px solid rgba(226, 232, 240, 0.8); 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); 
-    transition: all 0.3s ease;
-}
-
-.intel-card:hover { 
-    border-color: var(--red); 
-    transform: translateY(-2px); 
-    box-shadow: 0 12px 20px rgba(232, 52, 74, 0.05);
-}
-
-/* 2. Micro-Typography (Smarter & Smaller) */
-.kpi-label-sm { 
-    font-size: 9px; 
-    font-weight: 800; 
-    text-transform: uppercase; 
-    letter-spacing: 0.15em; 
-    color: #94a3b8; 
-    margin-bottom: 6px; 
-    display: block;
-}
-
-.intel-card h2 { 
-    font-size: 1.5rem; 
-    font-weight: 900; 
-    color: #1e293b; 
-    letter-spacing: -0.02em; 
-    margin: 0;
-}
-
+.kpi-label-sm { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #94a3b8; margin-bottom: 6px; display: block;}
+.intel-card h2 { font-size: 1.5rem; font-weight: 900; color: #1e293b; letter-spacing: -0.02em; margin: 0;}
 .trend-up { font-size: 10px; font-weight: 800; color: #10b981; margin-top: 4px; display: block; }
 .trend-down { font-size: 10px; font-weight: 800; color: #f59e0b; margin-top: 4px; display: block; }
 
-/* 3. Predictive Progress Bars (Ultra-Thin) */
-.forecast-row { 
-    margin-bottom: 18px; 
-    padding-bottom: 12px; 
-    border-bottom: 1px solid #f8fafc; 
-}
+.forecast-row { margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #f8fafc; }
+.forecast-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 6px; }
+.forecast-header span:first-child { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase;}
+.forecast-header span:last-child { font-size: 11px; font-weight: 900; color: var(--red); font-style: italic;}
 
-.forecast-header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: flex-end; 
-    margin-bottom: 6px; 
-}
-
-.forecast-header span:first-child { 
-    font-size: 11px; 
-    font-weight: 700; 
-    color: #475569; 
-    text-transform: uppercase;
-}
-
-.forecast-header span:last-child { 
-    font-size: 11px; 
-    font-weight: 900; 
-    color: var(--red); 
-    font-style: italic;
-}
-
-.progress-track { 
-    height: 4px; /* Thinner for a "smarter" look */
-    background: #f1f5f9; 
-    border-radius: 10px; 
-    overflow: hidden; 
-}
-
-.progress-fill { 
-    height: 100%; 
-    background: var(--red); 
-    border-radius: 10px; 
-    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); 
-}
-
-/* 4. Supplier Performance (High-Contrast Dark Panel) */
-.dark-panel { 
-    background: #0f172a; 
-    color: #fff; 
-    border-radius: 2rem; 
-    padding: 24px; 
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
-}
-
-.score-row { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 12px 0; 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
-}
-
+.progress-track { height: 4px; /* Thinner for a "smarter" look */background: #f1f5f9; border-radius: 10px; overflow: hidden;}
+.progress-fill { height: 100%; background: var(--red); border-radius: 10px; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+.dark-panel { background: #0f172a; color: #fff; border-radius: 2rem; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);}
+.score-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 .score-row p { margin: 0; }
 .score-row .sup-name { font-size: 12px; font-weight: 700; color: #f8fafc; }
 .score-row .sup-meta { font-size: 9px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-top: 2px; }
 
-/* 5. Minimalist Bar Chart */
-.chart-container { 
-    display: flex; 
-    align-items: flex-end; 
-    justify-content: space-around; 
-    height: 160px; 
-    padding: 20px 10px 0;
-}
-
-.chart-bar-wrapper { 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    width: 40px; 
-}
-
-.chart-bar { 
-    width: 24px; /* Pill-shaped bars */
-    background: rgba(232, 52, 74, 0.08); 
-    border-radius: 20px; 
-    position: relative; 
-    transition: all 0.4s ease; 
-}
-
-.chart-bar:hover { 
-    background: var(--red); 
-}
-
-.chart-val { 
-    position: absolute; 
-    top: -18px; 
-    font-size: 10px; 
-    font-weight: 900; 
-    color: #1e293b; 
-}
-
-.chart-label { 
-    font-size: 9px; 
-    font-weight: 800; 
-    color: #94a3b8; 
-    text-transform: uppercase; 
-    margin-top: 12px;
-    letter-spacing: 0.05em;
-}
-
-/* 6. Utility & Actions */
+.chart-container { display: flex; align-items: flex-end; justify-content: space-around; height: 160px; padding: 20px 10px 0;}
+.chart-bar-wrapper { display: flex; flex-direction: column; align-items: center; width: 40px; }
+.chart-bar {width: 24px;background: rgba(232, 52, 74, 0.08);border-radius: 20px;position: relative;transition: all 0.4s ease; }
+.chart-bar:hover {background: var(--red); }
+.chart-val {position: absolute;top: -18px;font-size: 10px;font-weight: 900;color: #1e293b; }
+.chart-label {font-size: 9px;font-weight: 800;color: #94a3b8;text-transform: uppercase;margin-top: 12px;letter-spacing: 0.05em;}
 .report-actions { display: flex; gap: 8px; }
+.btn-report-sm {font-size: 10px;font-weight: 800;text-transform: uppercase;letter-spacing: 1px;padding: 8px 16px;border-radius: 8px;transition: 0.2s;}
+.bir-totals-row {background: var(--red-pale) !important;font-weight: 800;color: var(--red-dark);}
+.alert-compliance {background: #FFFBEB;border: 1px solid #FDE68A;color: #92400E;padding: 12px 20px;border-radius: 12px;font-size: 0.75rem;font-weight: 600;display: flex;align-items: center;gap: 10px;margin-bottom: 20px;}
 
-.btn-report-sm {
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 8px 16px;
-    border-radius: 8px;
-    transition: 0.2s;
+.table-card table thead th {font-size: 9px;letter-spacing: 1px;text-transform: uppercase;
 }
 
-
-/* ── BIR COMPLIANCE SMART STYLES ── */
-.bir-totals-row {
-    background: var(--red-pale) !important;
-    font-weight: 800;
-    color: var(--red-dark);
+.table-card table tbody td {font-size: 11px;
 }
 
-.alert-compliance {
-    background: #FFFBEB;
-    border: 1px solid #FDE68A;
-    color: #92400E;
-    padding: 12px 20px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
+.or-modal {position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 9999;}
 
-/* Document High-Density Table */
-.table-card table thead th {
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
+.or-paper {background: white; width: 320px; padding: 30px; border-radius: 4px;box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);font-family: 'Courier New', Courier, monospace;color: #000;border-top: 8px solid var(--red);}
 
-.table-card table tbody td {
-    font-size: 11px;
-}
-
-/* Thermal Modal Logic */
-.or-modal {
-    position: fixed; 
-    inset: 0; 
-    background: rgba(15, 23, 42, 0.85); /* Darker backdrop */
-    backdrop-filter: blur(8px); /* Smart Blur */
-    display: none; /* JS will change this to 'flex' */
-    align-items: center; 
-    justify-content: center; 
-    z-index: 9999;
-}
-
-.or-paper {
-    background: white; 
-    width: 320px; 
-    padding: 30px; 
-    border-radius: 4px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    font-family: 'Courier New', Courier, monospace;
-    color: #000;
-    border-top: 8px solid var(--red); /* Pharma Red highlight */
-}
-
-/* Hide the Sidebar and Navbar when printing the OR */
 @media print {
     .sidebar, .top-header, .no-print, .btn, .alert-compliance {
         display: none !important;
@@ -504,44 +302,10 @@ textarea{resize:vertical;min-height:76px}
     .or-paper { box-shadow: none; border: none; }
 }
 
-/* Glassmorphism for Form Cards */
-.form-card {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid var(--gray-200);
-}
-
-.form-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-
-
-
-
-
-
-/* ── BULLETIN BOARD & ANNOUNCEMENT STYLES ── */
-
-/* 1. Feed Container */
-.announcement-feed {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-/* 2. Announcement Cards (Smarter & Unique) */
-.ann-card {
-    background: #ffffff;
-    padding: 1.5rem;
-    border-radius: 2rem; /* Matches your ultra-rounded style */
-    border: 1px solid #f1f5f9;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
+.form-card {transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);border: 1px solid var(--gray-200);}
+.form-title {display: flex;justify-content: space-between;align-items: center;}
+.announcement-feed {display: flex;flex-direction: column;gap: 1rem;}
+.ann-card {background: #ffffff;padding: 1.5rem;border-radius: 2rem; border: 1px solid #f1f5f9;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);position: relative;overflow: hidden;}
 
 .ann-card:hover {
     transform: translateX(8px); /* Slides slightly right on hover */
@@ -549,341 +313,58 @@ textarea{resize:vertical;min-height:76px}
     border-color: rgba(232, 52, 74, 0.1);
 }
 
-/* Priority Left Borders */
 .ann-card-high { border-left: 6px solid #ef4444; }
 .ann-card-medium { border-left: 6px solid #f59e0b; }
 .ann-card-low { border-left: 6px solid #94a3b8; }
 
-/* 3. Micro-Typography for Announcements */
-.ann-title {
-    font-size: 0.85rem;
-    font-weight: 900;
-    color: #1e293b;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.25rem;
-}
+.ann-title {font-size: 0.85rem;font-weight: 900;color: #1e293b;letter-spacing: -0.01em;margin-bottom: 0.25rem;}
+.ann-meta {font-size: 0.65rem; font-weight: 700;text-transform: uppercase;letter-spacing: 0.05em;color: #94a3b8;display: flex;align-items: center;gap: 0.5rem;}
+.ann-body {font-size: 0.75rem; line-height: 1.6;color: #64748b;margin-top: 0.75rem;}
+.badge-priority {font-size: 0.6rem;font-weight: 900;padding: 0.2rem 0.6rem;border-radius: 6px;text-transform: uppercase;color: #ffffff;}
+.sticky-form-container {position: sticky;top: 100px; }
+.form-card-smart {background: #ffffff;border-radius: 2.5rem;padding: 2rem;box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);border: 1px solid rgba(226, 232, 240, 0.8);}
+.form-label-tiny {font-size: 0.65rem;font-weight: 800;text-transform: uppercase;letter-spacing: 0.15em;color: #94a3b8;margin-left: 0.5rem;margin-bottom: 0.4rem;display: block;}
 
-.ann-meta {
-    font-size: 0.65rem; /* 10px */
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #94a3b8;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
+.input-ann {width: 100%;background-color: #f8fafc;border: 0;border-radius: 1rem;padding: 0.75rem 1rem;font-size: 0.75rem;font-weight: 600;color: #1e293b;outline: none;transition: all 0.2s;}
+.input-ann:focus {background-color: #ffffff;box-shadow: 0 0 0 3px rgba(232, 52, 74, 0.1);border: 1px solid rgba(232, 52, 74, 0.2);}
+.ann-action-btn {font-size: 0.65rem;font-weight: 800;text-transform: uppercase;letter-spacing: 0.1em;color: #cbd5e1;transition: color 0.2s;cursor: pointer;background: none;border: none;}
+.ann-action-btn:hover {color: var(--red);}
+.empty-feed-art {display: flex;flex-direction: column;align-items: center;justify-content: center;padding: 4rem;opacity: 0.2;filter: grayscale(1);}
+.btn-danger:hover {transform: scale(1.03);}
+.btn-outline-secondary:hover {transform: scale(1.03);}
+.feed-container {display: grid;grid-template-columns: 1fr 400px;gap: 30px;align-items: start;}
+.announcement-card {background: #ffffff;border-radius: 1.5rem;padding: 24px;border: 1px solid #f1f5f9;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);position: relative;}
+.announcement-card:hover {transform: translateY(-4px);box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);border-color: var(--red-pale);}
+.ann-label-tiny {font-size: 9px;font-weight: 800;text-transform: uppercase;letter-spacing: 1.5px;color: #94a3b8;}
+.ann-title-sm {font-size: 1.1rem;font-weight: 900;color: #1e293b;letter-spacing: -0.02em;}
+.ann-body-text {font-size: 0.78rem;line-height: 1.6;color: #475569;margin-top: 12px;}
 
-.ann-body {
-    font-size: 0.75rem; /* 11px */
-    line-height: 1.6;
-    color: #64748b;
-    margin-top: 0.75rem;
-}
-
-/* 4. Priority Badges */
-.badge-priority {
-    font-size: 0.6rem;
-    font-weight: 900;
-    padding: 0.2rem 0.6rem;
-    border-radius: 6px;
-    text-transform: uppercase;
-    color: #ffffff;
-}
-
-/* 5. The Sticky Smart Form */
-.sticky-form-container {
-    position: sticky;
-    top: 100px; /* Stays visible while scrolling feed */
-}
-
-.form-card-smart {
-    background: #ffffff;
-    border-radius: 2.5rem;
-    padding: 2rem;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-}
-
-/* 6. Form Micro-Styling */
-.form-label-tiny {
-    font-size: 0.65rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #94a3b8;
-    margin-left: 0.5rem;
-    margin-bottom: 0.4rem;
-    display: block;
-}
-
-.input-ann {
-    width: 100%;
-    background-color: #f8fafc;
-    border: 0;
-    border-radius: 1rem;
-    padding: 0.75rem 1rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #1e293b;
-    outline: none;
-    transition: all 0.2s;
-}
-
-.input-ann:focus {
-    background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(232, 52, 74, 0.1);
-    border: 1px solid rgba(232, 52, 74, 0.2);
-}
-
-/* 7. Action Icons/Buttons */
-.ann-action-btn {
-    font-size: 0.65rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #cbd5e1;
-    transition: color 0.2s;
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
-.ann-action-btn:hover {
-    color: var(--red);
-}
-
-/* 8. Empty State Art */
-.empty-feed-art {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem;
-    opacity: 0.2;
-    filter: grayscale(1);
-}
-
-.btn-danger:hover {
-        transform: scale(1.03);
-    }
-    .btn-outline-secondary:hover {
-        transform: scale(1.03);
-    }
-
-/* ── SMART BULLETIN BOARD REFINEMENTS ── */
-
-.feed-container {
-    display: grid;
-    grid-template-columns: 1fr 400px; /* Locked width for form sidebar */
-    gap: 30px;
-    align-items: start;
-}
-
-/* Professional Announcement Card */
-.announcement-card {
-    background: #ffffff;
-    border-radius: 1.5rem;
-    padding: 24px;
-    border: 1px solid #f1f5f9;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-}
-
-.announcement-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-    border-color: var(--red-pale);
-}
-
-/* Micro-Typography Utility */
-.ann-label-tiny {
-    font-size: 9px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #94a3b8;
-}
-
-.ann-title-sm {
-    font-size: 1.1rem;
-    font-weight: 900;
-    color: #1e293b;
-    letter-spacing: -0.02em;
-}
-
-.ann-body-text {
-    font-size: 0.78rem;
-    line-height: 1.6;
-    color: #475569;
-    margin-top: 12px;
-}
-
-/* Audience Badges with Icons */
-.audience-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #f8fafc;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 10px;
-    font-weight: 700;
-    color: #64748b;
-}
-
-/* Interactive Sticky Form */
-.sticky-panel {
-    position: sticky;
-    top: 90px;
-}
-
-.form-card-smart {
-    background: #ffffff;
-    border-radius: 2.5rem;
-    padding: 30px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
-}
-
-/* Ensure the grid columns are respected */
-.grid-cols-12 {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 2rem;
-}
-
+.audience-tag {display: inline-flex;align-items: center;gap: 6px;background: #f8fafc;padding: 4px 10px;border-radius: 8px;font-size: 10px;font-weight: 700;color: #64748b;}
+.sticky-panel {position: sticky;top: 90px;}
+.form-card-smart {background: #ffffff;border-radius: 2.5rem;padding: 30px;border: 1px solid #e2e8f0;box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);}
+.grid-cols-12 {display: grid;grid-template-columns: repeat(12, 1fr);gap: 2rem;}
 .col-span-7 { grid-column: span 7 / span 7; }
 .col-span-5 { grid-column: span 5 / span 5; }
+.bulletin-grid {display: grid;grid-template-columns: repeat(12, 1fr);gap: 1.5rem;align-items: start;}
 
-.bulletin-grid {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 1.5rem;
-        align-items: start;
-    }
+.notice-card {background: #ffffff;border-radius: 1.25rem;padding: 1.25rem;border: 1px solid #f1f5f9;box-shadow: 0 1px 3px rgba(0,0,0,0.02);transition: all 0.2s ease;position: relative;}
+.notice-card:hover {transform: translateX(4px);box-shadow: 0 10px 15px -3px rgba(0,0,0,0.04);border-color: #E8344A20;}
+.label-micro {font-size: 10px;font-weight: 800;text-transform: uppercase;letter-spacing: 0.1em;color: #91979f;}
+.text-notice-title {font-size: 0.95rem;font-weight: 800;color: #1e293b;letter-spacing: -0.01em;}
+.text-notice-body {font-size: 0.75rem;line-height: 1.5;color: #64748b;margin-top: 0.5rem;}
 
-    /* Smarter Feed Cards */
-    .notice-card {
-        background: #ffffff;
-        border-radius: 1.25rem;
-        padding: 1.25rem;
-        border: 1px solid #f1f5f9;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-        transition: all 0.2s ease;
-        position: relative;
-    }
-    .notice-card:hover {
-        transform: translateX(4px);
-        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.04);
-        border-color: #E8344A20;
-    }
-
-    /* Small Professional Typography */
-    .label-micro {
-        font-size: 10px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: #91979f;
-    }
-    .text-notice-title {
-        font-size: 0.95rem;
-        font-weight: 800;
-        color: #1e293b;
-        letter-spacing: -0.01em;
-    }
-    .text-notice-body {
-        font-size: 0.75rem;
-        line-height: 1.5;
-        color: #64748b;
-        margin-top: 0.5rem;
-    }
-
-    /* Compact Sticky Form */
-    .form-panel-sticky {
-        position: sticky;
-        top: 85px;
-        background: #ffffff;
-        border-radius: 1.5rem;
-        padding: 1.75rem;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
-    }
-
-    .input-compact {
-        width: 100%;
-        background-color: #f8fafc;
-        border: 1.5px solid #f1f5f9;
-        border-radius: 0.75rem;
-        padding: 0.6rem 0.8rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #1e293b;
-        outline: none;
-        transition: all 0.2s;
-    }
-    .input-compact:focus {
-        background-color: #fff;
-        border-color: var(--red);
-        box-shadow: 0 0 0 3px rgba(232, 52, 74, 0.05);
-    }
-
-.edit-btn {
-    margin-top: 10px;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #ffffff;
-    background: linear-gradient(135deg, #dc3545, #b02a37); 
-    padding: 6px 14px;
-    border-radius: 15px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.edit-btn:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(135deg, #b02a37, #991b1b);
-}
-
-.action-link {font-size: 10px;font-weight: 800;text-transform: uppercase;letter-spacing: 0.05em;color: #94a3b8; /* soft slate */transition: all 0.2s ease-in-out;
-    cursor: pointer;
-    position: relative;
-    text-decoration: none;}
-
+.form-panel-sticky {position: sticky;top: 85px;background: #ffffff;border-radius: 1.5rem;padding: 1.75rem;border: 1px solid #e2e8f0;box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);}
+.input-compact {width: 100%;background-color: #f8fafc;border: 1.5px solid #f1f5f9;border-radius: 0.75rem;padding: 0.6rem 0.8rem;font-size: 0.75rem;font-weight: 600;color: #1e293b;outline: none;transition: all 0.2s;}
+.input-compact:focus {background-color: #fff;border-color: var(--red);box-shadow: 0 0 0 3px rgba(232, 52, 74, 0.05);}
+.edit-btn {margin-top: 10px;font-size: 10px;font-weight: 700;text-transform: uppercase;letter-spacing: 0.05em;color: #ffffff;background: linear-gradient(135deg, #dc3545, #b02a37); padding: 6px 14px;border-radius: 15px;border: none;cursor: pointer;transition: all 0.2s ease-in-out;display: inline-flex;align-items: center;gap: 4px;}
+.edit-btn:hover {transform: translateY(-2px);background: linear-gradient(135deg, #b02a37, #991b1b);}
+.action-link {font-size: 10px;font-weight: 800;text-transform: uppercase;letter-spacing: 0.05em;color: #94a3b8;transition: all 0.2s ease-in-out;cursor: pointer;position: relative;text-decoration: none;}
 .action-link:hover {color: #dc3545;}
 
-
-/* ── INSTITUTIONAL SALES: PROFESSIONAL GRID ── */
-.sales-workspace {
-    display: grid;
-    grid-template-columns: 1fr 360px; /* Locked sidebar form width */
-    gap: 20px;
-    height: calc(100vh - 140px);
-    overflow: hidden;
-}
-
-/* Registry (Left) */
-.order-registry {
-    background: #fff;
-    border-radius: 1.5rem;
-    border: 1px solid #eef2f6;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
+.sales-workspace {display: grid;grid-template-columns: 1fr 360px; gap: 20px;height: calc(100vh - 140px);overflow: hidden;}
+.order-registry {background: #fff;border-radius: 1.5rem;border: 1px solid #eef2f6;display: flex;flex-direction: column;overflow: hidden;}
 .registry-scroll { flex: 1; overflow-y: auto; scrollbar-width: none; }
 .registry-scroll::-webkit-scrollbar { display: none; }
-
-/* Table Typography (Micro-Professional) */
 .sales-table { width: 100%; border-collapse: collapse; }
 .sales-table thead th {
     position: sticky; top: 0; background: #5b5858; z-index: 10;
@@ -892,223 +373,51 @@ textarea{resize:vertical;min-height:76px}
     border-bottom: 1px solid #eef2f6;
 }
 .sales-table td { padding: 12px 15px; border-bottom: 1px solid #f8fafc; font-size: 11px; vertical-align: middle; }
-
-/* Audit Inspector (Right) */
-.order-inspector {
-    background: #fff;
-    border-radius: 1.5rem;
-    border: 2px solid var(--red);
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 10px 30px rgba(232, 52, 74, 0.05);
-}
+.order-inspector {background: #fff;border-radius: 1.5rem;border: 2px solid var(--red);display: flex;flex-direction: column;box-shadow: 0 10px 30px rgba(232, 52, 74, 0.05);}
 
 .audit-head { padding: 20px; border-bottom: 1px dashed var(--red); }
 .audit-head h2 { font-size: 1rem; font-weight: 900; margin: 0; color: #1e293b; }
-
 .audit-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
 .audit-label { font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase; }
 .audit-val { font-size: 11px; font-weight: 700; color: #334155; }
-
 .financial-wrap { background: var(--red-pale); padding: 15px; border-radius: 12px; margin-top: 10px; }
 
-/* Status Buttons */
 .ship-btn {
     background: #FFFBEB; color: #B45309; border: 1px solid #FEF3C7;
     padding: 5px 10px; border-radius: 6px; font-weight: 800; font-size: 9px;
-    text-decoration: none; transition: 0.2s;
-}
+    text-decoration: none; transition: 0.2s;}
 .ship-btn:hover { background: #F59E0B; color: #fff; }
 
-/* FORMAL PRINT STYLES */
 @media print {
     body * { visibility: hidden; }
     #formal-invoice, #formal-invoice * { visibility: visible; }
     #formal-invoice { position: absolute; left: 0; top: 0; width: 100%; display: block !important; }
 }
-
 .page-header-actions {display: flex;align-items: center;justify-content: flex-end; gap: 15px;}
 .search-wrapper-smart {position: relative;width: 280px;}
+.search-wrapper-smart input {width: 100%;padding: 10px 15px 10px 40px; background: #ffffff;border-radius: 12px;font-size: 11px;font-weight: 600;color: #1e293b;outline: none;transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
+.search-wrapper-smart::before {content: '🔍';position: absolute;left: 15px;top: 50%;transform: translateY(-50%);font-size: 12px;opacity: 0.4;pointer-events: none;}
+.sales-workspace {display: grid;grid-template-columns: 1fr 360px; gap: 20px;height: calc(100vh - 160px); overflow: hidden;}
+.order-registry {display: flex;flex-direction: column;height: 100%;overflow: hidden;}
 
-.search-wrapper-smart input {width: 100%;padding: 10px 15px 10px 40px; background: #ffffff;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: 600;
-    color: #1e293b;
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+.registry-scroll {flex: 1;overflow-y: auto;}
+aside.flex.flex-col.gap-4 {height: 100%;overflow-y: auto; padding-right: 8px; scrollbar-width: thin;scrollbar-color: var(--red) #f1f1f1;}
+aside.flex.flex-col.gap-4::-webkit-scrollbar {width: 6px;}
+aside.flex.flex-col.gap-4::-webkit-scrollbar-track {background: #f1f1f1;border-radius: 10px;}
+aside.flex.flex-col.gap-4::-webkit-scrollbar-thumb {background: var(--red);border-radius: 10px;}
 
-.search-wrapper-smart::before {
-    content: '🔍';
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 12px;
-    opacity: 0.4;
-    pointer-events: none;
-}
+.order-audit-panel, .quick-entry-card {flex-shrink: 0; }
+.quick-entry-card {background: #ffffff;border-radius: 1.5rem;padding: 24px;border: 1px solid rgba(226, 232, 240, 0.8);box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);}
+.quick-entry-card h3 {font-size: 9px;font-weight: 900;text-transform: uppercase;letter-spacing: 2px;color: #94a3b8; /* Slate 400 */margin-bottom: 20px;}
 
-/* ─── QUICK SALES ENTRY: SMART FORM ─── */
-/* ─── SALES WORKSPACE FIXED HEIGHT FIX ─── */
-
-/* 1. Lock the main grid so it fits the laptop screen */
-.sales-workspace {
-    display: grid;
-    grid-template-columns: 1fr 360px; /* Keeps your 2-column layout */
-    gap: 20px;
-    height: calc(100vh - 160px); /* Fits 100% zoom perfectly */
-    overflow: hidden; /* Prevents the whole page from scrolling */
-}
-
-/* 2. Make the Left Table area scrollable */
-.order-registry {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow: hidden;
-}
-
-.registry-scroll {
-    flex: 1;
-    overflow-y: auto;
-}
-
-/* 3. FIX: Make the Right column (Audit + Form) scrollable independently */
-aside.flex.flex-col.gap-4 {
-    height: 100%;
-    overflow-y: auto; /* Allows you to scroll down to the form */
-    padding-right: 8px; /* Space for the scrollbar */
-    scrollbar-width: thin; /* Modern thin scrollbar */
-    scrollbar-color: var(--red) #f1f1f1;
-}
-
-/* Chrome/Edge/Safari Scrollbar Styling */
-aside.flex.flex-col.gap-4::-webkit-scrollbar {
-    width: 6px;
-}
-aside.flex.flex-col.gap-4::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-aside.flex.flex-col.gap-4::-webkit-scrollbar-thumb {
-    background: var(--red);
-    border-radius: 10px;
-}
-
-/* 4. Ensure the cards don't shrink */
-.order-audit-panel, .quick-entry-card {
-    flex-shrink: 0; 
-}
-
-.quick-entry-card {
-    background: #ffffff;
-    border-radius: 1.5rem;
-    padding: 24px;
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-}
-
-.quick-entry-card h3 {
-    font-size: 9px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #94a3b8; /* Slate 400 */
-    margin-bottom: 20px;
-}
-
-/* Professional Inset Inputs */
-.input-field-smart {
-    width: 100%;
-    background-color: #f8fafc; /* Subtle off-white */
-    border: 1.5px solid #f1f5f9;
-    border-radius: 12px;
-    padding: 10px 14px;
-    font-size: 11px;
-    font-weight: 600;
-    color: #1e293b;
-    outline: none;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.input-field-smart:focus {
-    background-color: #ffffff;
-    border-color: var(--red);
-    box-shadow: 0 0 0 4px rgba(232, 52, 74, 0.05);
-}
-
-/* Small Caps Labels */
-.entry-label {
-    font-size: 8px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #cbd5e1;
-    margin-left: 10px;
-    margin-bottom: 5px;
-    margin-top: 10px;
-    display: block;
-}
-
-/* Action Button */
-.btn-record-sale {
-    width: 100%;
-    background: var(--red);
-    color: #fff;
-    font-weight: 900;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 14px;
-    border-radius: 14px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    margin-top: 15px;
-}
-
-.btn-record-sale:hover {
-    background: var(--red); /* Switches to brand color on interaction */
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(232, 52, 74, 0.3);
-}
-
-/* ─── PROFESSIONAL PRINT BUTTON STYLE ─── */
-
-.btn-audit-print {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    background: var(--red);
-    color: #ffffff;
-    font-size: 10px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.input-field-smart {width: 100%;background-color: #f8fafc; /* Subtle off-white */border: 1.5px solid #f1f5f9;border-radius: 12px;padding: 10px 14px;font-size: 11px;font-weight: 600;color: #1e293b;outline: none;transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);}
+.input-field-smart:focus {background-color: #ffffff;border-color: var(--red);box-shadow: 0 0 0 4px rgba(232, 52, 74, 0.05);}
+.entry-label {font-size: 8px;font-weight: 900;text-transform: uppercase;letter-spacing: 1px;color: #cbd5e1;margin-left: 10px;margin-bottom: 5px;margin-top: 10px;display: block;}
+.btn-record-sale {width: 100%;background: var(--red);color: #fff;font-weight: 900;font-size: 10px;text-transform: uppercase;letter-spacing: 1.5px;padding: 14px;border-radius: 14px;border: none;cursor: pointer;transition: all 0.3s ease;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);margin-top: 15px;}
+.btn-record-sale:hover {background: var(--red);transform: translateY(-2px);box-shadow: 0 10px 15px -3px rgba(232, 52, 74, 0.3);}
+.btn-audit-print {display: flex;align-items: center;justify-content: center;gap: 10px;width: 100%;background: var(--red);color: #ffffff;font-size: 10px;font-weight: 900;text-transform: uppercase;letter-spacing: 2px;padding: 14px 20px;border: none;border-radius: 14px;cursor: pointer;transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 10px 15px -3px rgba(232, 52, 74, 0.2), 
                 0 4px 6px -2px rgba(232, 52, 74, 0.1);
-    margin-top: 25px;
-    margin-bottom: 25px;
-}
-
-/* Hover State: "Lifts" the button */
-.btn-audit-print:hover {
-    transform: translateY(-3px);
-}
-
-/* Ensure it doesn't show up on the printed document */
-@media print {
-    .btn-audit-print {
-        display: none !important;
-    }
-}
+    margin-top: 25px;margin-bottom: 25px;}
+.btn-audit-print:hover {transform: translateY(-3px);}
+@media print {.btn-audit-print {display: none !important;}}

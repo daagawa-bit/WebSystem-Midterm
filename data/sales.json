@@ -59,7 +59,7 @@
       "vat": 1.18,
       "payment": "Unpaid",
       "method": "Cash",
-      "delivery": "Pending",
+      "delivery": "Packed",
       "status": "Active",
       "batchNo": "BN-3545"
     },
